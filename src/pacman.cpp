@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include "../inc/symboles.h"
 
 #include <iostream>
 
@@ -6,14 +6,6 @@ SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
 SDL_Surface* plancheSprites = nullptr;
 
-SDL_Rect src_bg = { 200,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
-SDL_Rect bg = { 4,4, 672,864 }; // ici scale x4
-
-SDL_Rect ghost_r = { 3,123, 16,16 }; 
-SDL_Rect ghost_l = { 37,123, 16,16 }; 
-SDL_Rect ghost_d = { 105,123, 16,16 }; 
-SDL_Rect ghost_u = { 71,123, 16,16 }; 
-SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
 
 int count;
 
@@ -31,26 +23,26 @@ void init()
 void draw()
 {
     SDL_SetColorKey(plancheSprites, false, 0);
-    SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
+    SDL_BlitScaled(plancheSprites, &src_b1, win_surf, &bg);
 
     // petit truc pour faire tourner le fantome
     SDL_Rect* ghost_in = nullptr;
     switch (count/128)
     {
         case 0:
-            ghost_in = &(ghost_r);
+            ghost_in = &(ghost_rr1);
             ghost.x++;
             break;
         case 1:
-            ghost_in = &(ghost_d);
+            ghost_in = &(ghost_rd1);
             ghost.y++;
             break;
         case 2:
-            ghost_in = &(ghost_l);
+            ghost_in = &(ghost_rl1);
             ghost.x--;
             break;
         case 3:
-            ghost_in = &(ghost_u);
+            ghost_in = &(ghost_ru1);
             ghost.y--;
             break;
     }
