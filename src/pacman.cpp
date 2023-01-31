@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <iostream>
 
@@ -22,7 +22,7 @@ void init()
 	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
 
-	plancheSprites = SDL_LoadBMP("./pacman_sprites.bmp");
+	plancheSprites = SDL_LoadBMP("../inc/pacman_sprites.bmp");
     count = 0;
 }
 
