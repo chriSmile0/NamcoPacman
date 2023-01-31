@@ -1,6 +1,6 @@
 #include "../inc/symboles.h"
-
 #include <iostream>
+using namespace std;
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -16,6 +16,66 @@ void init()
 
 	plancheSprites = SDL_LoadBMP("../inc/pacman_sprites.bmp");
     count = 0;
+
+    SDL_SetColorKey(plancheSprites, false, 0);
+    SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
+
+    SDL_Rect ghost_r = (ghost_rr1);
+    SDL_Rect ghost_p = (ghost_cr1);
+    SDL_Rect ghost_c = (ghost_pr1);
+    SDL_Rect ghost_o = (ghost_or1);
+
+    SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
+    SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
+    SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
+    SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+    SDL_SetColorKey(plancheSprites, true, 0);
+    //Affichage des 4 fantomes aux centres 
+}
+
+void exit_ghost(char ghost_name) { // r,p,c,o
+    SDL_SetColorKey(plancheSprites, false, 0);
+    SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
+    SDL_Rect ghost_r = (ghost_rr1);
+    SDL_Rect ghost_p = (ghost_cr1);
+    SDL_Rect ghost_c = (ghost_pr1);
+    SDL_Rect ghost_o = (ghost_or1);
+    SDL_Rect* ghost_choice = nullptr;
+    switch (ghost_name) {
+        case 'r':
+            ghost_choice = &(ghost_rr1);
+            SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
+            SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
+            SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+            break;
+        case 'p':
+            ghost_choice = &(ghost_pr1);
+            SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
+            SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
+            SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+            break;
+        case 'c':
+            ghost_choice = &(ghost_cr1);
+            SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
+            SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
+            SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+            break;
+        case 'o':
+            ghost_choice = &(ghost_or1);
+            SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
+            SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
+            SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
+            break;
+    }
+    SDL_BlitScaled(plancheSprites, ghost_choice, win_surf, &ghost_free);
+    SDL_SetColorKey(plancheSprites, true, 0);
+    cout << "Sortie du fantome : " << ghost_name << " " << endl;
+
+    
+    /*else {
+        exit(EXIT_FAILURE);
+        cout << "Erreur sur le choix du fantome à sortir" << endl;
+    }*/
 }
 
 
@@ -23,7 +83,7 @@ void init()
 void draw()
 {
     SDL_SetColorKey(plancheSprites, false, 0);
-    SDL_BlitScaled(plancheSprites, &src_b1, win_surf, &bg);
+    SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
 
     // petit truc pour faire tourner le fantome
     SDL_Rect* ghost_in = nullptr;
@@ -95,9 +155,11 @@ int main(int argc, char** argv)
             puts("LEFT");
         if (keys[SDL_SCANCODE_RIGHT])
             puts("RIGHT");
+        if (keys[SDL_SCANCODE_DOWN])
+            exit_ghost('o');
 
         // AFFICHAGE
-		draw();
+		/*draw();*/
 		SDL_UpdateWindowSurface(pWindow); 
         // LIMITE A 60 FPS
 		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions

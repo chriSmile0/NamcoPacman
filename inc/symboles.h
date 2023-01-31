@@ -55,8 +55,17 @@ SDL_Rect ghost_bkl = { 87,195, 16,16 };
 SDL_Rect ghost_bkd = {105,195, 16,16 };
 SDL_Rect ghost_bku = {122,195, 16,16 };
 
-
+//In board
 SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
+//Start 
+SDL_Rect ghost_rstart = { 325,385, 32,32 };    
+SDL_Rect ghost_pstart = { 295,420, 32,32 };     
+SDL_Rect ghost_cstart = { 325,420, 32,32 };    
+SDL_Rect ghost_ostart = { 355,420, 32,32 };
+
+//Ghost Exit -> behind to front of the door
+SDL_Rect ghost_free = { 325,330, 32,32 };
+
 
 //Pacmans
 
@@ -161,8 +170,12 @@ SDL_Rect bell_o = { 386,257, 14,16 };
 SDL_Rect key_r = { 404,235, 9,15 };
 SDL_Rect key_b = { 404,256, 9,15 };
 
+//Gum 
+SDL_Rect bgum = { 8,78,  9,9 };
+SDL_Rect lgum = { 1,78,  8,8 };
+
 //Logos
-SDL_Rect editor = { 3,77, 87,10 };
+SDL_Rect editor = { 26,77, 64,10 };
 SDL_Rect game_name = { 3,3, 182,47 };
 
 #endif // SYMBOLES_H //
