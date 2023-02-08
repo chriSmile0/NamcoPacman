@@ -21,7 +21,7 @@ void init()
 	SDL_SetColorKey(plancheSprites, false, 0);
 	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
 
-	/*SDL_Rect ghost_r = (ghost_rr1);
+	SDL_Rect ghost_r = (ghost_rr1);
 	SDL_Rect ghost_p = (ghost_cr1);
 	SDL_Rect ghost_c = (ghost_pr1);
 	SDL_Rect ghost_o = (ghost_or1);
@@ -29,7 +29,7 @@ void init()
 	SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
 	SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
 	SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-	SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);*/
+	SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
 	SDL_SetColorKey(plancheSprites, true, 0);
 	//Affichage des 4 fantomes aux centres 
 }
@@ -126,77 +126,22 @@ int main(int argc, char** argv)
 		std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError() << std::endl;
 		return 1;
 	}
-	Utile_elem ue;
-	cout << ue.get_x() << endl;
-
-	Utile_elem ue2{4,4,4,4};
-	cout << ue2.get_x() << endl;
-
-	ue.set_x(7);
-	cout << ue.get_x() << endl;
-
-	Utile_elem ue3{ue};
-	cout << ue3.get_x() << endl; 
-	// Utile_elem ok 
-
-	Board n_board(3);
-	cout << "board : " << n_board.get_typeboard() << endl;
-	n_board.get_sizeofgameboard();
-
 	
-	
-
 	init();
-	Game g("jojo",&n_board,pWindow,win_surf,plancheSprites);
-	Personnage n_g;
-	cout << n_g.get_nom() << endl;
-
-	Personnage n_gg2{ghost_rstart};
-
-
-	Personnage n_ggg3{"huhu"};
-
-
-	Ghost g1;
-
+	Board gmboard{3};
+	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
 	Ghost g2{ghost_rstart};
-	cout << g2.get_x() << endl;
 
 	Ghost g3{"ghosting"};
-	cout << g3.get_nom() << endl;
 
 	Pacman pocman;
-	cout << pocman.get_nom() << " + x : " << pocman.get_x() << endl;
-	n_board.add_elem(pocman);
-	cout << n_board.get_elem_with_index(0).get_x() << endl;
-	cout << g.get_board()->get_elem_with_index(0).get_x() << endl;
+	gmboard.add_elem(pocman);
 
 	pocman.set_nom("POCMAN");
-	cout << pocman.get_nom() << endl;
 
-	cout << (n_board.get_tab_elem()).size() << endl;
-	n_board.add_elem(g3);
-	cout << "size :" << (n_board.get_tab_elem()).size() << endl;
+	gmboard.add_elem(g3);
 
-	n_board.add_elem(g2);
-	cout << "board elem g2 x: " << n_board.get_elem_with_index(2).get_x() << endl;
-	cout << "add rstart " << endl;
-	cout << (n_board.get_tab_elem()).size() << endl;
-	cout << "game : " << g.get_board()->get_elem_with_index(0).get_x() << endl;
-	
-
-	cout << "update pos of rstart" << endl;
-	cout << (n_board.get_elem_with_index(1).get_x()) << endl;
-	
-
-	Utile_elem uu;
-	uu = n_board.get_elem_with_index(2);
-	cout << uu.get_x() << endl;
-
-	n_board.change_pos(0,5,5);
-	cout << n_board.get_elem_with_index(2).get_x() << endl; // OK */
-
-
+	gmboard.add_elem(g2);
 	// BOUCLE PRINCIPALE
 	bool quit = false;
 	while (!quit)
