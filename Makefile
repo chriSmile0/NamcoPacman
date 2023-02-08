@@ -8,7 +8,7 @@ main : clean
 
 exec : main 
 	cd build ; \
-	./pacman
+	./pacman \
 
 clean : 
 	-$(RM) -r build
