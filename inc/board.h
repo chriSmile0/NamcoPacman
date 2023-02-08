@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include "utile_elem.h"
+#include "graine.h"
+#include "recompense.h"
 #include "symboles.h"
 #include <iostream>
 #include <vector>
@@ -36,6 +37,8 @@ class Board
 		int type_board;
 		SDL_Rect* gameboard;
 		vector<Utile_elem> tab_elem;
+		vector<Graine> tab_seed;
+		vector<Recompense> tab_award;
 };
 
 Board::Board()

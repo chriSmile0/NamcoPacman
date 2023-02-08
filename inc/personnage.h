@@ -31,7 +31,7 @@ Personnage::Personnage(SDL_Rect rect): Utile_elem(rect)
     cout << "crea rect" << endl;
 }
 
-Personnage::Personnage(Personnage const& perso)
+Personnage::Personnage(Personnage const& perso): Utile_elem()
 {
     nom_perso = perso.nom_perso;
 }

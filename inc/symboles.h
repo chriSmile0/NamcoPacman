@@ -173,10 +173,11 @@ SDL_Rect key_b = { 404,256, 9,15 };
 
 //Gum 
 SDL_Rect bgum = { 8,78,  9,9 };
-SDL_Rect lgum = { 1,78,  8,8 };
+SDL_Rect lgum = { 1,78,  6,6 };
 
 //Logos
 SDL_Rect editor = { 26,77, 64,10 };
 SDL_Rect game_name = { 3,3, 182,47 };
+
 
 #endif // SYMBOLES_H //

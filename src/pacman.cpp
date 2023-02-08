@@ -2,6 +2,8 @@
 #include "../inc/personnage.h"
 #include "../inc/ghost.h"
 #include "../inc/pacman.h"
+#include "../inc/graine.h"
+#include "../inc/recompense.h"
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -9,6 +11,150 @@ SDL_Surface* plancheSprites = nullptr;
 
 
 int count;
+
+void init_seeds()
+{	
+	//On évite le surplus et la superposition de graine 
+	//en signifiant que les graines sont toutes à la verticales
+	//Ce n'est donc que elles qui comptent 
+	//On saute donc sur x toutes celle qui pourrait faire office de croisement
+	
+	//On fait pour le moment une version simple sans classe 
+	int x = 38;
+	int y = 40;
+	int w = 20;
+	int h = 20;
+	// *********************************************Les horizontales *************************************************//
+	for(int i = 0 ; i < 21 ; i++) {
+		if ((i != 5) && (i != 10) && (i != 15) && (i != 20)){
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		else if (i == 10) {
+			x += 75;
+		}
+
+
+		x += 25;
+	}
+	//La seconde horizontale en partant d'en haut à gauche
+	y = 40+(25*5); 
+	x = 38+25;
+	for(int i = 0 ; i < 23 ; i++) {
+		if((i != 4) && (i != 15) && (i!= 17) && (i != 22)){
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		x += 25;
+	}
+	//La troisième horizontale en partant d'en haut à gauche
+	y = 40+(25*9);
+	x = 38+25;
+	for(int i = 0 ; i < 23 ; i++) {
+		// a opti ici -> trop de comparaison à faire 
+		if((i != 4) && (i != 5) && (i != 6) && (i != 7) && (i != 10) && (i != 11) && (i != 14) &&  (i != 15) && (i != 16) && (i!= 17) && (i != 22)){
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		x += 25;
+	}
+	//La quatrième horizontale en partant d'en haut à gauche 
+	y = 50+(25*11);
+	x = 63+(25*8);
+	for(int i = 0 ; i < 6 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		x += 25;
+	}
+
+	//La cinquième horizontale en partant d'en haut à gauche
+	y = 35+(25*22); 
+	x = 38+25;
+	for(int i = 0 ; i < 23 ; i++) {
+		if((i != 4) &&  (i != 7) && (i != 10) && (i != 11) &&  (i != 14) && (i != 17) && (i != 22)){
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		x += 25;
+	}
+
+	//La sizième horizontale en partant d'en haut à gauche
+	y = 40+(25*24); 
+	x = 38+25;
+	for(int i = 0 ; i < 23 ; i++) {
+		if(i == 18)
+			x += 10;
+		if((i!= 3) && (i!= 4) &&  (i != 7) && (i != 14) && (i != 17) && (i != 18) && (i != 22)){
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		x += 25;
+	}
+
+	
+
+
+
+	// ************************************Les verticales********************************************************************** //
+	//La verticale en haut à gauche
+	x = 38;
+	y = 40;
+	for(int i = 0 ; i < 10 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		y += 25;
+	}
+
+
+	//Verticale 2 et 5 (en partant de en haut à gauche)
+	x = 38+(25*5);
+	y = 40;
+	//La verticale en haut à gauche numéro 2
+	for(int i = 0 ; i < 30 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		if(i == 20)
+			y -= 5;
+		if(i == 22)
+			y += 5;
+		if(i == 28)
+			y += 40;
+		y += 25;
+	}
+	x = 38+(25*18);
+	y = 40;
+	//La verticale en haut à gauche numéro 5
+	for(int i = 0 ; i < 30 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		if(i == 20)
+			y -= 5;
+		if(i == 22)
+			y += 5;
+		if(i == 28)
+			y += 40;
+		y += 25;
+	}
+	//La verticale en haut à droite
+	x = 38+(25*23);
+	y = 40;
+	for(int i = 0 ; i < 10 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		y += 25;
+	}
+
+}
 
 void init()
 {
@@ -30,6 +176,11 @@ void init()
 	SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
 	SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
 	SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+
+
+	//Init seeds
+	init_seeds();
+
 	SDL_SetColorKey(plancheSprites, true, 0);
 	//Affichage des 4 fantomes aux centres 
 }
@@ -142,6 +293,12 @@ int main(int argc, char** argv)
 	gmboard.add_elem(g3);
 
 	gmboard.add_elem(g2);
+
+	SDL_Rect lgomme{1,78,8,8};
+	SDL_Rect bgomme{8,78,9,9};
+
+	Graine seed1{lgomme};
+
 	// BOUCLE PRINCIPALE
 	bool quit = false;
 	while (!quit)
@@ -173,6 +330,18 @@ int main(int argc, char** argv)
 			g.get_board()->get_elem_with_index(2).set_x((rec->x)+5);
 			g.update_pos_of_elem(2,5,0,1);
 		}
+
+		if (keys[SDL_SCANCODE_1]) {
+			puts("1");
+		}
+		if (keys[SDL_SCANCODE_2]) {
+			puts("2");
+		}
+		if (keys[SDL_SCANCODE_Q]) {
+			puts("A in QWERTY");
+			seed1.hideSeed();
+		}
+
 
 		// AFFICHAGE
 		//draw();
