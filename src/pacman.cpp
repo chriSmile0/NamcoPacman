@@ -42,7 +42,10 @@ void init_seeds()
 	y = 40+(25*5); 
 	x = 38+25;
 	for(int i = 0 ; i < 23 ; i++) {
-		if((i != 4) && (i != 15) && (i!= 17) && (i != 22)){
+		if(i == 14)
+			x += 5;
+
+		if((i != 4) &&  (i != 7) && (i != 14) && (i!= 17) && (i != 22)){
 			SDL_Rect seed = (lgum);// ou bgum 
 			SDL_Rect emplacement{x,y,w,h};
 			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
@@ -65,6 +68,8 @@ void init_seeds()
 	y = 50+(25*11);
 	x = 63+(25*8);
 	for(int i = 0 ; i < 6 ; i++) {
+
+
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
@@ -75,6 +80,8 @@ void init_seeds()
 	y = 35+(25*22); 
 	x = 38+25;
 	for(int i = 0 ; i < 23 ; i++) {
+		if(i == 19)
+			x += 10;
 		if((i != 4) &&  (i != 7) && (i != 10) && (i != 11) &&  (i != 14) && (i != 17) && (i != 22)){
 			SDL_Rect seed = (lgum);// ou bgum 
 			SDL_Rect emplacement{x,y,w,h};
@@ -89,7 +96,21 @@ void init_seeds()
 	for(int i = 0 ; i < 23 ; i++) {
 		if(i == 18)
 			x += 10;
-		if((i!= 3) && (i!= 4) &&  (i != 7) && (i != 14) && (i != 17) && (i != 18) && (i != 22)){
+		if((i != 2) && (i!= 3) && (i!= 4) &&  (i != 7) && (i != 14) && (i != 17) && (i != 18) && (i != 19) && (i != 22)){
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		x += 25;
+	}
+	//La septieme horizontale en partant d'en haut à gauche
+	y = 40+(25*28);
+	x = 38+25;
+	for(int i = 0 ; i < 23 ; i++) {
+		// a opti ici -> trop de comparaison à faire 
+		if(i == 19)
+			x += 10;
+		if((i != 4) && (i != 5) && (i != 6) && (i != 7) && (i != 10) && (i != 11) && (i != 14) &&  (i != 15) && (i != 16) && (i!= 17) && (i != 19) && (i != 22)){
 			SDL_Rect seed = (lgum);// ou bgum 
 			SDL_Rect emplacement{x,y,w,h};
 			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
@@ -97,6 +118,31 @@ void init_seeds()
 		x += 25;
 	}
 
+	//La huitième horizontale en partant d'en haut à gauche
+	y = 40+(25*30)+15;
+	x = 38+25;
+	for(int i = 0 ; i < 23 ; i++) {
+		// a opti ici -> trop de comparaison à faire 
+		if(i == 14)
+			x += 5;
+		if(i == 16)
+			x -= 5;
+		if((i != 2) && (i != 4) && (i != 7) && (i != 14)  && (i!= 17) && (i != 19) && (i != 22)){
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		x += 25;
+	}
+	//L'horizontale central (sous la cage)
+	y = 40+(25*18)-5;
+	x = 38+(25*9);
+	for(int i = 0 ; i < 6 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		x += 25;
+	}
 	
 
 
@@ -153,6 +199,123 @@ void init_seeds()
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 25;
 	}
+	//La verticale numéro 3 partant de haut à gauche 
+	x = 38+(25*8);
+	y = 40+(25*5);
+	for(int i = 0 ; i < 25 ; i++) {
+		if ((i==5) || (i == 15))
+			y += 10;
+		if (i == 17)
+			y += 5;
+
+		if(i == 24)
+			y += 15;
+
+		if ((i != 5) && (i != 17) && (i != 23)) {
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		y += 25;
+	}
+	//La verticale numéro 6 partant de haut à gauche 
+	x = 43+(25*15);
+	y = 40+(25*5);
+	for(int i = 0 ; i < 25 ; i++) {
+		if ((i==5) || (i == 15))
+			y += 10;
+		if (i == 17)
+			y += 5;
+
+		if(i == 24)
+			y += 15;
+
+		if ((i != 5) && (i != 17) && (i != 23)) {
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		y += 25;
+	}
+
+	//La verticale numero 7 en partant d'en bas à gauche 
+
+
+	//La verticale numéro 4 partant d'en haut à gauche
+	x = 38+(25*10);
+	y = 40;
+	for(int i = 0 ; i < 5 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		y += 25;
+	}
+	//La verticale numéro 6 partant d'en haut à gauche
+	x = 38+(25*13);
+	y = 40;
+	for(int i = 0 ; i < 5 ; i++) {
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		y += 25;
+	}
+
+	//Les verticales numéro 0 et 8 en partant d'en bas à gauche
+	//0
+	x = 38;
+	y = 40+(25*22)-5;
+	for(int i = 0 ; i < 10 ; i++) {
+		if(i==2)
+			y += 5;
+		if(i==9)
+			y -= 8;
+		if(( i < 3) || (i > 5)) {
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		y += 25;
+	}
+	//8
+	x = 38+(25*23)+5;
+	y = 40+(25*22)-5;
+	for(int i = 0 ; i < 10 ; i++) {
+		if(i==2)
+			y += 5;
+		if(i==9)
+			y -= 8;
+		if(( i < 3) || (i > 5)) {
+			SDL_Rect seed = (lgum);// ou bgum 
+			SDL_Rect emplacement{x,y,w,h};
+			SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		}
+		y += 25;
+	}
+	//Les verticales 1 et 8 en partant d'en bas à gauche 
+	//1
+	x = 38+(25*3);
+	y = 40+(25*24);
+	for(int i = 0 ; i < 6 ; i++) {
+		if(i == 5)
+			y += 40;
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		y += 25;
+	}
+	//8
+	x = 38+(25*20)+10;
+	y = 40+(25*24);
+	for(int i = 0 ; i < 6 ; i++) {
+		if(i == 5)
+			y += 40;
+		SDL_Rect seed = (lgum);// ou bgum 
+		SDL_Rect emplacement{x,y,w,h};
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
+		y += 25;
+	}
+
+
 
 }
 
