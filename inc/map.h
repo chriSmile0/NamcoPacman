@@ -42,7 +42,61 @@ Map::Map()
 	Murs.push_back(m6);
 	Murs.push_back(m7);
 	Murs.push_back(m8);
-	Murs.push_back(m99);//mur du bas 
+	Murs.push_back(m9);
+	Murs.push_back(m10);
+	Murs.push_back(m11);
+	Murs.push_back(m12);
+	Murs.push_back(m13);
+	Murs.push_back(m14);
+	Murs.push_back(m15);
+	Murs.push_back(m16);
+	Murs.push_back(m17);
+	Murs.push_back(m18);
+	Murs.push_back(m19);
+	Murs.push_back(m20);
+	Murs.push_back(m21);
+	Murs.push_back(m22);
+	Murs.push_back(m23);
+	Murs.push_back(m24);
+	Murs.push_back(m25);
+	Murs.push_back(m26);
+	Murs.push_back(m27);
+	Murs.push_back(m28);
+
+	//Les blocs 
+	Murs.push_back(b);
+	Murs.push_back(b1);
+	Murs.push_back(b2);
+	Murs.push_back(b3);
+	Murs.push_back(b4);
+	Murs.push_back(b5);
+	Murs.push_back(b6);
+	Murs.push_back(b7);
+	Murs.push_back(b8);
+	Murs.push_back(b9);
+	Murs.push_back(b10);
+	Murs.push_back(b11);
+	Murs.push_back(b12);
+	Murs.push_back(b13);
+	Murs.push_back(b14);
+	Murs.push_back(b15);
+	Murs.push_back(b16);
+	Murs.push_back(b17);
+	Murs.push_back(b18);
+	Murs.push_back(b19);
+	Murs.push_back(b20);
+	Murs.push_back(b21);
+	Murs.push_back(b22);
+	Murs.push_back(b23);
+	Murs.push_back(b24);
+	Murs.push_back(b25);
+	Murs.push_back(b26);
+	Murs.push_back(b27);
+	Murs.push_back(b28);
+	Murs.push_back(b29);
+	Murs.push_back(b30);
+	Murs.push_back(b31);
+	Murs.push_back(b32);
 }
 
 int Map::hitWall(int x , int y , int new_x, int new_y) //check si la position "heurte" un mur 
