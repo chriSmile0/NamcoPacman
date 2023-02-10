@@ -112,7 +112,6 @@ void Board::add_elem(Utile_elem elem)
 {
 	cout << "pos elem : " << elem.get_x() << endl;
 	tab_elem.push_back(elem);
-
 }
 
 void Board::del_elem(int index)

@@ -32,6 +32,9 @@ void init_seeds(Board *b)
 			x += 96;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		Utile_elem e{emplacement};
+		cout << e.get_x() << endl;
+		b->add_elem(e);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}
@@ -251,61 +254,84 @@ void init(Board *b)
 	SDL_SetColorKey(plancheSprites, false, 0);
 	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
 
-	SDL_Rect ghost_r = (ghost_rr1);
-	SDL_Rect ghost_p = (ghost_cr1);
-	SDL_Rect ghost_c = (ghost_pr1);
-	SDL_Rect ghost_o = (ghost_or1);
-
 	SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
 	SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
 	SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-	SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+	SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);
+	SDL_BlitScaled(plancheSprites, &pacman_p, win_surf, &pacman_start);
 
 
+	Utile_elem g_r{ghost_r}; //Utile_elem par Ghost
+	g_r.set_x(ghost_rstart.x);
+	g_r.set_y(ghost_rstart.y);
+	g_r.set_h(32);// x2 scale
+	g_r.set_w(32);// x2 scale
+	Utile_elem g_p{ghost_p};
+	g_p.set_x(ghost_pstart.x);
+	g_p.set_y(ghost_pstart.y);
+	g_p.set_h(32);// x2 scale
+	g_p.set_w(32);// x2 scale
+	Utile_elem g_c{ghost_c};
+	g_c.set_x(ghost_cstart.x);
+	g_c.set_y(ghost_cstart.y);
+	g_c.set_h(32);// x2 scale
+	g_c.set_w(32);// x2 scale
+	Utile_elem g_y{ghost_y};
+	g_y.set_x(ghost_ystart.x);
+	g_y.set_y(ghost_ystart.y);
+	g_y.set_h(32);// x2 scale
+	g_y.set_w(32);// x2 scale
+	Utile_elem p{pacman_p}; //Utile_elem par Pacman
+	b->add_elem(g_r);
+	b->add_elem(g_p);
+	b->add_elem(g_c);
+	b->add_elem(g_y);
+	b->add_elem(p);
 	//Init seeds
 	init_seeds(b);
 
 	SDL_SetColorKey(plancheSprites, true, 0);
-	//Affichage des 4 fantomes aux centres 
+	//Affichage des 4 fantomes aux centres et du pacman
 }
 
-void exit_ghost(char ghost_name) { // r,p,c,o
+void exit_ghost(Board *b,char ghost_name) { // r,p,c,o
 	SDL_SetColorKey(plancheSprites, false, 0);
 	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
-	SDL_Rect ghost_r = (ghost_rr1);
-	SDL_Rect ghost_p = (ghost_cr1);
-	SDL_Rect ghost_c = (ghost_pr1);
-	SDL_Rect ghost_o = (ghost_or1);
 	SDL_Rect* ghost_choice = nullptr;
+	int index_choice = -1;
 	switch (ghost_name) {
 		case 'r':
+			index_choice = 0;
 			ghost_choice = &(ghost_rr1);
-			SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
+			/*SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
 			SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-			SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+			SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);*/
 			break;
 		case 'p':
+			index_choice = 1;
 			ghost_choice = &(ghost_pr1);
-			SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
+			/*SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart); //normalement deja sortit
 			SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-			SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+			SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);*/
 			break;
 		case 'c':
+			index_choice = 2;
 			ghost_choice = &(ghost_cr1);
-			SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
-			SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
-			SDL_BlitScaled(plancheSprites, &ghost_o, win_surf, &ghost_ostart);
+			/*SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart); //normalement deja sortit
+			SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart); //normalement deja sortit
+			SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);*/
 			break;
-		case 'o':
-			ghost_choice = &(ghost_or1);
-			SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
-			SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-			SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
+		case 'y':
+			index_choice = 3;
+			ghost_choice = &(ghost_yr1);
+			/*SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart); //normalement deja sortit
+			SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart); // ""
+			SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart); // ""*/
 			break;
 	}
+	b->change_pos(index_choice,ghost_free.x,ghost_free.y);
 	SDL_BlitScaled(plancheSprites, ghost_choice, win_surf, &ghost_free);
 	SDL_SetColorKey(plancheSprites, true, 0);
-	cout << "Sortie du fantome : " << ghost_name << " " << endl;
 }
 
 
@@ -365,18 +391,9 @@ int main(int argc, char** argv)
 	Board gmboard{3};
 	init(&gmboard);
 	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
-	Ghost g2{ghost_rstart};
-
-	Ghost g3{"ghosting"};
-
 	Pacman pocman;
 	gmboard.add_elem(pocman);
-
 	pocman.set_nom("POCMAN");
-
-	gmboard.add_elem(g3);
-
-	gmboard.add_elem(g2);
 
 	SDL_Rect lgomme{1,78,8,8};
 	SDL_Rect bgomme{8,78,9,9};
@@ -407,26 +424,36 @@ int main(int argc, char** argv)
 		if (keys[SDL_SCANCODE_LEFT])
 			puts("LEFT");
 		if (keys[SDL_SCANCODE_RIGHT]) {
-			/*SDL_Rect *rec = nullptr;
+			SDL_Rect *rec = nullptr;
 			rec = (g.get_board()->get_elem_with_index(13).get_ptr_elem());
 			g.get_board()->get_elem_with_index(13).set_h((rec->h)+5);
 			//g.update_pos_of_elem(13,0,0,0);
 			g.update_size_of_elem(13,5,5,1);
-			cout << g.get_board()->get_elem_with_index(13).get_h() << endl;*/
+			cout << g.get_board()->get_elem_with_index(13).get_h() << endl;
 			puts("RIGHT");
 		}
 		if (keys[SDL_SCANCODE_DOWN]) {
 			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(2).get_ptr_elem());
-			g.get_board()->get_elem_with_index(2).set_x((rec->x)+5);
-			g.update_pos_of_elem(2,5,0,1);
+			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
+			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
+			g.update_pos_of_elem(0,5,0,1);
 		}
 
+		if (keys[SDL_SCANCODE_0]) {
+			exit_ghost(&gmboard,'r');
+			puts("Rouge");
+		}
 		if (keys[SDL_SCANCODE_1]) {
-			puts("1");
+			exit_ghost(&gmboard,'p');
+			puts("Rose");
 		}
 		if (keys[SDL_SCANCODE_2]) {
-			puts("2");
+			exit_ghost(&gmboard,'c');
+			puts("Cyan");
+		}
+		if (keys[SDL_SCANCODE_3]) {
+			exit_ghost(&gmboard,'y');
+			puts("Jaune");
 		}
 		if (keys[SDL_SCANCODE_Q]) {
 			puts("A in QWERTY");

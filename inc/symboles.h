@@ -38,14 +38,14 @@ SDL_Rect ghost_co2 = { 87,159, 16,16 };
 SDL_Rect ghost_cu1 = {105,159, 16,16 };
 SDL_Rect ghost_cu2 = {122,159, 16,16 }; 
 
-SDL_Rect ghost_or1 = { 3,177, 16,16 };
-SDL_Rect ghost_or2 = { 20,177, 16,16 };
-SDL_Rect ghost_ol1 = { 37,177, 16,16 };
-SDL_Rect ghost_ol2 = { 54,177, 16,16 };
-SDL_Rect ghost_oo1 = { 71,177, 16,16 };
-SDL_Rect ghost_oo2 = { 87,177, 16,16 };
-SDL_Rect ghost_ou1 = {105,177, 16,16 };
-SDL_Rect ghost_ou2 = {122,177, 16,16 }; 
+SDL_Rect ghost_yr1 = { 3,177, 16,16 };
+SDL_Rect ghost_yr2 = { 20,177, 16,16 };
+SDL_Rect ghost_yl1 = { 37,177, 16,16 };
+SDL_Rect ghost_yl2 = { 54,177, 16,16 };
+SDL_Rect ghost_yo1 = { 71,177, 16,16 };
+SDL_Rect ghost_yo2 = { 87,177, 16,16 };
+SDL_Rect ghost_yu1 = {105,177, 16,16 };
+SDL_Rect ghost_yu2 = {122,177, 16,16 }; 
 
 SDL_Rect ghost_b1 = { 3,195, 16,16 };
 SDL_Rect ghost_b2 = { 20,195, 16,16 };
@@ -58,11 +58,18 @@ SDL_Rect ghost_bku = {122,195, 16,16 };
 
 //In board
 SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
+SDL_Rect ghost_r = (ghost_rr1);
+SDL_Rect ghost_p = (ghost_pr1);
+SDL_Rect ghost_c = (ghost_cr1);
+SDL_Rect ghost_y = (ghost_yr1);
+SDL_Rect pacman_p = { 3,89, 16,16 };
 //Start 
 SDL_Rect ghost_rstart = { 325,385, 32,32 };    
 SDL_Rect ghost_pstart = { 295,420, 32,32 };     
 SDL_Rect ghost_cstart = { 325,420, 32,32 };    
-SDL_Rect ghost_ostart = { 355,420, 32,32 };
+SDL_Rect ghost_ystart = { 355,420, 32,32 };
+//Start pacman 
+SDL_Rect pacman_start = { 325,485, 32,32 };
 
 //Ghost Exit -> behind to front of the door
 SDL_Rect ghost_free = { 325,330, 32,32 };
