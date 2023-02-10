@@ -7,7 +7,7 @@ SDL_Rect selectuu = {355,390,32,32};//g.get_board()->get_elem_with_index(2).get_
 SDL_Rect src_b1 = { 200,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
 SDL_Rect src_b2 = { 370,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
 SDL_Rect src_b3 = { 540,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
-SDL_Rect bg = { 4,4, 672,864 }; // ici scale x4
+SDL_Rect bg = { 0,0, 672,864 }; // ici scale x4
 
 //Ghosts 
 
@@ -64,15 +64,15 @@ SDL_Rect ghost_c = (ghost_cr1);
 SDL_Rect ghost_y = (ghost_yr1);
 SDL_Rect pacman_p = { 3,89, 16,16 };
 //Start 
-SDL_Rect ghost_rstart = { 325,385, 32,32 };    
-SDL_Rect ghost_pstart = { 295,420, 32,32 };     
-SDL_Rect ghost_cstart = { 325,420, 32,32 };    
-SDL_Rect ghost_ystart = { 355,420, 32,32 };
+SDL_Rect ghost_rstart = { 321,381, 32,32 };    
+SDL_Rect ghost_pstart = { 291,416, 32,32 };     
+SDL_Rect ghost_cstart = { 321,416, 32,32 };    
+SDL_Rect ghost_ystart = { 351,416, 32,32 };
 //Start pacman 
-SDL_Rect pacman_start = { 325,485, 32,32 };
+SDL_Rect pacman_start = { 321,481, 32,32 };
 
 //Ghost Exit -> behind to front of the door
-SDL_Rect ghost_free = { 325,330, 32,32 };
+SDL_Rect ghost_free = { 321,326, 32,32 };
 
 
 //Pacmans

@@ -12,16 +12,28 @@ SDL_Surface* plancheSprites = nullptr;
 
 int count;
 
+void init_walls(Board *b)
+{
+	//Voir pour ensuite confondre la map dans le jeu en entier 
+	int nb_murs = b->getMap().getMurs().size();
+	for(int i = 0 ; i < nb_murs; i++) {
+		SDL_Rect seed = (lgum);// pour simuler le mur 
+		SDL_Rect mur = (b->getMap().getMur_with_index(i));
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, &mur);
+	}
+}
+
 void init_seeds(Board *b)
 {	
 	//On évite le surplus et la superposition de graine 
 	//en signifiant que les graines sont toutes à la verticales
 	//Ce n'est donc que elles qui comptent 
 	//On saute donc sur x toutes celle qui pourrait faire office de croisement
-	
+
+		
 	//On fait pour le moment une version simple sans classe 
-	int x = 50+(32); // reference pour les horizontales
-	int y = 50;		//+32 aussi pour les verticales
+	int x = 46+(32); // reference pour les horizontales
+	int y = 46;		//+32 aussi pour les verticales
 	int w = 6; // *3
 	int h = 6; // *3
 	// *********************************************Les horizontales *************************************************//
@@ -42,8 +54,8 @@ void init_seeds(Board *b)
 	cout << b->get_tab_elem().size() << endl;
 
 	//La seconde horizontale en partant d'en haut à gauche
-	y = 50+(32*4); 
-	x = 50+(32);
+	y = 46+(32*4); 
+	x = 46+(32);
 	for(int i = 0 ; i < 11 ; i++) {
 		if((i == 3) || (i == 4) || (i == 5) || (i == 6) || (i == 7) || (i == 8))
 			x += 32;
@@ -53,8 +65,8 @@ void init_seeds(Board *b)
 		x += 32;
 	}
 	//La troisième horizontale en partant d'en haut à gauche
-	y = 50+(32*7);
-	x = 50+(32);
+	y = 46+(32*7);
+	x = 46+(32);
 	for(int i = 0 ; i < 8 ; i++) {
 		if((i == 3) || (i == 4) || (i == 5))
 			x += 96; //saut de 3 cases
@@ -64,8 +76,8 @@ void init_seeds(Board *b)
 		x += 32;
 	}
 	//La quatrieme horizontale 
-	y = 50+(32*17);
-	x = 50+(32);
+	y = 46+(32*17);
+	x = 46+(32);
 	for(int i = 0 ; i < 8 ; i++) {
 		// a opti ici -> trop de comparaison à faire 
 		if((i == 1) || (i == 2) || (i == 3) || (i == 5) || (i == 6) || (i == 7))
@@ -78,8 +90,8 @@ void init_seeds(Board *b)
 		x += 32;
 	}
 	//La cinquieme horizontale 
-	y = 50+(32*19);
-	x = 50+(32);
+	y = 46+(32*19);
+	x = 46+(32);
 	for(int i = 0 ; i < 7 ; i++) {
 		if((i == 2) || (i == 3) || (i == 4) || (i == 5))
 			x += 32; //saut de 1 case
@@ -91,8 +103,8 @@ void init_seeds(Board *b)
 		x += 32;
 	}
 	//La sizieme horizontale en partant d'en haut à gauche
-	y = 50+(32*22);
-	x = 50+(32);
+	y = 46+(32*22);
+	x = 46+(32);
 	for(int i = 0 ; i < 6 ; i++) {
 		if((i == 2) || (i == 3) || (i == 4))
 			x += 96;
@@ -104,8 +116,8 @@ void init_seeds(Board *b)
 		x += 32;
 	}	
 	//La septieme 
-	y = 50+(32*24);
-	x = 50+(32);
+	y = 46+(32*24);
+	x = 46+(32);
 	for(int i = 0 ; i < 9 ; i++) {
 		if((i == 1) || (i == 2) || (i == 3) || (i == 4) || (i == 5) || (i == 6)
 			|| (i == 7) || (i == 8))
@@ -118,8 +130,8 @@ void init_seeds(Board *b)
 
 	// ************************************Les verticales********************************************************************** //
 	//La verticale en haut à gauche
-	x = 50;
-	y = 50;
+	x = 46;
+	y = 46;
 	for(int i = 0 ; i < 14 ; i++) {
 		if(i == 8)
 			y += 32*9;
@@ -131,8 +143,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La seconde verticale en partant de la gauche 
-	x = 50+(32*4);
-	y = 50;
+	x = 46+(32*4);
+	y = 46;
 	for(int i = 0 ; i < 24 ; i++) {
 		if(i == 23)
 			y += 32;
@@ -142,8 +154,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La troisieme verticale en partant de la gauche 
-	x = 50+(32*6);
-	y = 50+(32*4);
+	x = 46+(32*6);
+	y = 46+(32*4);
 	for(int i = 0 ; i < 10 ; i++) {
 		if(i == 4) 
 			y += 32*9;
@@ -155,8 +167,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La quatrième verticale en partant de la gauche 
-	x = 50+(32*8);
-	y = 50;
+	x = 46+(32*8);
+	y = 46;
 	for(int i = 0 ; i < 12 ; i++) {
 		if((i == 5) || (i == 9))
 			y += 64;
@@ -168,8 +180,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La cinquième = quatrième verticale en partant de la gauche
-	x = 50+(32*10);
-	y = 50;
+	x = 46+(32*10);
+	y = 46;
 	for(int i = 0 ; i < 12 ; i++) {
 		if((i == 5) || (i == 9))
 			y += 64;
@@ -181,8 +193,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La sizieme = troisieme verticale en partant de la gauche 
-	x = 50+(32*12);
-	y = 50+(32*4);
+	x = 46+(32*12);
+	y = 46+(32*4);
 	for(int i = 0 ; i < 10 ; i++) {
 		if(i == 4) 
 			y += 32*9;
@@ -194,8 +206,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La septieme = deuxieme verticale en partant de la gauche
-	x = 50+(32*14);
-	y = 50;
+	x = 46+(32*14);
+	y = 46;
 	for(int i = 0 ; i < 24 ; i++) {
 		if(i == 23)
 			y += 32;
@@ -205,8 +217,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La verticale en haut à droite
-	x = 50+(32*18);
-	y = 50;
+	x = 46+(32*18);
+	y = 46;
 	for(int i = 0 ; i < 14 ; i++) {
 		if(i == 8)
 			y += 32*9;
@@ -219,8 +231,8 @@ void init_seeds(Board *b)
 	}
 	//Verticales du bas de la MAP
 	//La deuxieme en partant de la gauche
-	x = 50+(32*2);
-	y = 50+(32*17);
+	x = 46+(32*2);
+	y = 46+(32*17);
 	for(int i = 0 ; i < 6 ; i++) {
 		if((i == 1) || (i == 5))
 			y += 32;
@@ -231,8 +243,8 @@ void init_seeds(Board *b)
 		y += 32;
 	}
 	//La deuxieme en partant de la droite -> similaire à celle de la gauche 
-	x = 50+(32*16);
-	y = 50+(32*17);
+	x = 46+(32*16);
+	y = 46+(32*17);
 	for(int i = 0 ; i < 6 ; i++) {
 		if((i == 1) || (i == 5))
 			y += 32;
@@ -245,7 +257,7 @@ void init_seeds(Board *b)
 
 void init(Board *b)
 {
-	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 672, 864, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
 
 	plancheSprites = SDL_LoadBMP("../inc/pacman_sprites.bmp");
@@ -289,6 +301,8 @@ void init(Board *b)
 	b->add_elem(p);
 	//Init seeds
 	init_seeds(b);
+	//Init walls 
+	init_walls(b);
 
 	SDL_SetColorKey(plancheSprites, true, 0);
 	//Affichage des 4 fantomes aux centres et du pacman
@@ -389,6 +403,8 @@ int main(int argc, char** argv)
 	}
 	
 	Board gmboard{3};
+
+
 	init(&gmboard);
 	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
 	Pacman pocman;
@@ -399,6 +415,8 @@ int main(int argc, char** argv)
 	SDL_Rect bgomme{8,78,9,9};
 
 	Graine seed1{lgomme};
+
+	cout << "hit :: " << gmboard.getMap().hitWall(340,200,340,100) << endl; //fonctionne !!!
 
 	// BOUCLE PRINCIPALE
 	bool quit = false;
@@ -421,22 +439,30 @@ int main(int argc, char** argv)
 		const Uint8* keys = SDL_GetKeyboardState(&nbk);
 		if (keys[SDL_SCANCODE_ESCAPE])
 			quit = true;
-		if (keys[SDL_SCANCODE_LEFT])
-			puts("LEFT");
+		if (keys[SDL_SCANCODE_LEFT]) {
+			SDL_Rect *rec = nullptr;
+			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
+			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
+			g.update_pos_of_elem(0,-5,0,1);
+		}
 		if (keys[SDL_SCANCODE_RIGHT]) {
 			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(13).get_ptr_elem());
-			g.get_board()->get_elem_with_index(13).set_h((rec->h)+5);
-			//g.update_pos_of_elem(13,0,0,0);
-			g.update_size_of_elem(13,5,5,1);
-			cout << g.get_board()->get_elem_with_index(13).get_h() << endl;
-			puts("RIGHT");
+			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
+			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
+			g.update_pos_of_elem(0,5,0,1);
 		}
 		if (keys[SDL_SCANCODE_DOWN]) {
 			SDL_Rect *rec = nullptr;
 			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
 			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
-			g.update_pos_of_elem(0,5,0,1);
+			g.update_pos_of_elem(0,0,5,1);
+		}
+
+		if (keys[SDL_SCANCODE_UP]) {
+			SDL_Rect *rec = nullptr;
+			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
+			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
+			g.update_pos_of_elem(0,0,-5,1);
 		}
 
 		if (keys[SDL_SCANCODE_0]) {
@@ -467,6 +493,6 @@ int main(int argc, char** argv)
 		// LIMITE A 60 FPS
 		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
 	}
-	SDL_Quit(); // ON SORT*/
+	SDL_Quit(); // ON SORT
 	return 0;
 }

@@ -63,18 +63,25 @@ void Game::update_pos_of_elem(int idx_elem_to_update, int x, int y, int add) // 
 	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
 	int new_x = x;
 	int new_y = y;
+    SDL_Rect add_rect = boar->get_elem_with_index(idx_elem_to_update).get_val_elem();
 	if(add) {
-		SDL_Rect add_rect = boar->get_elem_with_index(idx_elem_to_update).get_val_elem();
 		new_x += add_rect.x;
 		new_y += add_rect.y;
 	}
-	
-	boar->change_pos(idx_elem_to_update,new_x,new_y);
-	SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
-	boar->get_elem_with_index(idx_elem_to_update).set_rect(&elem_newpos);
+
+    if((new_x > 610) || (new_y > 800) || (new_y < 28) || (new_x < 28)) {//murs provisoires
+        if(add) {
+            new_x = add_rect.x;
+            new_y = add_rect.y;
+        }
+    }
+    else {
+        boar->change_pos(idx_elem_to_update,new_x,new_y);
+    }
+    SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
+    boar->get_elem_with_index(idx_elem_to_update).set_rect(&elem_newpos);
     SDL_Rect* ghost_choice = nullptr;
     ghost_choice = &(ghost_rr1);
-    
     SDL_BlitScaled(sprites_planches, ghost_choice, win_surface, &elem_newpos);
     SDL_SetColorKey(sprites_planches, true, 0);
     cout << boar->get_elem_with_index(idx_elem_to_update).get_x() << endl;

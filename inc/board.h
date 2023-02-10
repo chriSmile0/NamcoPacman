@@ -3,6 +3,7 @@
 #include "graine.h"
 #include "recompense.h"
 #include "symboles.h"
+#include "map.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -29,6 +30,7 @@ class Board
 
 		vector<Utile_elem> get_tab_elem() {return tab_elem;}
 		Utile_elem get_elem_with_index(int index) {cout << "tab_elem::x " << (tab_elem.at(index)).get_x() << endl;return tab_elem[index];}
+		Map getMap() {return map;}
 
 		void change_pos(int index, int new_x, int new_y);
 		void change_size(int index, int new_w, int new_h);
@@ -37,6 +39,7 @@ class Board
 	private:
 		int type_board;
 		SDL_Rect* gameboard;
+		Map map;
 		vector<Utile_elem> tab_elem;
 		vector<Graine> tab_seed;
 		vector<Recompense> tab_award;
