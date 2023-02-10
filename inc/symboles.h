@@ -173,7 +173,7 @@ SDL_Rect key_b = { 404,256, 9,15 };
 
 //Gum 
 SDL_Rect bgum = { 8,78,  9,9 };
-SDL_Rect lgum = { 1,78,  6,6 };
+SDL_Rect lgum = { 4,81,  2,2 };
 
 //Logos
 SDL_Rect editor = { 26,77, 64,10 };

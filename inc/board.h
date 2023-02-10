@@ -31,6 +31,7 @@ class Board
 		Utile_elem get_elem_with_index(int index) {cout << "tab_elem::x " << (tab_elem.at(index)).get_x() << endl;return tab_elem[index];}
 
 		void change_pos(int index, int new_x, int new_y);
+		void change_size(int index, int new_w, int new_h);
 
 
 	private:
@@ -125,5 +126,10 @@ void Board::change_pos(int index_elem, int new_x, int new_y)
 	tab_elem[index_elem] = {new_x,new_y,recup_elem.get_w(),recup_elem.get_h()};
 }
 
+void Board::change_size(int index_elem, int new_w , int new_h)
+{
+	Utile_elem recup_elem = tab_elem.at(index_elem);
+	tab_elem[index_elem] = {recup_elem.get_x(),recup_elem.get_y(),new_w,new_h};
+}
 
 #endif // BOARD_H //
