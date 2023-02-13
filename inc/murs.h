@@ -8,11 +8,16 @@
 //On peut faire le test en mettant des gums a ces endroits là 
 //sw = scale_walls
 int sw = 4;
+
+//Attention il faut aussi gérer le mur en fonction de la taille du perso
+//Pour le moment si on enleve 25 sur le mur m6 cela fonctionne mais il faut trouver un moyen de 
+//de le faire en automatique en fonction du perso 
+
 //{x,y,w,h}
 SDL_Rect m =  { 28,28, 154*sw,4 };  // ,  // , //-> tout en haut sur all longueur // sur le gameboard actif -> peut importe lequel 
-SDL_Rect m1 = {320,28, 4,30*sw }; //  ,  //  , //-> en haut le mur qui coupe m (gauche) // ""  
+SDL_Rect m1 = {320,28, 4,30*sw }; //  ,  //  , //-> en haut le mur qui coupe m (gauche) // ""   m1/m2/m3 à remplacer par un bloc
 SDL_Rect m2 = {348,28, 4,30*sw }; //  ,  //  , //-> en haut le mur qui coupe m (droite) // "" 
-SDL_Rect m3 = {323,154, 7*sw,4 }; //  ,  //  , //-> en haut entre m1 et m2
+SDL_Rect m3 = {318,149, 10*sw,4 }; //  ,  //  , //-> en haut entre m1 et m2
 SDL_Rect m4 = { 28,28, 4,67*sw }; //  ,  //  , //-> en haut à gauche // "" 
 SDL_Rect m5 = {640,28, 4,67*sw }; //  ,  //  , //-> en haut à droite // "" 
 SDL_Rect m6 = {28,25+(66*sw), 31*sw,4 }; //  ,  //  ,  //-> en bas à droite de m4// "" 

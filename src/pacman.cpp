@@ -10,7 +10,7 @@ SDL_Surface* win_surf = nullptr;
 SDL_Surface* plancheSprites = nullptr;
 
 
-int count;
+int coun;
 
 void init_walls(Board *b)
 {
@@ -18,8 +18,8 @@ void init_walls(Board *b)
 	int nb_murs = b->getMap().getMurs().size();
 	for(int i = 0 ; i < nb_murs; i++) {
 		SDL_Rect seed = (lgum);// pour simuler le mur 
-		SDL_Rect mur = (b->getMap().getMur_with_index(i));
-		SDL_BlitScaled(plancheSprites, &seed, win_surf, &mur);
+		SDL_Rect *mur = (b->getMap().getMur_with_index(i));
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, mur);
 	}
 }
 
@@ -44,9 +44,7 @@ void init_seeds(Board *b)
 			x += 96;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
-		Utile_elem e{emplacement};
-		cout << e.get_x() << endl;
-		b->add_elem(e);
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}
@@ -61,6 +59,7 @@ void init_seeds(Board *b)
 			x += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}
@@ -72,6 +71,7 @@ void init_seeds(Board *b)
 			x += 96; //saut de 3 cases
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}
@@ -86,6 +86,7 @@ void init_seeds(Board *b)
 			x += 96;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}
@@ -99,6 +100,7 @@ void init_seeds(Board *b)
 			x += 96;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}
@@ -112,6 +114,7 @@ void init_seeds(Board *b)
 			x += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}	
@@ -124,6 +127,7 @@ void init_seeds(Board *b)
 			x += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		x += 32;
 	}
@@ -139,6 +143,7 @@ void init_seeds(Board *b)
 			y += 64;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -150,6 +155,7 @@ void init_seeds(Board *b)
 			y += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -163,6 +169,7 @@ void init_seeds(Board *b)
 			y += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -176,6 +183,7 @@ void init_seeds(Board *b)
 			y += 32*9;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -189,6 +197,7 @@ void init_seeds(Board *b)
 			y += 32*9;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -202,6 +211,7 @@ void init_seeds(Board *b)
 			y += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -213,6 +223,7 @@ void init_seeds(Board *b)
 			y += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -226,6 +237,7 @@ void init_seeds(Board *b)
 			y += 64;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -239,6 +251,7 @@ void init_seeds(Board *b)
 
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -250,6 +263,7 @@ void init_seeds(Board *b)
 			y += 32;
 		SDL_Rect seed = (lgum);// ou bgum 
 		SDL_Rect emplacement{x,y,w,h};
+		b->add_gum(emplacement);
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, &emplacement);
 		y += 32;
 	}
@@ -261,39 +275,52 @@ void init(Board *b)
 	win_surf = SDL_GetWindowSurface(pWindow);
 
 	plancheSprites = SDL_LoadBMP("../inc/pacman_sprites.bmp");
-	count = 0;
+	coun = 0;
 
 	SDL_SetColorKey(plancheSprites, false, 0);
 	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
 
-	SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart);
-	SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
-	SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-	SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);
-	SDL_BlitScaled(plancheSprites, &pacman_p, win_surf, &pacman_start);
+	SDL_BlitScaled(plancheSprites, &ghost_rr1, win_surf, &ghost_rstart);
+	SDL_BlitScaled(plancheSprites, &ghost_pr1, win_surf, &ghost_pstart);
+	SDL_BlitScaled(plancheSprites, &ghost_cr1, win_surf, &ghost_cstart);
+	SDL_BlitScaled(plancheSprites, &ghost_yr1, win_surf, &ghost_ystart);
+	SDL_BlitScaled(plancheSprites, &lpacman_c, win_surf, &pacman_start);
+	b->add_ghost(ghost_r);
+	b->add_ghost(ghost_p);
+	b->add_ghost(ghost_c);
+	b->add_ghost(ghost_y);
+	b->add_ghost(pacman_p);
 
-
-	Utile_elem g_r{ghost_r}; //Utile_elem par Ghost
+	
+	Utile_elem g_r{&ghost_r}; //Utile_elem par Ghost
+	cout << "g_r x :: " << g_r.get_x() << endl;
+	cout << "ghost r x :: " << ghost_r.x << endl;
 	g_r.set_x(ghost_rstart.x);
+	cout << "g_r x :: " << g_r.get_x() << endl;
+	cout << "ghost r x :: " << ghost_r.x << endl;
 	g_r.set_y(ghost_rstart.y);
-	g_r.set_h(32);// x2 scale
 	g_r.set_w(32);// x2 scale
-	Utile_elem g_p{ghost_p};
+	g_r.set_h(32);// x2 scale
+	Utile_elem g_p{&ghost_p};
 	g_p.set_x(ghost_pstart.x);
 	g_p.set_y(ghost_pstart.y);
-	g_p.set_h(32);// x2 scale
 	g_p.set_w(32);// x2 scale
-	Utile_elem g_c{ghost_c};
+	g_p.set_h(32);// x2 scale
+	Utile_elem g_c{&ghost_c};
 	g_c.set_x(ghost_cstart.x);
 	g_c.set_y(ghost_cstart.y);
-	g_c.set_h(32);// x2 scale
 	g_c.set_w(32);// x2 scale
-	Utile_elem g_y{ghost_y};
+	g_c.set_h(32);// x2 scale
+	Utile_elem g_y{&ghost_y};
 	g_y.set_x(ghost_ystart.x);
 	g_y.set_y(ghost_ystart.y);
-	g_y.set_h(32);// x2 scale
 	g_y.set_w(32);// x2 scale
-	Utile_elem p{pacman_p}; //Utile_elem par Pacman
+	g_y.set_h(32);// x2 scale
+	Utile_elem p{&pacman_p}; //Utile_elem par Pacman
+	p.set_x(pacman_start.x);
+	p.set_y(pacman_start.y);
+	p.set_w(32);
+	p.set_h(32);
 	b->add_elem(g_r);
 	b->add_elem(g_p);
 	b->add_elem(g_c);
@@ -357,7 +384,7 @@ void draw()
 
 	// petit truc pour faire tourner le fantome
 	SDL_Rect* ghost_in = nullptr;
-	switch (count/128)
+	switch (coun/128)
 	{
 		case 0:
 			ghost_in = &(ghost_rr1);
@@ -376,11 +403,11 @@ void draw()
 			ghost.y--;
 			break;
 	}
-	count =(count+1)%(512);
+	coun =(coun+1)%(512);
 
 	// ici on change entre les 2 sprites sources pour une jolie animation.
 	SDL_Rect ghost_in2 = *ghost_in;
-	if ((count/4)%2)
+	if ((coun/4)%2)
 		ghost_in2.x += 17;
 		
 	// couleur transparente
@@ -407,16 +434,10 @@ int main(int argc, char** argv)
 
 	init(&gmboard);
 	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
-	Pacman pocman;
-	gmboard.add_elem(pocman);
-	pocman.set_nom("POCMAN");
 
-	SDL_Rect lgomme{1,78,8,8};
-	SDL_Rect bgomme{8,78,9,9};
+	cout << gmboard.getMap().hitWall(321,326,321,331,24) << endl;
 
-	Graine seed1{lgomme};
-
-	cout << "hit :: " << gmboard.getMap().hitWall(340,200,340,100) << endl; //fonctionne !!!
+	gmboard.sort_gums_by_xy();
 
 	// BOUCLE PRINCIPALE
 	bool quit = false;
@@ -441,28 +462,28 @@ int main(int argc, char** argv)
 			quit = true;
 		if (keys[SDL_SCANCODE_LEFT]) {
 			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
-			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
-			g.update_pos_of_elem(0,-5,0,1);
+			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
+			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
+			g.update_pos_of_elem(4,-6,0,1);
 		}
 		if (keys[SDL_SCANCODE_RIGHT]) {
 			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
-			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
-			g.update_pos_of_elem(0,5,0,1);
+			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
+			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
+			g.update_pos_of_elem(4,6,0,1);//faire en sorte que les autres élements sont toujours affichés
 		}
 		if (keys[SDL_SCANCODE_DOWN]) {
 			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
-			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
-			g.update_pos_of_elem(0,0,5,1);
+			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
+			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
+			g.update_pos_of_elem(4,0,6,1);
 		}
 
 		if (keys[SDL_SCANCODE_UP]) {
 			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(0).get_ptr_elem());
-			g.get_board()->get_elem_with_index(0).set_x((rec->x)+5);
-			g.update_pos_of_elem(0,0,-5,1);
+			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
+			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
+			g.update_pos_of_elem(4,0,-6,1);
 		}
 
 		if (keys[SDL_SCANCODE_0]) {
@@ -483,7 +504,6 @@ int main(int argc, char** argv)
 		}
 		if (keys[SDL_SCANCODE_Q]) {
 			puts("A in QWERTY");
-			seed1.hideSeed();
 		}
 
 

@@ -19,6 +19,7 @@ class Utile_elem
     public:
         Utile_elem();
         Utile_elem(SDL_Rect rect);
+        Utile_elem(SDL_Rect* rect);
         Utile_elem(int xe, int ye, int we , int he);
 		Utile_elem(Utile_elem const& copy);
         ~Utile_elem();
@@ -58,6 +59,16 @@ Utile_elem::Utile_elem(SDL_Rect rect)
     w = rect.w;
     h = rect.h;
 }
+
+Utile_elem::Utile_elem(SDL_Rect* rect) 
+{
+    elem = rect;
+    x = rect->x;
+    y = rect->y;
+    w = rect->w;
+    h = rect->h;
+}
+
 
 Utile_elem::Utile_elem(int xe, int ye, int we , int he)
 {

@@ -10,7 +10,7 @@ SDL_Rect src_b3 = { 540,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
 SDL_Rect bg = { 0,0, 672,864 }; // ici scale x4
 
 //Ghosts 
-
+//Skins
 SDL_Rect ghost_rr1 = { 3,123, 16,16 }; 
 SDL_Rect ghost_rr2 = { 20,123, 16,16 };
 SDL_Rect ghost_rl1 = { 37,123, 16,16 };
@@ -57,12 +57,14 @@ SDL_Rect ghost_bkd = {105,195, 16,16 };
 SDL_Rect ghost_bku = {122,195, 16,16 };
 
 //In board
+
 SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
-SDL_Rect ghost_r = (ghost_rr1);
-SDL_Rect ghost_p = (ghost_pr1);
-SDL_Rect ghost_c = (ghost_cr1);
-SDL_Rect ghost_y = (ghost_yr1);
-SDL_Rect pacman_p = { 3,89, 16,16 };
+SDL_Rect ghost_r = {1,1, 16,16 };
+SDL_Rect ghost_p = {1,1, 16,16 };
+SDL_Rect ghost_c = {1,1, 16,16 };
+SDL_Rect ghost_y = {1,1, 16,16 };
+SDL_Rect pacman_p = {1,1, 16,16 };
+
 //Start 
 SDL_Rect ghost_rstart = { 321,381, 32,32 };    
 SDL_Rect ghost_pstart = { 291,416, 32,32 };     
@@ -76,7 +78,7 @@ SDL_Rect ghost_free = { 321,326, 32,32 };
 
 
 //Pacmans
-
+//Skins
 SDL_Rect bpacman_c = { 3,218, 32,32 }; // bigpacman
 SDL_Rect bpacman_co = { 36,218, 32,32 }; //bigpacman
 SDL_Rect bpacman_o = { 68,218, 32,32 }; //bigpacman
@@ -161,6 +163,7 @@ SDL_Rect sc_5000 = { 176,195, 18,9 };
 
 
 //Fruits 
+//SKins
 SDL_Rect cherry_o = { 288,238, 15,13 };
 SDL_Rect cherry_r = { 288,257, 15,13 };
 SDL_Rect strawberry_o = { 305,238, 15,13 };
@@ -179,6 +182,7 @@ SDL_Rect key_r = { 404,235, 9,15 };
 SDL_Rect key_b = { 404,256, 9,15 };
 
 //Gum 
+//SKins
 SDL_Rect bgum = { 8,78,  9,9 };
 SDL_Rect lgum = { 4,81,  2,2 };
 
