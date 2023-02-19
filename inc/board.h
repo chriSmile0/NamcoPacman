@@ -50,7 +50,7 @@ class Board
 		SDL_Rect getGum_with_index(int i) {return (gums[i]);}
 		int getGum_with_x_y(int x, int y);
 		SDL_Rect* getPacman() {return pacman;}
-		SDL_Rect* getSkin(int idx);//dans l'ordre r/p/c/y/pacman
+		SDL_Rect* getSkin(int idx, char sens);//dans l'ordre r/p/c/y/pacman
 
 		int catch_gum(int old_y, int old_x , int new_x, int new_y);
 
@@ -139,15 +139,44 @@ void Board::add_elem(Utile_elem elem)
 	elems.push_back(elem);
 }
 
-SDL_Rect* Board::getSkin(int idx)
+SDL_Rect* Board::getSkin(int idx, char sens)//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
 {
 	switch(idx) {
-		case 0: return &(ghost_rr1);
-		case 1: return &(ghost_pr1);
-		case 2: return &(ghost_cr1);
-		case 3: return &(ghost_yr1);
+		case 0: 
+			switch(sens) {
+				case 'b': return &(ghost_rd1); 
+				case 'h': return &(ghost_ru1);
+				case 'g': return &(ghost_rl1);
+				case 'd': return &(ghost_rr1);
+			}
+		case 1: 
+			switch(sens) {
+				case 'b': return &(ghost_pd1); 
+				case 'h': return &(ghost_pu1);
+				case 'g': return &(ghost_pl1);
+				case 'd': return &(ghost_pr1);
+			}
+		case 2:
+			switch(sens) {
+				case 'b': return &(ghost_cd1); 
+				case 'h': return &(ghost_cu1);
+				case 'g': return &(ghost_cl1);
+				case 'd': return &(ghost_cr1);
+			}
+		case 3: 
+			switch(sens) {
+				case 'b': return &(ghost_yd1); 
+				case 'h': return &(ghost_yu1);
+				case 'g': return &(ghost_yl1);
+				case 'd': return &(ghost_yr1);
+			}
 		default:
-			return &(lpacman_c);
+			switch(sens) {
+				case 'b': return &(lpacman_cod); 
+				case 'h': return &(lpacman_cou);
+				case 'g': return &(lpacman_col);
+				case 'd': return &(lpacman_cor);
+			}
 	}
 }
 

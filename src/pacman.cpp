@@ -376,47 +376,6 @@ void exit_ghost(Board *b,char ghost_name) { // r,p,c,o
 }
 
 
-// fonction qui met à jour la surface de la fenetre "win_surf"
-void draw()
-{
-	SDL_SetColorKey(plancheSprites, false, 0);
-	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
-
-	// petit truc pour faire tourner le fantome
-	SDL_Rect* ghost_in = nullptr;
-	switch (coun/128)
-	{
-		case 0:
-			ghost_in = &(ghost_rr1);
-			ghost.x++;
-			break;
-		case 1:
-			ghost_in = &(ghost_rd1);
-			ghost.y++;
-			break;
-		case 2:
-			ghost_in = &(ghost_rl1);
-			ghost.x--;
-			break;
-		case 3:
-			ghost_in = &(ghost_ru1);
-			ghost.y--;
-			break;
-	}
-	coun =(coun+1)%(512);
-
-	// ici on change entre les 2 sprites sources pour une jolie animation.
-	SDL_Rect ghost_in2 = *ghost_in;
-	if ((coun/4)%2)
-		ghost_in2.x += 17;
-		
-	// couleur transparente
-	SDL_SetColorKey(plancheSprites, true, 0);
-	// copie du sprite zoomé
-	SDL_BlitScaled(plancheSprites, &ghost_in2, win_surf, &ghost);
-}
-
-
 
 int main(int argc, char** argv)
 {
@@ -436,6 +395,7 @@ int main(int argc, char** argv)
 	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
 
 	cout << gmboard.getMap().hitWall(321,326,321,331,24) << endl;
+	int out_ghosts = -1;
 
 	gmboard.sort_gums_by_xy();
 
@@ -455,6 +415,10 @@ int main(int argc, char** argv)
 			}
 		}
 
+		if(out_ghosts != -1)//fonctionne
+			g.updateRedGhost(pacman_p.x , pacman_p.y);
+
+
 		// Gestion du clavier        
 		int nbk;
 		const Uint8* keys = SDL_GetKeyboardState(&nbk);
@@ -464,7 +428,9 @@ int main(int argc, char** argv)
 			SDL_Rect *rec = nullptr;
 			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
 			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
-			g.update_pos_of_elem(4,-6,0,1);
+			cout << "pacman p : " << pacman_p.x << endl;
+			//g.update_pos_of_elem(4,-6,0,1);
+			g.updatePacman(-6,0,'g');
 		}
 		if (keys[SDL_SCANCODE_RIGHT]) {
 			SDL_Rect *rec = nullptr;
@@ -488,6 +454,7 @@ int main(int argc, char** argv)
 
 		if (keys[SDL_SCANCODE_0]) {
 			exit_ghost(&gmboard,'r');
+			out_ghosts++;
 			puts("Rouge");
 		}
 		if (keys[SDL_SCANCODE_1]) {
@@ -502,9 +469,20 @@ int main(int argc, char** argv)
 			exit_ghost(&gmboard,'y');
 			puts("Jaune");
 		}
+
+		if (keys[SDL_SCANCODE_4]) {
+			g.updateRedGhost(pacman_p.x,pacman_p.y);
+			puts("Move red");
+		}
+
+
+
 		if (keys[SDL_SCANCODE_Q]) {
 			puts("A in QWERTY");
 		}
+
+		SDL_SetColorKey(plancheSprites, true, 0);
+
 
 
 		// AFFICHAGE

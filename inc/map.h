@@ -22,7 +22,7 @@ class Map {
 		vector<SDL_Rect*> getMurs() {return Murs;}
 		SDL_Rect* getMur_with_index(int index) {return Murs[index];}
 
-		int hitWall(int x, int y , int new_x, int new_y, int dim_perso);
+		char hitWall(int x, int y , int new_x, int new_y, int dim_perso);//char pour savoir de quel côté on est bloqué
 
 	private:
 		vector<SDL_Rect*> Murs;
@@ -97,7 +97,7 @@ Map::Map()
 	Murs.push_back(&b32);*/
 }
 
-int Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check si la position "heurte" un mur 
+char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check si la position "heurte" un mur 
 {										//sens : h = haut , b = bas, g = gauche, d = droit
 	//on peut determiner le sens nous même maintenant avec new et old 
 
@@ -145,9 +145,9 @@ int Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check si
 		i++;
 	}
 	if(goon == 0)
-		return i-1;
+		return sens;
 	else
-		return -1;
+		return 'f';//f for free
 }
 
 Map::~Map()

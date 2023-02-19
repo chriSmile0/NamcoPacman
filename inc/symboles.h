@@ -24,8 +24,8 @@ SDL_Rect ghost_pr1 = { 3,141, 16,16 };
 SDL_Rect ghost_pr2 = { 20,141, 16,16 };
 SDL_Rect ghost_pl1 = { 37,141, 16,16 };
 SDL_Rect ghost_pl2 = { 54,141, 16,16 };
-SDL_Rect ghost_po1 = { 71,141, 16,16 };
-SDL_Rect ghost_po2 = { 87,141, 16,16 };
+SDL_Rect ghost_pd1 = { 71,141, 16,16 };
+SDL_Rect ghost_pd2 = { 87,141, 16,16 };
 SDL_Rect ghost_pu1 = {105,141, 16,16 };
 SDL_Rect ghost_pu2 = {122,141, 16,16 }; 
 
@@ -33,8 +33,8 @@ SDL_Rect ghost_cr1 = { 3,159, 16,16 };
 SDL_Rect ghost_cr2 = { 20,159, 16,16 };
 SDL_Rect ghost_cl1 = { 37,159, 16,16 };
 SDL_Rect ghost_cl2 = { 54,159, 16,16 };
-SDL_Rect ghost_co1 = { 71,159, 16,16 };
-SDL_Rect ghost_co2 = { 87,159, 16,16 };
+SDL_Rect ghost_cd1 = { 71,159, 16,16 };
+SDL_Rect ghost_cd2 = { 87,159, 16,16 };
 SDL_Rect ghost_cu1 = {105,159, 16,16 };
 SDL_Rect ghost_cu2 = {122,159, 16,16 }; 
 
@@ -42,8 +42,8 @@ SDL_Rect ghost_yr1 = { 3,177, 16,16 };
 SDL_Rect ghost_yr2 = { 20,177, 16,16 };
 SDL_Rect ghost_yl1 = { 37,177, 16,16 };
 SDL_Rect ghost_yl2 = { 54,177, 16,16 };
-SDL_Rect ghost_yo1 = { 71,177, 16,16 };
-SDL_Rect ghost_yo2 = { 87,177, 16,16 };
+SDL_Rect ghost_yd1 = { 71,177, 16,16 };
+SDL_Rect ghost_yd2 = { 87,177, 16,16 };
 SDL_Rect ghost_yu1 = {105,177, 16,16 };
 SDL_Rect ghost_yu2 = {122,177, 16,16 }; 
 
