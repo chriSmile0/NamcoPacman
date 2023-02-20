@@ -265,19 +265,19 @@ int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
     
         if(sens == 'g') {
             if(new_sens == 'd')
-                new_sens = 'h';
+                new_sens = sens_potentiel_y;//On influence en fonction de la position de pacman
         }
         else if(sens == 'd') {
             if(new_sens == 'g')
-                new_sens = 'b';
+                new_sens = sens_potentiel_y;
         }
         else if(sens == 'h') {
             if(new_sens == 'b')
-                new_sens = 'd';
+                new_sens = sens_potentiel_x;
         }
         else if(sens == 'b') {
             if(new_sens == 'h')
-                new_sens = 'g';
+                new_sens = sens_potentiel_x;
         }
         sens = new_sens;
     }
