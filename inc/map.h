@@ -31,7 +31,7 @@ class Map {
 
 Map::Map()
 {
-	Murs.push_back(&m);//mur du haut
+	/*Murs.push_back(&m);//mur du haut
 	Murs.push_back(&m1);
 	Murs.push_back(&m2);
 	Murs.push_back(&m3);
@@ -59,10 +59,10 @@ Map::Map()
 	Murs.push_back(&m25);
 	Murs.push_back(&m26);
 	Murs.push_back(&m27);
-	Murs.push_back(&m28);
+	Murs.push_back(&m28);*/
 
 	//Les blocs 
-	/*Murs.push_back(&b);
+	Murs.push_back(&b);
 	Murs.push_back(&b1);
 	Murs.push_back(&b2);
 	Murs.push_back(&b3);
@@ -94,7 +94,7 @@ Map::Map()
 	Murs.push_back(&b29);
 	Murs.push_back(&b30);
 	Murs.push_back(&b31);
-	Murs.push_back(&b32);*/
+	Murs.push_back(&b32);
 }
 
 //A AMELIORER Car soucis !!!!! avec les coins et le vers la gauche et le haut pas correct dans certains cas 
@@ -124,25 +124,51 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 		SDL_Rect wall = *(Murs.at(i));
 		hauteur_mur = wall.h;
 		largeur_mur = wall.w;
-		switch(sens) { // La pour le moment sa le fera dès le premier mur 
-			case 'h': 
-					if(((y > wall.y) && (new_y <= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
-						goon = 0;
+		if(hauteur_mur > 16)//cas d'un bloc 
+		{
+			switch(sens) { // La pour le moment sa le fera dès le premier mur 
+				case 'h': 
+						if(((y > wall.y) && (new_y <= (wall.y+hauteur_mur))) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
+							goon = 0;
+						break;
+				case 'b': //wall.y -= dim_perso;
+						if(((y < wall.y) && (new_y >= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
+							goon = 0;
+						break;
+				case 'g':
+						if(((x > wall.x) && (new_x <= (wall.x+largeur_mur))) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
+							goon = 0;
+						break;
+				case 'd': //wall.x -= dim_perso; 
+						if(((x < wall.x) && (new_x >= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
+							goon = 0;
+						break;
+				default:
 					break;
-			case 'b': wall.y -= dim_perso;
-					if(((y < wall.y) && (new_y >= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
-						goon = 0;
+			}
+		}
+		else { // cas d'un mur
+			switch(sens) { // La pour le moment sa le fera dès le premier mur 
+				case 'h': 
+						if(((y > wall.y) && (new_y <= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
+							goon = 0;
+						break;
+				case 'b': wall.y -= dim_perso;
+						if(((y < wall.y) && (new_y >= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
+							goon = 0;
+						break;
+				case 'g':
+
+						if(((x > wall.x) && (new_x <= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
+							goon = 0;
+						break;
+				case 'd': wall.x -= dim_perso; 
+						if(((x < wall.x) && (new_x >= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
+							goon = 0;
+						break;
+				default:
 					break;
-			case 'g':
-					if(((x > wall.x) && (new_x <= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
-						goon = 0;
-					break;
-			case 'd': wall.x -= dim_perso; 
-					if(((x < wall.x) && (new_x >= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
-						goon = 0;
-					break;
-			default:
-				break;
+			}
 		}
 		i++;
 	}

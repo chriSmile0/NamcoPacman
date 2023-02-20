@@ -50,42 +50,42 @@ SDL_Rect m28 = { 28, 835, 154*4,4 }; // , // ,	//-> le mur tout en bas// ""
 
 /*Il s'agit maintenant de bloc , on part d'en haut à gauche (puis on précise)*/
 
-SDL_Rect b = {70,70, 85,85 }; //  ,  //  ,  //-> en haut à gauche 
-SDL_Rect b1 = {198,70, 85,85 }; //  ,  //  ,  //-> à droite de b
-SDL_Rect b2 = {390,70, 85,85 }; //  ,  //  ,  //-> à droite de b1
-SDL_Rect b3 = {518,70, 85,85 }; //  ,  //  ,  //-> à droite de b2
+SDL_Rect b = {64-d_p,64-d_p ,92+d_p,90+d_p }; //  ,  //  ,  //-> en haut à gauche 
+SDL_Rect b1 = {192-d_p,64-d_p, 92+d_p,90+d_p }; //  ,  //  ,  //-> à droite de b
+SDL_Rect b2 = {384-d_p,64-d_p, 92+d_p,90+d_p }; //  ,  //  ,  //-> à droite de b1
+SDL_Rect b3 = {512-d_p,64-d_p, 92+d_p,90+d_p }; //  ,  //  ,  //-> à droite de b2
 
-SDL_Rect b4 = {70,198, 85,53 }; //  ,  //  ,  //-> en dessous de b
-SDL_Rect b5 = {518,198, 85,53 }; //  ,  //  ,  //-> en dessous de b3
+SDL_Rect b4 = {64-d_p,192-d_p, 92+d_p,58+d_p }; //  ,  //  ,  //-> en dessous de b
+SDL_Rect b5 = {512-d_p,192-d_p, 92+d_p,58+d_p }; //  ,  //  ,  //-> en dessous de b3
 
-SDL_Rect b6 = {262,198, 148,53 }; //  ,  //  ,  //-> en dessous et entre b1 et b2
-SDL_Rect b7 = {325,251, 22, 63 }; //  ,  //  ,  //-> en dessous de b6
-SDL_Rect b8 = {198,198, 20,211 }; //  ,  //  ,  //-> en longueur en b4 et b6
-SDL_Rect b9 = {454,198, 20,211 }; //  ,  //  ,  //-> à l'opposé de b8
-SDL_Rect b10 = {218,294, 63,20 }; //  ,  //  ,  //-> à droite de b8
-SDL_Rect b11 = {391,294, 63,20 }; //  ,  //  ,  //-> à gauche de b9
-SDL_Rect b12 = {198,454, 20,115 }; //  ,  //  ,  //-> en dessous de b8
-SDL_Rect b13 = {454,454, 20,115 }; //  ,  //  ,  //-> en dessous  de b9
-SDL_Rect b14 = {262,518, 148,53 }; //  ,  //  ,  //-> entre b12 et b13
-SDL_Rect b15 = {325,571, 22,63 }; //  ,  //  ,  //-> en dessous de b6}; //  ,  //  ,  //-> en dessous de b14 (pareil que b7)
-SDL_Rect b16 = {198,613, 83,22 }; //  ,  //  ,  //-> à gauche de b15
-SDL_Rect b17 = {390,613, 83,22 }; //  ,  //  ,  //-> à droite de b16
-SDL_Rect b18 = {72,613, 83,22 }; //  ,  //  ,  //-> à gauche de b16
-SDL_Rect b19 = {517,613, 83,22 }; //  ,  //  ,  //-> à droite de b17
-SDL_Rect b20 = {133,635, 22,93 }; //  ,  //  ,  //-> en bas à droite de b18
-SDL_Rect b21 = {517,635, 22,93 }; //  ,  //  ,  //-> en bas à gauche de b19
-SDL_Rect b22 = {197,679, 22,96 }; // , // , //-> à droite de b20
-SDL_Rect b23 = {453,679, 22,96 }; // , // , //-> à gauche de b21
-SDL_Rect b24 = {71,773, 210,22 }; // , // , //-> en bas à gauche de b22
-SDL_Rect b25 = {391,773, 210,22 }; // , // , //-> en bas à droite de b23
-SDL_Rect b26 = {262,678, 148,53 }; // , // , //-> à droite de b22 , comme b6
-SDL_Rect b27 = {325,731, 22,63 }; // , // , //-> en dessous de b26 , comme b7
+SDL_Rect b6 = {256-d_p,192-d_p, 155+d_p,58+d_p}; //  ,  //  ,  //-> en dessous et entre b1 et b2
+SDL_Rect b7 = {319-d_p,245-d_p, 27+d_p, 68+d_p }; //  ,  //  ,  //-> en dessous de b6
+SDL_Rect b8 = {192-d_p,192-d_p, 25+d_p,216+d_p }; //  ,  //  ,  //-> en longueur en b4 et b6
+SDL_Rect b9 = {448-d_p,192-d_p, 25+d_p,216+d_p }; //  ,  //  ,  //-> à l'opposé de b8
+SDL_Rect b10 = {212-d_p,288-d_p, 68+d_p,25+d_p }; //  ,  //  ,  //-> à droite de b8
+SDL_Rect b11 = {385-d_p,288-d_p, 68+d_p,25+d_p }; //  ,  //  ,  //-> à gauche de b9
+SDL_Rect b12 = {192-d_p,448-d_p, 25+d_p,120+d_p }; //  ,  //  ,  //-> en dessous de b8
+SDL_Rect b13 = {448-d_p,448-d_p, 25+d_p,120+d_p }; //  ,  //  ,  //-> en dessous  de b9
+SDL_Rect b14 = {256-d_p,512-d_p, 153+d_p,58+d_p }; //  ,  //  ,  //-> entre b12 et b13
+SDL_Rect b15 = {319-d_p,565-d_p, 27+d_p,68+d_p }; //  ,  //  ,  //-> en dessous de b6}; //  ,  //  ,  //-> en dessous de b14 (pareil que b7)
+SDL_Rect b16 = {192-d_p,607-d_p, 88+d_p,27+d_p }; //  ,  //  ,  //-> à gauche de b15
+SDL_Rect b17 = {384-d_p,607-d_p, 88+d_p,27+d_p }; //  ,  //  ,  //-> à droite de b16
+SDL_Rect b18 = {66-d_p,607-d_p, 88+d_p,27+d_p }; //  ,  //  ,  //-> à gauche de b16
+SDL_Rect b19 = {511-d_p,607-d_p, 88+d_p,27+d_p }; //  ,  //  ,  //-> à droite de b17
+SDL_Rect b20 = {127-d_p,629-d_p, 27+d_p,98+d_p }; //  ,  //  ,  //-> en bas à droite de b18
+SDL_Rect b21 = {511-d_p,629-d_p, 27+d_p,98+d_p }; //  ,  //  ,  //-> en bas à gauche de b19
+SDL_Rect b22 = {191-d_p,673-d_p, 27+d_p,101+d_p }; // , // , //-> à droite de b20
+SDL_Rect b23 = {447-d_p,673-d_p, 27+d_p,101+d_p }; // , // , //-> à gauche de b21
+SDL_Rect b24 = {65-d_p,767-d_p, 215+d_p,27+d_p }; // , // , //-> en bas à gauche de b22
+SDL_Rect b25 = {385-d_p,767-d_p, 215+d_p,27+d_p }; // , // , //-> en bas à droite de b23
+SDL_Rect b26 = {256-d_p,672-d_p, 155+d_p,58+d_p }; // , // , //-> à droite de b22 , comme b6
+SDL_Rect b27 = {319-d_p,725-d_p, 27+d_p,68+d_p }; // , // , //-> en dessous de b26 , comme b7
 
 //Cage des fantomes 
-SDL_Rect b28 = {285,453, 105,22 }; // , // , //-> le bas de la cage des fantomes 
-SDL_Rect b29 = {263,376, 22,95 }; // , // , //-> le coté gauche
-SDL_Rect b30 = {388,376, 22,95 }; // , // , //-> le coté droit
-SDL_Rect b31 = {264,358, 41,19 }; // , // , //-> en haut à gauche
-SDL_Rect b32 = {367,358, 41,19 }; // , // , //-> en haut à droite
+SDL_Rect b28 = {279-d_p,447-d_p, 110+d_p,27+d_p }; // , // , //-> le bas de la cage des fantomes 
+SDL_Rect b29 = {257-d_p,370-d_p, 27+d_p,100+d_p }; // , // , //-> le coté gauche
+SDL_Rect b30 = {382-d_p,370-d_p, 27+d_p,100+d_p }; // , // , //-> le coté droit
+SDL_Rect b31 = {258-d_p,352-d_p, 46+d_p,24+d_p }; // , // , //-> en haut à gauche
+SDL_Rect b32 = {361-d_p,352-d_p, 46+d_p,24+d_p }; // , // , //-> en haut à droite
 
 #endif // MURS_H //
