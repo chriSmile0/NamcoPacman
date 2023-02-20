@@ -31,7 +31,7 @@ class Map {
 
 Map::Map()
 {
-	/*Murs.push_back(&m);//mur du haut
+	Murs.push_back(&m);//mur du haut
 	Murs.push_back(&m1);
 	Murs.push_back(&m2);
 	Murs.push_back(&m3);
@@ -59,7 +59,7 @@ Map::Map()
 	Murs.push_back(&m25);
 	Murs.push_back(&m26);
 	Murs.push_back(&m27);
-	Murs.push_back(&m28);*/
+	Murs.push_back(&m28);
 
 	//Les blocs 
 	Murs.push_back(&b);
@@ -124,7 +124,7 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 		SDL_Rect wall = *(Murs.at(i));
 		hauteur_mur = wall.h;
 		largeur_mur = wall.w;
-		if(hauteur_mur > 16)//cas d'un bloc 
+		if((hauteur_mur > 16) && (largeur_mur > 16))//cas d'un bloc 
 		{
 			switch(sens) { // La pour le moment sa le fera dès le premier mur 
 				case 'h': 

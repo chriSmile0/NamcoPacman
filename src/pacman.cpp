@@ -398,6 +398,9 @@ int main(int argc, char** argv)
 	int out_ghosts = -1;
 
 	gmboard.sort_gums_by_xy();
+	//char true_sens = 'd';
+	char sens = 'd';
+
 
 	// BOUCLE PRINCIPALE
 	bool quit = false;
@@ -416,11 +419,13 @@ int main(int argc, char** argv)
 			}
 		}
 
-		if(out_ghosts != -1) //fonctionne
-			if(g.updateRedGhost(g.get_board()->get_elem_with_index(4).get_x() , g.get_board()->get_elem_with_index(4).get_y())==-1) {
+		if(out_ghosts != -1) { //fonctionne
+			if(g.updateRedGhost(g.get_board()->get_elem_with_index(4).get_x() , g.get_board()->get_elem_with_index(4).get_y(),sens)==-1) {
 				cout << "Catch Pacman" << endl;
 				quit = true;
 			}
+			cout << "sens" << sens << endl;
+		}
 		
 
 

@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "board.h"
+#include <random>
 
 class Game 
 {
@@ -38,7 +39,7 @@ class Game
         void update_pos_of_elem(int idx_elem_to_update, int x, int y, int add);
         void update_size_of_elem(int idx_elem_to_update, int w, int h, int add);
 
-        int updateRedGhost(int x_pac, int y_pac);
+        int updateRedGhost(int x_pac, int y_pac, char &sens);
         void updatePinkGhost(int x_pac, int y_pac);
         void updateCyanGhost(int x_pac, int y_pac);
         void updateYellowGhost(int x_pac, int y_pac);
@@ -172,7 +173,7 @@ void Game::update_size_of_elem(int idx_elem_to_update, int w, int h, int add) //
 /*
 - 
 */
-int Game::updateRedGhost(int x_pac, int y_pac)
+int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
 {
     int red_x = boar->get_elem_with_index(0).get_x();
     int red_y = boar->get_elem_with_index(0).get_y();
@@ -189,53 +190,96 @@ int Game::updateRedGhost(int x_pac, int y_pac)
     int delta_x = (x_pac - red_x)*(x_pac - red_x);
     int delta_y = (y_pac - red_y)*(y_pac - red_y);
     cout << "d_x : " << delta_x << " d_y : " << delta_y << endl; //on cherche à se rapprocher le plus possible donc le plus grand delta
-    char avancee = (delta_x < delta_y) ? sens_potentiel_y : sens_potentiel_x;
+    /*char avancee = (delta_x < delta_y) ? sens_potentiel_y : sens_potentiel_x;
     char option_xy = ((avancee == 'g') || (avancee == 'h')) ? '-' : '+';
     new_x = (avancee == sens_potentiel_x) ? ((option_xy == '-') ? red_x-distance : red_x+distance) : red_x;
-    new_y = (avancee == sens_potentiel_y) ? ((option_xy == '-') ? red_y-distance : red_y+distance) : red_y;
+    new_y = (avancee == sens_potentiel_y) ? ((option_xy == '-') ? red_y-distance : red_y+distance) : red_y;*/
 
     char result_hitwal = 'f';
     int i = 0;
     int rtn = 0;
-    result_hitwal = boar->getMap().hitWall(red_x,red_y,new_x,new_y,24);
-    if(result_hitwal == sens_potentiel_x) {//ça veut dire qu'on est bloqué , on doit faire y 
-                                            //mais si y bloque que faire
-        new_y = (sens_potentiel_y == 'h') ? red_y-distance : red_y+distance;
+    if(sens == 'b') {
         new_x = red_x;
-        final_sens = sens_potentiel_y;
-        rtn = -2;
+        new_y = red_y + distance;
     }
-    else if(result_hitwal == sens_potentiel_y) {
-        new_x = (sens_potentiel_x == 'g') ? (red_x-distance) : (red_x+distance);
+    if(sens == 'd') {
+        new_x = red_x + distance;
         new_y = red_y;
-        final_sens = sens_potentiel_x;
-        new_y = red_y;
-        rtn = -2;
     }
-    else if(result_hitwal == 'f') { //debut
-        switch(avancee) {
+
+    if(sens == 'g') {
+        new_x = red_x - distance;
+        new_y = red_y;
+    }
+    if(sens == 'h') {
+        new_x = red_x;
+        new_y = red_y - distance;
+    }
+    result_hitwal = boar->getMap().hitWall(red_x,red_y,new_x,new_y,24);
+    
+    if(result_hitwal == 'f') { //debut
+        switch(sens) {
             case 'g': new_x = red_x - distance;
-                if((new_x <= x_pac+5) && (((new_y >= y_pac-5)||(new_y <= y_pac+5))))
+                if((new_x == x_pac) && ((new_y >= y_pac-5)&&(new_y <= y_pac+5)))
                     rtn = -1;
                 break;
             case 'd': new_x = red_x + distance;
-                if(((new_x == x_pac)||(new_x >= x_pac+5)) && ((new_y >= y_pac-5)||(new_y <= y_pac+5)))
+                if((new_x == x_pac) && ((new_y >= y_pac-5)&&(new_y <= y_pac+5)))
                     rtn = -1;
                 break;
             case 'h': new_y = red_y - distance;
-                    if((new_y <= y_pac+5) && (((new_x >= x_pac-5)||(new_x <= x_pac+5))))
+                if((new_y == y_pac) && ((new_x >= x_pac-5)&&(new_x <= x_pac+5)))
                     rtn = -1;
                 break;
             case 'b': new_y = red_y + distance;
-                    if(((new_y == y_pac)||(new_y >= y_pac+5)) && ((new_x >= x_pac-5)||(new_x <= x_pac+5)))
+                if(((new_y == y_pac)) && ((new_x >= x_pac-5)&&(new_x <= x_pac+5)))
                     rtn = -1;
                 break;
             default:
                 break;
         }
-        final_sens = avancee;
+        final_sens = sens;
         if(rtn != -1)
             rtn =  0;
+    }
+    else {
+        std::random_device rd;  // Will be used to obtain a seed for the random number engine
+        std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+        std::uniform_int_distribution<> distrib(0, 3);
+        int valeur_random =  distrib(gen);
+        char new_sens = 'f';
+        switch(valeur_random) {
+            case 0: new_sens = 'd';
+                break;
+            case 1: new_sens = 'g';
+                break;
+            case 2: new_sens = 'b';
+                break;
+            case 3: new_sens = 'h';
+                break;
+            default : 
+                break;
+        }
+        new_x = red_x;
+        new_y = red_y;
+    
+        if(sens == 'g') {
+            if(new_sens == 'd')
+                new_sens = 'h';
+        }
+        else if(sens == 'd') {
+            if(new_sens == 'g')
+                new_sens = 'b';
+        }
+        else if(sens == 'h') {
+            if(new_sens == 'b')
+                new_sens = 'd';
+        }
+        else if(sens == 'b') {
+            if(new_sens == 'h')
+                new_sens = 'g';
+        }
+        sens = new_sens;
     }
     cout << "new_x :" << new_x << endl;
     cout << "new_y :" << new_y << endl;
@@ -247,8 +291,14 @@ int Game::updateRedGhost(int x_pac, int y_pac)
     SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
     boar->get_elem_with_index(0).set_rect(&elem_newpos);
     char sens_walk = sens_of_walk(red_x,red_y,new_x,new_y,'g',0); 
-    SDL_BlitScaled(sprites_planches, boar->getSkin(0,final_sens), win_surface, &elem_newpos);
+    SDL_BlitScaled(sprites_planches, boar->getSkin(0,sens), win_surface, &elem_newpos);
     return rtn;
+    /*Fonctionne mais ne prend pas les intervalles, c'est à dire ne fonctionne que dans les coins
+        pour le moment, il faut trouver un moyen de faire aller dans un sens encore plus aléatoire
+        en fonction de certain espace
+    - En tout cas fonctiionne bien pour les coins de la map car on va dans une direction , on ne peut pas
+    aller dans celle d'où l'on viens ni l'inverse donc on va forcément dans le dernier sens possible 
+    */
 }
 
 // a tendance à se mettre en embuscade. Elle vise l'endroit où va se trouver Pac-Man.
@@ -375,7 +425,7 @@ void Game::update_ghosts(int x_pac, int y_pac)
 
 
 	//Update algo rose
-    updateRedGhost(x_pac,y_pac);
+    //updateRedGhost(x_pac,y_pac);
 	//Update algo cyan
     updatePinkGhost(x_pac,y_pac);
 
