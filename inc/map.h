@@ -97,6 +97,8 @@ Map::Map()
 	Murs.push_back(&b32);*/
 }
 
+//A AMELIORER Car soucis !!!!! avec les coins et le vers la gauche et le haut pas correct dans certains cas 
+
 char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check si la position "heurte" un mur 
 {										//sens : h = haut , b = bas, g = gauche, d = droit
 	//on peut determiner le sens nous même maintenant avec new et old 
@@ -123,7 +125,7 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 		hauteur_mur = wall.h;
 		largeur_mur = wall.w;
 		switch(sens) { // La pour le moment sa le fera dès le premier mur 
-			case 'h': //y -= dim_perso; 
+			case 'h': 
 					if(((y > wall.y) && (new_y <= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
 						goon = 0;
 					break;
@@ -131,7 +133,7 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 					if(((y < wall.y) && (new_y >= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
 						goon = 0;
 					break;
-			case 'g': //x += dim_perso; 
+			case 'g':
 					if(((x > wall.x) && (new_x <= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
 						goon = 0;
 					break;

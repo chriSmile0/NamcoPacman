@@ -38,7 +38,7 @@ class Game
         void update_pos_of_elem(int idx_elem_to_update, int x, int y, int add);
         void update_size_of_elem(int idx_elem_to_update, int w, int h, int add);
 
-        void updateRedGhost(int x_pac, int y_pac);
+        int updateRedGhost(int x_pac, int y_pac);
         void updatePinkGhost(int x_pac, int y_pac);
         void updateCyanGhost(int x_pac, int y_pac);
         void updateYellowGhost(int x_pac, int y_pac);
@@ -172,11 +172,11 @@ void Game::update_size_of_elem(int idx_elem_to_update, int w, int h, int add) //
 /*
 - 
 */
-void Game::updateRedGhost(int x_pac, int y_pac)
+int Game::updateRedGhost(int x_pac, int y_pac)
 {
     int red_x = boar->get_elem_with_index(0).get_x();
     int red_y = boar->get_elem_with_index(0).get_y();
-    int distance = 1;//distance de déplacement des fantomes
+    int distance = 6;//distance de déplacement des fantomes
 
     int new_x = red_x;//à changer en fonction de la position de pacman
     int new_y = red_y;// "" "" 
@@ -190,68 +190,65 @@ void Game::updateRedGhost(int x_pac, int y_pac)
     int delta_y = (y_pac - red_y)*(y_pac - red_y);
     cout << "d_x : " << delta_x << " d_y : " << delta_y << endl; //on cherche à se rapprocher le plus possible donc le plus grand delta
     char avancee = (delta_x < delta_y) ? sens_potentiel_y : sens_potentiel_x;
-    //char option_xy = ((avancer == 'g') || (avancer == 'h')) ? '-' : '+';
+    char option_xy = ((avancee == 'g') || (avancee == 'h')) ? '-' : '+';
+    new_x = (avancee == sens_potentiel_x) ? ((option_xy == '-') ? red_x-distance : red_x+distance) : red_x;
+    new_y = (avancee == sens_potentiel_y) ? ((option_xy == '-') ? red_y-distance : red_y+distance) : red_y;
 
     char result_hitwal = 'f';
     int i = 0;
-    do {
-        if(result_hitwal == sens_potentiel_x) {//ça veut dire qu'on est bloqué , on doit faire y 
-                                                //mais si y bloque que faire
-            cout << "here " << endl;
-            new_y = (sens_potentiel_y == 'g') ? red_y - distance : red_y + distance;
-            final_sens = sens_potentiel_y;
-        }
-        else if(result_hitwal == sens_potentiel_y) {
-            new_x = (sens_potentiel_x == 'h') ? (red_x - distance) : (red_x + distance);
-            final_sens = sens_potentiel_x;
-        }
-        else if(result_hitwal == 'f') { //debut
-            switch(avancee) {
-                case 'g': new_x = red_x - distance;
-                    break;
-                case 'd': new_x = red_x + distance;
-                    break;
-                case 'h': new_y = red_y - distance;
-                    break;
-                case 'b': new_y = red_y + distance;
-                    break;
-                default:
-                    break;
-            }
-            final_sens = avancee;
-        }
-        cout << "new_x :" << new_x << endl;
-        cout << "new_y :" << new_y << endl;
-        cout << "res wall : " << result_hitwal << endl;
-        i++; 
+    int rtn = 0;
+    result_hitwal = boar->getMap().hitWall(red_x,red_y,new_x,new_y,24);
+    if(result_hitwal == sens_potentiel_x) {//ça veut dire qu'on est bloqué , on doit faire y 
+                                            //mais si y bloque que faire
+        new_y = (sens_potentiel_y == 'h') ? red_y-distance : red_y+distance;
+        new_x = red_x;
+        final_sens = sens_potentiel_y;
+        rtn = -2;
     }
-    while(((result_hitwal = boar->getMap().hitWall(red_x,red_y,new_x,new_y,24)) != 'f') && (i < 4));//((new_x > 610) || (new_y > 800) || (new_y < 28) || (new_x < 28)) {//murs provisoires
+    else if(result_hitwal == sens_potentiel_y) {
+        new_x = (sens_potentiel_x == 'g') ? (red_x-distance) : (red_x+distance);
+        new_y = red_y;
+        final_sens = sens_potentiel_x;
+        new_y = red_y;
+        rtn = -2;
+    }
+    else if(result_hitwal == 'f') { //debut
+        switch(avancee) {
+            case 'g': new_x = red_x - distance;
+                if((new_x <= x_pac+5) && (((new_y >= y_pac-5)||(new_y <= y_pac+5))))
+                    rtn = -1;
+                break;
+            case 'd': new_x = red_x + distance;
+                if(((new_x == x_pac)||(new_x >= x_pac+5)) && ((new_y >= y_pac-5)||(new_y <= y_pac+5)))
+                    rtn = -1;
+                break;
+            case 'h': new_y = red_y - distance;
+                    if((new_y <= y_pac+5) && (((new_x >= x_pac-5)||(new_x <= x_pac+5))))
+                    rtn = -1;
+                break;
+            case 'b': new_y = red_y + distance;
+                    if(((new_y == y_pac)||(new_y >= y_pac+5)) && ((new_x >= x_pac-5)||(new_x <= x_pac+5)))
+                    rtn = -1;
+                break;
+            default:
+                break;
+        }
+        final_sens = avancee;
+        if(rtn != -1)
+            rtn =  0;
+    }
+    cout << "new_x :" << new_x << endl;
+    cout << "new_y :" << new_y << endl;
+    cout << "x_pac : " << x_pac << endl;
+    cout << "y_pac : " << y_pac << endl;
+    cout << "res wall : " << result_hitwal << endl;
 
-    
     boar->change_pos(0,new_x,new_y);
     SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
     boar->get_elem_with_index(0).set_rect(&elem_newpos);
     char sens_walk = sens_of_walk(red_x,red_y,new_x,new_y,'g',0); 
     SDL_BlitScaled(sprites_planches, boar->getSkin(0,final_sens), win_surface, &elem_newpos);
-    
-        //Test du catch ball 
-    //}
-
-
-
-    //char sens = sens_of_walk(red_x,red_y,new_x,new_y,'d',0);
-	//SDL_SetColorKey(sprites_planches, true, 0);
-
-
-
-	/*if(abs_x > abs_y) { // 
-		//try d'aller à gauche 
-		//si fonctionne pas on va à droite
-		if(abs_x != 0)
-    		boar->change_pos(0,red_x,red_y);
-		else 
-			boar->
-	}*/
+    return rtn;
 }
 
 // a tendance à se mettre en embuscade. Elle vise l'endroit où va se trouver Pac-Man.
@@ -324,7 +321,7 @@ void Game::updatePacman(int x_pac, int y_pac, char s)
     SDL_SetColorKey(sprites_planches, false, 0);//On efface tout 
 	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
 
-    updateRedGhost(boar->get_elem_with_index(4).get_val_elem().x,boar->get_elem_with_index(4).get_val_elem().y);
+    //updateRedGhost(boar->get_elem_with_index(4).get_val_elem().x,boar->get_elem_with_index(4).get_val_elem().y);
     for (int i = 1 ; i < 4; i++) {
         SDL_Rect save_elem = boar->get_elem_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
         SDL_Rect *skin_choice = boar->getSkin(i,'d');//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
@@ -361,7 +358,7 @@ void Game::updatePacman(int x_pac, int y_pac, char s)
     SDL_Rect* ghost_choice = nullptr;
     ghost_choice = boar->getSkin(4,sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1));
     SDL_BlitScaled(sprites_planches, ghost_choice, win_surface, &elem_newpos);
-    SDL_SetColorKey(sprites_planches, true, 0);
+    //SDL_SetColorKey(sprites_planches, true, 0);
     //cout << boar->get_elem_with_index(idx_elem_to_update).get_x() << endl;
 }
 
@@ -408,7 +405,7 @@ char Game::sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_
     return sens;
 }
 
-int Game::catchPacman()
+int Game::catchPacman() //Mis en pause car implemter dans updateGhost
 {//test après chaque update de ghost et pacman si il y'a contact entre un fantomes et pacman
     int hit_box_xpacman = 0; 
     int hit_box_ypacman = 0;

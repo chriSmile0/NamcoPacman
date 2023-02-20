@@ -8,40 +8,41 @@
 //On peut faire le test en mettant des gums a ces endroits là 
 //sw = scale_walls
 int sw = 4;
+int d_p = 24; //dim_perso -> dimension de pacman
 
 //Attention il faut aussi gérer le mur en fonction de la taille du perso
 //Pour le moment si on enleve 25 sur le mur m6 cela fonctionne mais il faut trouver un moyen de 
 //de le faire en automatique en fonction du perso 
 
 //{x,y,w,h}
-SDL_Rect m =  { 28,28, 154*sw,4 };  // ,  // , //-> tout en haut sur all longueur // sur le gameboard actif -> peut importe lequel 
-SDL_Rect m1 = {320,28, 4,30*sw }; //  ,  //  , //-> en haut le mur qui coupe m (gauche) // ""   m1/m2/m3 à remplacer par un bloc
-SDL_Rect m2 = {348,28, 4,30*sw }; //  ,  //  , //-> en haut le mur qui coupe m (droite) // "" 
-SDL_Rect m3 = {318,149, 10*sw,4 }; //  ,  //  , //-> en haut entre m1 et m2
-SDL_Rect m4 = { 28,28, 4,67*sw }; //  ,  //  , //-> en haut à gauche // "" 
-SDL_Rect m5 = {640,28, 4,67*sw }; //  ,  //  , //-> en haut à droite // "" 
-SDL_Rect m6 = {28,25+(66*sw), 31*sw,4 }; //  ,  //  ,  //-> en bas à droite de m4// "" 
-SDL_Rect m7 = {520,25+(66*sw), 30*sw,4 }; //  ,  //  , //-> en bas à gauche de m5// "" 
-SDL_Rect m8 = {153,290, 4,122 }; //  ,  //  , 	//-> en bas à droite du mur m6// "" 
-SDL_Rect m9 = {515,290, 4,122 }; //  ,  //  , 	//-> en bas à droite du mur m7// "" 
-SDL_Rect m10 = {4,411, 148,4 }; //  ,  //  ,  	//-> en bas à gauche de m8// "" 
-SDL_Rect m11 = {520,411, 148,4 }; //  ,  //  , 	//-> en bas à droite de m9// "" 
-SDL_Rect m12 = {4,449, 148,4 }; //  ,  //  ,  	//-> en bas de m10// ""
-SDL_Rect m13 = {520,449, 148,4 }; //  ,  //  ,	//-> en bas de m11// ""
-SDL_Rect m14 = {153,450, 4,122 }; //  ,  //  ,  //-> en bas à droite de m12// ""
-SDL_Rect m15 = {515,450, 4,122 }; //  ,  //  ,  //-> en bas à gauche de m13// ""
+SDL_Rect m =  { 28,28, 154*sw,8 };  // ,  // , //-> tout en haut sur all longueur // sur le gameboard actif -> peut importe lequel 
+SDL_Rect m1 = {320,28, 8,30*sw }; //  ,  //  , //-> en haut le mur qui coupe m (gauche) // ""   m1/m2/m3 à remplacer par un bloc
+SDL_Rect m2 = {348,28, 8,30*sw }; //  ,  //  , //-> en haut le mur qui coupe m (droite) // "" 
+SDL_Rect m3 = {315-d_p,149, (10*sw)+d_p,8 }; //  ,  //  , //-> en haut entre m1 et m2
+SDL_Rect m4 = { 28,28, 8,67*sw }; //  ,  //  , //-> en haut à gauche // "" 
+SDL_Rect m5 = {640,28, 8,67*sw }; //  ,  //  , //-> en haut à droite // "" 
+SDL_Rect m6 = {28,25+(66*sw), 31*sw,8 }; //  ,  //  ,  //-> en bas à droite de m4// "" 
+SDL_Rect m7 = {520-d_p,25+(66*sw), (30*sw)+d_p,8 }; //  ,  //  , //-> en bas à gauche de m5// "" 
+SDL_Rect m8 = {153,288-d_p, 8,122+d_p }; //  ,  //  , 	//-> en bas à droite du mur m6// "" 
+SDL_Rect m9 = {513,288-d_p, 8,122+d_p }; //  ,  //  , 	//-> en bas à droite du mur m7// "" 
+SDL_Rect m10 = {4,411, 148,8 }; //  ,  //  ,  	//-> en bas à gauche de m8// "" 
+SDL_Rect m11 = {520-d_p,411, 148+d_p,8 }; //  ,  //  , 	//-> en bas à droite de m9// "" 
+SDL_Rect m12 = {4,449, 148,8 }; //  ,  //  ,  	//-> en bas de m10// ""
+SDL_Rect m13 = {520-d_p,449, 148+d_p,8 }; //  ,  //  ,	//-> en bas de m11// ""
+SDL_Rect m14 = {153,450-d_p, 4,122+d_p }; //  ,  //  ,  //-> en bas à droite de m12// ""
+SDL_Rect m15 = {513,450-d_p, 8,122+d_p }; //  ,  //  ,  //-> en bas à gauche de m13// ""
 SDL_Rect m16 = {28,571, 124,4 }; //  ,  //  ,  	//-> en bas à gauche de m14// ""
-SDL_Rect m17 = {520,571, 124,4 }; //  ,  //  ,  //-> en bas à droite de m15 // ""
+SDL_Rect m17 = {520-d_p,571, 124+d_p,8 }; //  ,  //  ,  //-> en bas à droite de m15 // ""
 SDL_Rect m18 = {28,575, 4,102 }; //  ,  //  ,  	//-> en bas à gauche de m16// ""
-SDL_Rect m19 = {641,575, 4,102 }; //  ,  //  ,  //-> en bas à droite de m17// ""
+SDL_Rect m19 = {639,575, 4,102 }; //  ,  //  ,  //-> en bas à droite de m17// ""
 SDL_Rect m20 = {28,673, 61,4 }; //  ,  //  ,  	//-> en bas à droite de m18// ""
-SDL_Rect m21 = {584,673, 61,4 }; //  ,  //  ,  	//-> en bas à gauche de m19// ""
+SDL_Rect m21 = {584-d_p,673, 61+d_p,8 }; //  ,  //  ,  	//-> en bas à gauche de m19// ""
 SDL_Rect m22 = {89,675, 4,57 }; //  ,  //  ,  	//-> en bas à droite de m20// ""
-SDL_Rect m23 = {579,675, 4,57 }; //  ,  //  ,  	//-> en bas à gauche de m21// ""
+SDL_Rect m23 = {579,673-d_p, 8,57+d_p }; //  ,  //  ,  	//-> en bas à gauche de m21// ""
 SDL_Rect m24 = {28,731, 61,4 }; //  ,  //  ,  	//-> en bas à gauche de m22// ""
-SDL_Rect m25 = {584,731, 61,4 }; //  ,  //  ,  	//-> en bas à droite de m23// ""
+SDL_Rect m25 = {584-d_p,731, 61+d_p,8 }; //  ,  //  ,  	//-> en bas à droite de m23// ""
 SDL_Rect m26 = {28,733, 4,105 }; //  ,  //  ,  	//-> en bas à gauche de m24// ""
-SDL_Rect m27 = {640,733 , 4,105 }; //  ,  //  , //-> en bas à droite de m25// ""
+SDL_Rect m27 = {639,730 , 4,105 }; //  ,  //  , //-> en bas à droite de m25// ""
 SDL_Rect m28 = { 28, 835, 154*4,4 }; // , // ,	//-> le mur tout en bas// ""
 
 //***********************************VOIR POUR COMPRESSER LES FORMES DE PLUS DE 3 MURS EN CARRÉS exemple : m20-m25 = 2 carré

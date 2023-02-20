@@ -401,6 +401,7 @@ int main(int argc, char** argv)
 
 	// BOUCLE PRINCIPALE
 	bool quit = false;
+	int cou = 0;
 	while (!quit)
 	{
 		SDL_Event event;
@@ -415,8 +416,12 @@ int main(int argc, char** argv)
 			}
 		}
 
-		if(out_ghosts != -1)//fonctionne
-			g.updateRedGhost(pacman_p.x , pacman_p.y);
+		if(out_ghosts != -1) //fonctionne
+			if(g.updateRedGhost(g.get_board()->get_elem_with_index(4).get_x() , g.get_board()->get_elem_with_index(4).get_y())==-1) {
+				cout << "Catch Pacman" << endl;
+				quit = true;
+			}
+		
 
 
 		// Gestion du clavier        
@@ -428,9 +433,10 @@ int main(int argc, char** argv)
 			SDL_Rect *rec = nullptr;
 			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
 			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
-			cout << "pacman p : " << pacman_p.x << endl;
+			cout << "pacman p : " << g.get_board()->get_elem_with_index(4).get_x() << endl;
 			//g.update_pos_of_elem(4,-6,0,1);
 			g.updatePacman(-6,0,'g');
+
 		}
 		if (keys[SDL_SCANCODE_RIGHT]) {
 			SDL_Rect *rec = nullptr;
@@ -471,7 +477,8 @@ int main(int argc, char** argv)
 		}
 
 		if (keys[SDL_SCANCODE_4]) {
-			g.updateRedGhost(pacman_p.x,pacman_p.y);
+			//g.updateRedGhost(g.get_board()->get_elem_with_index(4).get_x(),g.get_board()->get_elem_with_index(4).get_y());
+
 			puts("Move red");
 		}
 
@@ -479,6 +486,7 @@ int main(int argc, char** argv)
 
 		if (keys[SDL_SCANCODE_Q]) {
 			puts("A in QWERTY");
+			cout << "count : " << cou << endl;
 		}
 
 		SDL_SetColorKey(plancheSprites, true, 0);
@@ -486,7 +494,7 @@ int main(int argc, char** argv)
 
 
 		// AFFICHAGE
-		//draw();
+		//draw();*/
 		SDL_UpdateWindowSurface(pWindow); 
 		// LIMITE A 60 FPS
 		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
