@@ -39,11 +39,12 @@ class Game
         void update_pos_of_elem(int idx_elem_to_update, int x, int y, int add);
         void update_size_of_elem(int idx_elem_to_update, int w, int h, int add);
 
+        int moveGhost(int x_pac, int y_pac, char &sens, int index);
         int updateRedGhost(int x_pac, int y_pac, char &sens);
-        void updatePinkGhost(int x_pac, int y_pac);
-        void updateCyanGhost(int x_pac, int y_pac);
-        void updateYellowGhost(int x_pac, int y_pac);
-        void update_ghosts(int x_pac, int y_pac);
+        int updatePinkGhost(int x_pac, int y_pac, char &sens);
+        int updateCyanGhost(int x_pac, int y_pac, char &sens);
+        int updateYellowGhost(int x_pac, int y_pac, char &sens);
+        int updateGhosts(int x_pac, int y_pac, char sens[4], int out_ghost);
         void updatePacman(int x_pac, int y_pac, char s);
 
         char sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_or_p);
@@ -169,14 +170,12 @@ void Game::update_size_of_elem(int idx_elem_to_update, int w, int h, int add) //
 
 }
 
-// attaque directement Pac Man. Il suit Pac-Man comme son ombre.
-/*
-- 
-*/
-int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
+
+
+int Game::moveGhost(int x_pac, int y_pac, char &sens, int index)
 {
-    int red_x = boar->get_elem_with_index(0).get_x();
-    int red_y = boar->get_elem_with_index(0).get_y();
+    int red_x = boar->get_elem_with_index(index).get_x();
+    int red_y = boar->get_elem_with_index(index).get_y();
     int distance = 6;//distance de déplacement des fantomes
 
     int new_x = red_x;//à changer en fonction de la position de pacman
@@ -281,18 +280,21 @@ int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
         }
         sens = new_sens;
     }
-    cout << "new_x :" << new_x << endl;
-    cout << "new_y :" << new_y << endl;
-    cout << "x_pac : " << x_pac << endl;
-    cout << "y_pac : " << y_pac << endl;
-    cout << "res wall : " << result_hitwal << endl;
 
-    boar->change_pos(0,new_x,new_y);
+    boar->change_pos(index,new_x,new_y);
     SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
-    boar->get_elem_with_index(0).set_rect(&elem_newpos);
+    boar->get_elem_with_index(index).set_rect(&elem_newpos);
     char sens_walk = sens_of_walk(red_x,red_y,new_x,new_y,'g',0); 
-    SDL_BlitScaled(sprites_planches, boar->getSkin(0,sens), win_surface, &elem_newpos);
+    SDL_BlitScaled(sprites_planches, boar->getSkin(index,sens), win_surface, &elem_newpos);
     return rtn;
+}
+// attaque directement Pac Man. Il suit Pac-Man comme son ombre.
+/*
+- 
+*/
+int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
+{
+    return moveGhost(x_pac,y_pac,sens,0);
     /*Fonctionne mais ne prend pas les intervalles, c'est à dire ne fonctionne que dans les coins
         pour le moment, il faut trouver un moyen de faire aller dans un sens encore plus aléatoire
         en fonction de certain espace
@@ -305,65 +307,27 @@ int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
 /*
 -
 */
-void Game::updatePinkGhost(int x_pac, int y_pac)
+int Game::updatePinkGhost(int x_pac, int y_pac,char &sens)
 {
-    int pink_x = boar->getGhost_with_index(1)->x;
-    int pink_y = boar->getGhost_with_index(1)->y;
-    int abs_x = x_pac - pink_x;
-    int abs_y = y_pac - pink_y;
-    //bas/haut/gauche/droit
-    char sens_y = (pink_y < y_pac) ? 'b' : 'h';
-    char sens_x = (pink_x < x_pac) ? 'd' : 'g';
-
-
-    /*pink_x += (sens_x == 'g') ? -6 : 6;
-    pink_y += (sens_y == 'h') ? -6 : 6; */
-
-    //boar->change_pos(0,pink_x,pink_y);
+    return moveGhost(x_pac,y_pac,sens,1);
 }
 
 // De temps en temps, il part dans la direction opposée à Pac-Man.
 /*
 -
 */
-void Game::updateCyanGhost(int x_pac, int y_pac)
+int Game::updateCyanGhost(int x_pac, int y_pac, char &sens)
 {
-    int cyan_x = boar->getGhost_with_index(2)->x;
-    int cyan_y = boar->getGhost_with_index(2)->y;
-    int abs_x = x_pac - cyan_x;
-    int abs_y = y_pac - cyan_y;
-    //bas/haut/gauche/droit
-    char sens_y = (cyan_y < y_pac) ? 'b' : 'h';
-    char sens_x = (cyan_x < x_pac) ? 'd' : 'g';
-
-    //Je doit lancer un random de tel sorte que 1/3 ou 1/4 il aille dans la direction
-    //opposer de pacman
-
-    /*cyan_x += (sens_x == 'g') ? -6 : 6;
-    cyan_y += (sens_y == 'h') ? -6 : 6;*/
-    //boar->change_pos(0,cyan_x,cyan_y);
+    return moveGhost(x_pac,y_pac,sens,2);
 }
 
 //De temps en temps, il choisit une direction au hasard (qui peut être celle de Pac-Man).
 /*
 -
 */
-void Game::updateYellowGhost(int x_pac, int y_pac)
+int Game::updateYellowGhost(int x_pac, int y_pac, char &sens)
 {
-    int yel_x = boar->getGhost_with_index(3)->x;
-    int yel_y = boar->getGhost_with_index(3)->y;
-    int abs_x = x_pac - yel_x;
-    int abs_y = y_pac - yel_y;
-    //bas/haut/gauche/droit
-    char sens_y = (yel_y < y_pac) ? 'b' : 'h';
-    char sens_x = (yel_x < x_pac) ? 'd' : 'g';
-    /*yel_x += (sens_x == 'g') ? -6 : 6;
-    yel_y += (sens_y == 'h') ? -6 : 6; */
-
-    //On combine cyan avec ici sauf que cette fois ci il va dans n'importe
-    //quelle direction 1/3 ou 1/4 fois.
-
-    //boar->change_pos(0,yel_x,yel_y);
+    return moveGhost(x_pac,y_pac,sens,3);
 }
 
 void Game::updatePacman(int x_pac, int y_pac, char s) 
@@ -372,7 +336,7 @@ void Game::updatePacman(int x_pac, int y_pac, char s)
 	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
 
     //updateRedGhost(boar->get_elem_with_index(4).get_val_elem().x,boar->get_elem_with_index(4).get_val_elem().y);
-    for (int i = 1 ; i < 4; i++) {
+    for (int i = 0 ; i < 4; i++) {
         SDL_Rect save_elem = boar->get_elem_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
         SDL_Rect *skin_choice = boar->getSkin(i,'d');//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
         SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
@@ -414,27 +378,24 @@ void Game::updatePacman(int x_pac, int y_pac, char s)
 
 
 // fonction qui met à jour la surface de la fenetre "win_surf"
-void Game::update_ghosts(int x_pac, int y_pac)
+int Game::updateGhosts(int x_pac, int y_pac, char sens[4], int out_ghost)
 {
 	/*SDL_SetColorKey(plancheSprites, false, 0);
 	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);*/
 
 	//Faire tourner les fantomes 
-	//Update algo rouge
-    //Chercher la position de Pacman -> lui fourni un +6 le plus proche de pacman
-
-
-	//Update algo rose
-    //updateRedGhost(x_pac,y_pac);
-	//Update algo cyan
-    updatePinkGhost(x_pac,y_pac);
-
-	//Update algo jaune
-    updateCyanGhost(x_pac,y_pac);
-	//puis on appel update_pos_of_elem(pacman) 
-    updateYellowGhost(x_pac,y_pac);
-
-	
+    if(updateRedGhost(x_pac,y_pac, sens[0])==-1)
+        return -1;
+    if(out_ghost > 0)
+        if(updatePinkGhost(x_pac,y_pac, sens[1])==-1)
+            return -1;
+    if(out_ghost > 1)
+        if(updateCyanGhost(x_pac,y_pac,sens[2])==-1)
+            return -1;
+    if(out_ghost > 2)
+        if(updateYellowGhost(x_pac,y_pac,sens[3])==-1)
+            return -1;
+    return 0;
 	//print the skins on the window
 	/*SDL_SetColorKey(plancheSprites, true, 0);
 	SDL_BlitScaled(plancheSprites, &ghost_in2, win_surface, &ghost);*/

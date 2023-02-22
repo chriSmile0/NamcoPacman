@@ -399,7 +399,15 @@ int main(int argc, char** argv)
 
 	gmboard.sort_gums_by_xy();
 	//char true_sens = 'd';
-	char sens = 'd';
+	char sens_r = 'd';
+	char sens_p = 'd';
+	char sens_c = 'd';
+	char sens_y = 'd';
+	char *sens_ghosts[4] = {&sens_r,&sens_p,&sens_c,&sens_y};//un peu overkill , on pourrais juste suppr les sens_ et mettre
+	//direct des 'd'/'g' dans le tableau 
+	*sens_ghosts[0] = 'g';
+	cout << "sens g 0 : " << sens_ghosts[0] << endl;
+	cout << "sens_r : " << sens_r << endl;
 
 
 	// BOUCLE PRINCIPALE
@@ -420,83 +428,54 @@ int main(int argc, char** argv)
 		}
 
 		if(out_ghosts != -1) { //fonctionne
-			if(g.updateRedGhost(g.get_board()->get_elem_with_index(4).get_x() , g.get_board()->get_elem_with_index(4).get_y(),sens)==-1) {
-				cout << "Catch Pacman" << endl;
+			cout << "out ghosts : " << out_ghosts << endl;
+			if(g.updateGhosts(g.get_board()->get_elem_with_index(4).get_x(),g.get_board()->get_elem_with_index(4).get_y(),*sens_ghosts,out_ghosts) == -1)
 				quit = true;
-			}
-			cout << "sens" << sens << endl;
 		}
 		
-
-
 		// Gestion du clavier        
 		int nbk;
 		const Uint8* keys = SDL_GetKeyboardState(&nbk);
 		if (keys[SDL_SCANCODE_ESCAPE])
 			quit = true;
 		if (keys[SDL_SCANCODE_LEFT]) {
-			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
-			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
-			cout << "pacman p : " << g.get_board()->get_elem_with_index(4).get_x() << endl;
-			//g.update_pos_of_elem(4,-6,0,1);
 			g.updatePacman(-6,0,'g');
 
 		}
+
 		if (keys[SDL_SCANCODE_RIGHT]) {
-			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
-			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
-			g.update_pos_of_elem(4,6,0,1);//faire en sorte que les autres élements sont toujours affichés
+			g.updatePacman(6,0,'d');
 		}
+
 		if (keys[SDL_SCANCODE_DOWN]) {
-			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
-			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
-			g.update_pos_of_elem(4,0,6,1);
+			g.updatePacman(0,6,'b');
 		}
 
 		if (keys[SDL_SCANCODE_UP]) {
-			SDL_Rect *rec = nullptr;
-			rec = (g.get_board()->get_elem_with_index(4).get_ptr_elem());
-			g.get_board()->get_elem_with_index(4).set_x((rec->x)+5);
-			g.update_pos_of_elem(4,0,-6,1);
+			g.updatePacman(0,-6,'h');
 		}
 
 		if (keys[SDL_SCANCODE_0]) {
 			exit_ghost(&gmboard,'r');
 			out_ghosts++;
-			puts("Rouge");
+			puts("Exit Rouge");
 		}
 		if (keys[SDL_SCANCODE_1]) {
 			exit_ghost(&gmboard,'p');
-			puts("Rose");
+			out_ghosts++;
+			puts("Exit Rose");
 		}
 		if (keys[SDL_SCANCODE_2]) {
 			exit_ghost(&gmboard,'c');
-			puts("Cyan");
+			out_ghosts++;
+			puts("Exit Cyan");
 		}
 		if (keys[SDL_SCANCODE_3]) {
 			exit_ghost(&gmboard,'y');
-			puts("Jaune");
+			out_ghosts++;
+			puts("Exit Jaune");
 		}
-
-		if (keys[SDL_SCANCODE_4]) {
-			//g.updateRedGhost(g.get_board()->get_elem_with_index(4).get_x(),g.get_board()->get_elem_with_index(4).get_y());
-
-			puts("Move red");
-		}
-
-
-
-		if (keys[SDL_SCANCODE_Q]) {
-			puts("A in QWERTY");
-			cout << "count : " << cou << endl;
-		}
-
 		SDL_SetColorKey(plancheSprites, true, 0);
-
-
 
 		// AFFICHAGE
 		//draw();*/

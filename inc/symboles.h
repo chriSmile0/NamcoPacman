@@ -88,9 +88,9 @@ SDL_Rect lpacman_cor = { 20,89, 16,16 };
 SDL_Rect lpacman_or = { 35,89, 12,16 };
 SDL_Rect lpacman_col = { 47,89, 15,16 };
 SDL_Rect lpacman_ol = { 62,89, 12,16 };
-SDL_Rect lpacman_cod = { 75,89, 16,16 };
+SDL_Rect lpacman_cou = { 75,89, 16,16 };
 SDL_Rect lpacman_od = { 92,89, 16,16 };
-SDL_Rect lpacman_cou = { 109,89, 16,16 };
+SDL_Rect lpacman_cod = { 109,89, 16,16 };
 SDL_Rect lpacman_ou = { 126,93, 16,13 };
 
 //Letters 
