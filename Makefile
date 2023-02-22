@@ -1,14 +1,14 @@
 all : main
 
-main : 
+main : clean
 	mkdir build 2> /dev/null ;\
 	cd build ; \
 	cmake .. ; \
 	make ; \
 
-exec : 
+exec : main 
 	cd build ; \
-	./pacman
+	./pacman \
 
 clean : 
 	-$(RM) -r build
