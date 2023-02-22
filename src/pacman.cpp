@@ -329,15 +329,15 @@ void init(Board *b)
 	//Init seeds
 	init_seeds(b);
 	//Init walls 
-	init_walls(b);
+	//init_walls(b);
 
 	SDL_SetColorKey(plancheSprites, true, 0);
 	//Affichage des 4 fantomes aux centres et du pacman
 }
 
 void exit_ghost(Board *b,char ghost_name) { // r,p,c,o
-	SDL_SetColorKey(plancheSprites, false, 0);
-	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
+	/*SDL_SetColorKey(plancheSprites, false, 0);
+	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);*/
 	SDL_Rect* ghost_choice = nullptr;
 	int index_choice = -1;
 	switch (ghost_name) {
