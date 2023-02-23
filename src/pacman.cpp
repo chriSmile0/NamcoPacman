@@ -335,53 +335,11 @@ void init(Board *b)
 	//Affichage des 4 fantomes aux centres et du pacman
 }
 
-void exit_ghost(Board *b,char ghost_name) { // r,p,c,o
-	/*SDL_SetColorKey(plancheSprites, false, 0);
-	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);*/
-	SDL_Rect* ghost_choice = nullptr;
-	int index_choice = -1;
-	switch (ghost_name) {
-		case 'r':
-			index_choice = 0;
-			ghost_choice = &(ghost_rr1);
-			/*SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart);
-			SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-			SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);*/
-			break;
-		case 'p':
-			index_choice = 1;
-			ghost_choice = &(ghost_pr1);
-			/*SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart); //normalement deja sortit
-			SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart);
-			SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);*/
-			break;
-		case 'c':
-			index_choice = 2;
-			ghost_choice = &(ghost_cr1);
-			/*SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart); //normalement deja sortit
-			SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart); //normalement deja sortit
-			SDL_BlitScaled(plancheSprites, &ghost_y, win_surf, &ghost_ystart);*/
-			break;
-		case 'y':
-			index_choice = 3;
-			ghost_choice = &(ghost_yr1);
-			/*SDL_BlitScaled(plancheSprites, &ghost_p, win_surf, &ghost_pstart); //normalement deja sortit
-			SDL_BlitScaled(plancheSprites, &ghost_c, win_surf, &ghost_cstart); // ""
-			SDL_BlitScaled(plancheSprites, &ghost_r, win_surf, &ghost_rstart); // ""*/
-			break;
-	}
-	b->change_pos(index_choice,ghost_free.x,ghost_free.y);
-	SDL_BlitScaled(plancheSprites, ghost_choice, win_surf, &ghost_free);
-	SDL_SetColorKey(plancheSprites, true, 0);
-}
 
 
 
 int main(int argc, char** argv)
 {
-
-
-
 	if (SDL_Init(SDL_INIT_VIDEO) != 0 )
 	{
 		std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError() << std::endl;
@@ -389,8 +347,6 @@ int main(int argc, char** argv)
 	}
 	
 	Board gmboard{3};
-
-
 	init(&gmboard);
 	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
 
@@ -398,23 +354,21 @@ int main(int argc, char** argv)
 	int out_ghosts = -1;
 
 	gmboard.sort_gums_by_xy();
-	//char true_sens = 'd';
 	char sens_r = 'd';
 	char sens_p = 'd';
 	char sens_c = 'd';
 	char sens_y = 'd';
-	char *sens_ghosts[4] = {&sens_r,&sens_p,&sens_c,&sens_y};//un peu overkill , on pourrais juste suppr les sens_ et mettre
+	char sens_pac = 'd';
+	char *sens_ghosts[5] = {&sens_r,&sens_p,&sens_c,&sens_y,&sens_pac};//un peu overkill , on pourrais juste suppr les sens_ et mettre
 	//direct des 'd'/'g' dans le tableau 
-	*sens_ghosts[0] = 'g';
-	cout << "sens g 0 : " << sens_ghosts[0] << endl;
-	cout << "sens_r : " << sens_r << endl;
-
-
 	// BOUCLE PRINCIPALE
 	bool quit = false;
 	int cou = 0;
 	while (!quit)
 	{
+		cou++;
+		g.drawGums();
+		g.drawGhostsAPac(*sens_ghosts);
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{
@@ -427,51 +381,48 @@ int main(int argc, char** argv)
 			}
 		}
 
-		if(out_ghosts != -1) { //fonctionne
-			cout << "out ghosts : " << out_ghosts << endl;
-			if(g.updateGhosts(g.get_board()->get_elem_with_index(4).get_x(),g.get_board()->get_elem_with_index(4).get_y(),*sens_ghosts,out_ghosts) == -1)
+		if(out_ghosts != -1)  //fonctionne
+			if(g.updateGhosts(g.get_board()->get_elem_with_index(4).get_x(),g.get_board()->get_elem_with_index(4).get_y(),*sens_ghosts,out_ghosts) == 1)
 				quit = true;
-		}
-		
 		// Gestion du clavier        
 		int nbk;
 		const Uint8* keys = SDL_GetKeyboardState(&nbk);
 		if (keys[SDL_SCANCODE_ESCAPE])
 			quit = true;
 		if (keys[SDL_SCANCODE_LEFT]) {
-			g.updatePacman(-6,0,'g');
-
+			g.updatePacman(-6,0,*sens_ghosts[4],'g');
 		}
 
 		if (keys[SDL_SCANCODE_RIGHT]) {
-			g.updatePacman(6,0,'d');
+			g.updatePacman(6,0,*sens_ghosts[4],'d');
 		}
 
 		if (keys[SDL_SCANCODE_DOWN]) {
-			g.updatePacman(0,6,'b');
+			g.updatePacman(0,6,*sens_ghosts[4],'b');
 		}
 
 		if (keys[SDL_SCANCODE_UP]) {
-			g.updatePacman(0,-6,'h');
+			g.updatePacman(0,-6,*sens_ghosts[4],'h');
 		}
 
-		if (keys[SDL_SCANCODE_0]) {
-			exit_ghost(&gmboard,'r');
+		//Sortie auto des fantomes 
+		if(cou == 50) {
+			g.exit_ghost('r');
 			out_ghosts++;
 			puts("Exit Rouge");
 		}
-		if (keys[SDL_SCANCODE_1]) {
-			exit_ghost(&gmboard,'p');
+		else if(cou == 130) {
+			g.exit_ghost('p');
 			out_ghosts++;
 			puts("Exit Rose");
 		}
-		if (keys[SDL_SCANCODE_2]) {
-			exit_ghost(&gmboard,'c');
+		else if(cou == 180) {
+			g.exit_ghost('c');
 			out_ghosts++;
 			puts("Exit Cyan");
 		}
-		if (keys[SDL_SCANCODE_3]) {
-			exit_ghost(&gmboard,'y');
+		else if(cou == 240) {
+			g.exit_ghost('y');
 			out_ghosts++;
 			puts("Exit Jaune");
 		}

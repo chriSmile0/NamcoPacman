@@ -36,20 +36,22 @@ class Game
         void set_name(string name) {player_name = name;}
         string get_name() {return player_name;}
 
-        void update_pos_of_elem(int idx_elem_to_update, int x, int y, int add);
-        void update_size_of_elem(int idx_elem_to_update, int w, int h, int add);
+		void drawGums();
+		void drawGhostsAPac(char sens[5]);
+
+		void exit_ghost(char ghost_name);
 
         int moveGhost(int x_pac, int y_pac, char &sens, int index);
         int updateRedGhost(int x_pac, int y_pac, char &sens);
         int updatePinkGhost(int x_pac, int y_pac, char &sens);
         int updateCyanGhost(int x_pac, int y_pac, char &sens);
         int updateYellowGhost(int x_pac, int y_pac, char &sens);
-        int updateGhosts(int x_pac, int y_pac, char sens[4], int out_ghost);
-        void updatePacman(int x_pac, int y_pac, char s);
+        int updateGhosts(int x_pac, int y_pac, char sens[5], int out_ghost);
+        void updatePacman(int x_pac, int y_pac, char &sens, char s);
 
         char sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_or_p);
 
-        int catchPacman();
+        int catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens);
 
 };
 
@@ -74,172 +76,42 @@ Game::Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* pl
 	sprites_planches = pl;
 }
 
-void Game::update_pos_of_elem(int idx_elem_to_update, int x, int y, int add) // 1 pour += , 0 pour = 
-{
-    //On peut ici checker le cas si c'est fantome ou pacman ou un autre élement
-    //Normalement seul les fantômes voit leur position changer 
-    //car les autres éléments apparaisse ou disparaisse donc position fixe ou nul sur 
-    //le terrain 
-    SDL_SetColorKey(sprites_planches, false, 0);//On efface tout 
-	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
-
-
-    for (int i = 0 ; i < 5; i++) {
-        SDL_Rect save_elem = boar->get_elem_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
-        SDL_Rect *skin_choice = boar->getSkin(i,'d');//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
-        SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
-    }
-
-    int nb_gums = boar->get_gums().size();
-    for(int i = 0 ; i < nb_gums ; i++) {
-        SDL_Rect gum = (boar->getGum_with_index(i));
-        if(gum.h > 0)
-            SDL_BlitScaled(sprites_planches, &(lgum), win_surface, &gum);
-    }
-
-    //Il faut aussi sauver l'emplacement des billes// 
-
-    /*for(int i = 0 ; i < 28;i++) {
-        SDL_Rect *wall = (boar->getMap().getMurs().at(i));
-        //gum étallé = mur //ils vont de toutes façon disparaitre, c'est juste pour le style pour le moment
-        SDL_BlitScaled(sprites_planches,&(lgum),win_surface, wall);
-    }*/
-
-	int new_x = x;
-	int new_y = y;
-    SDL_Rect add_rect = boar->get_elem_with_index(idx_elem_to_update).get_val_elem();
-	if(add) {
-		new_x += add_rect.x;
-		new_y += add_rect.y;
-	}
-
-    char result_hitwal = 'x';
-    if((result_hitwal = boar->getMap().hitWall(add_rect.x,add_rect.y,new_x,new_y,24)) != 'f') {//((new_x > 610) || (new_y > 800) || (new_y < 28) || (new_x < 28)) {//murs provisoires
-        if(add) {
-            new_x = add_rect.x;
-            new_y = add_rect.y;
-        }
-    }
-    else {
-        int gum_catch = 0;
-        if((gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y)) != -1)
-            cout << "catch gum number : " << gum_catch << endl;
-        boar->change_pos(idx_elem_to_update,new_x,new_y);
-        //Test du catch ball 
-    }
-    SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
-    boar->get_elem_with_index(idx_elem_to_update).set_rect(&elem_newpos);
-    SDL_Rect* ghost_choice = nullptr;
-    if(idx_elem_to_update < 5)
-        ghost_choice = boar->getGhost_with_index(idx_elem_to_update);
-    /*else 
-        ghost_choice = boar->getPacman();*/
-    SDL_BlitScaled(sprites_planches, ghost_choice, win_surface, &elem_newpos);
-    //SDL_SetColorKey(sprites_planches, true, 0);
-    cout << boar->get_elem_with_index(idx_elem_to_update).get_x() << endl;
-}
-
-
-//****Voir pour utiliser update en ajoutant un param avec add = 2 pour mettre voir x et y comme w et h !!!!!****
-void Game::update_size_of_elem(int idx_elem_to_update, int w, int h, int add) // 1 pour += , 0 pour = 
-{
-    //On peut ici checker le cas si c'est fantome ou pacman ou un autre élement
-    //Normalement seul les fantômes voit leur position changer 
-    //car les autres éléments apparaisse ou disparaisse donc position fixe ou nul sur 
-    //le terrain 
-    SDL_SetColorKey(sprites_planches, false, 0);
-	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
-	int new_w = w;
-	int new_h = h;
-	if(add) {
-		SDL_Rect add_rect = boar->get_elem_with_index(idx_elem_to_update).get_val_elem();
-		new_w += add_rect.w;
-		new_h += add_rect.h;
-	}
-	
-	//boar->change_pos(idx_elem_to_update,new_x,new_y);
-    boar->change_size(idx_elem_to_update,new_w,new_h);
-	SDL_Rect elem_newpos{boar->get_elem_with_index(idx_elem_to_update).get_x(),boar->get_elem_with_index(idx_elem_to_update).get_x(),new_w,new_h};//(g.get_board()->get_elem_with_index(2).get_val_elem());
-	boar->get_elem_with_index(idx_elem_to_update).set_rect(&elem_newpos);
-    SDL_Rect* ghost_choice = nullptr;
-    ghost_choice = &(lgum);
-    
-    SDL_BlitScaled(sprites_planches, ghost_choice, win_surface, &elem_newpos);
-    SDL_SetColorKey(sprites_planches, true, 0);
-    cout << boar->get_elem_with_index(idx_elem_to_update).get_h() << endl;
-
-}
-
-
 
 int Game::moveGhost(int x_pac, int y_pac, char &sens, int index)
 {
-    int red_x = boar->get_elem_with_index(index).get_x();
-    int red_y = boar->get_elem_with_index(index).get_y();
+    int g_x = boar->get_elem_with_index(index).get_x();
+    int g_y = boar->get_elem_with_index(index).get_y();
     int distance = 6;//distance de déplacement des fantomes
 
-    int new_x = red_x;//à changer en fonction de la position de pacman
-    int new_y = red_y;// "" "" 
-    int add_x = 0;
-    int add_y = 0;
-    char sens_potentiel_x = (x_pac < red_x) ? 'g' : 'd'; 
-    char sens_potentiel_y = (y_pac < red_y) ? 'h' : 'b';
-    char final_sens = 'x';
-
-    int delta_x = (x_pac - red_x)*(x_pac - red_x);
-    int delta_y = (y_pac - red_y)*(y_pac - red_y);
-    cout << "d_x : " << delta_x << " d_y : " << delta_y << endl; //on cherche à se rapprocher le plus possible donc le plus grand delta
-    /*char avancee = (delta_x < delta_y) ? sens_potentiel_y : sens_potentiel_x;
-    char option_xy = ((avancee == 'g') || (avancee == 'h')) ? '-' : '+';
-    new_x = (avancee == sens_potentiel_x) ? ((option_xy == '-') ? red_x-distance : red_x+distance) : red_x;
-    new_y = (avancee == sens_potentiel_y) ? ((option_xy == '-') ? red_y-distance : red_y+distance) : red_y;*/
+    int new_x = g_x;//à changer en fonction de la position de pacman
+    int new_y = g_y;// "" "" 
+    char sens_potentiel_x = (x_pac < g_x) ? 'g' : 'd'; 
+    char sens_potentiel_y = (y_pac < g_y) ? 'h' : 'b';
 
     char result_hitwal = 'f';
     int i = 0;
     int rtn = 0;
     if(sens == 'b') {
-        new_x = red_x;
-        new_y = red_y + distance;
+        new_x = g_x;
+        new_y = g_y + distance;
     }
     if(sens == 'd') {
-        new_x = red_x + distance;
-        new_y = red_y;
+        new_x = g_x + distance;
+        new_y = g_y;
     }
 
     if(sens == 'g') {
-        new_x = red_x - distance;
-        new_y = red_y;
+        new_x = g_x - distance;
+        new_y = g_y;
     }
     if(sens == 'h') {
-        new_x = red_x;
-        new_y = red_y - distance;
+        new_x = g_x;
+        new_y = g_y - distance;
     }
-    result_hitwal = boar->getMap().hitWall(red_x,red_y,new_x,new_y,24);
+    result_hitwal = boar->getMap().hitWall(g_x,g_y,new_x,new_y,24);
     
     if(result_hitwal == 'f') { //debut
-        switch(sens) {
-            case 'g': new_x = red_x - distance;
-                if((new_x == x_pac) && ((new_y >= y_pac-5)&&(new_y <= y_pac+5)))
-                    rtn = -1;
-                break;
-            case 'd': new_x = red_x + distance;
-                if((new_x == x_pac) && ((new_y >= y_pac-5)&&(new_y <= y_pac+5)))
-                    rtn = -1;
-                break;
-            case 'h': new_y = red_y - distance;
-                if((new_y == y_pac) && ((new_x >= x_pac-5)&&(new_x <= x_pac+5)))
-                    rtn = -1;
-                break;
-            case 'b': new_y = red_y + distance;
-                if(((new_y == y_pac)) && ((new_x >= x_pac-5)&&(new_x <= x_pac+5)))
-                    rtn = -1;
-                break;
-            default:
-                break;
-        }
-        final_sens = sens;
-        if(rtn != -1)
-            rtn =  0;
+		rtn = catchPacman(new_x,new_y,x_pac,y_pac,sens);
     }
     else {
         std::random_device rd;  // Will be used to obtain a seed for the random number engine
@@ -259,8 +131,8 @@ int Game::moveGhost(int x_pac, int y_pac, char &sens, int index)
             default : 
                 break;
         }
-        new_x = red_x;
-        new_y = red_y;
+        new_x = g_x;
+        new_y = g_y;
     
         if(sens == 'g') {
             if(new_sens == 'd')
@@ -284,8 +156,6 @@ int Game::moveGhost(int x_pac, int y_pac, char &sens, int index)
     boar->change_pos(index,new_x,new_y);
     SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
     boar->get_elem_with_index(index).set_rect(&elem_newpos);
-    char sens_walk = sens_of_walk(red_x,red_y,new_x,new_y,'g',0); 
-    SDL_BlitScaled(sprites_planches, boar->getSkin(index,sens), win_surface, &elem_newpos);
     return rtn;
 }
 // attaque directement Pac Man. Il suit Pac-Man comme son ombre.
@@ -330,25 +200,8 @@ int Game::updateYellowGhost(int x_pac, int y_pac, char &sens)
     return moveGhost(x_pac,y_pac,sens,3);
 }
 
-void Game::updatePacman(int x_pac, int y_pac, char s) 
+void Game::updatePacman(int x_pac, int y_pac, char& sens,char s) 
 {
-    SDL_SetColorKey(sprites_planches, false, 0);//On efface tout 
-	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
-
-    //updateRedGhost(boar->get_elem_with_index(4).get_val_elem().x,boar->get_elem_with_index(4).get_val_elem().y);
-    for (int i = 0 ; i < 4; i++) {
-        SDL_Rect save_elem = boar->get_elem_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
-        SDL_Rect *skin_choice = boar->getSkin(i,'d');//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
-        SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
-    }
-
-    int nb_gums = boar->get_gums().size();
-    for(int i = 0 ; i < nb_gums ; i++) {
-        SDL_Rect gum = (boar->getGum_with_index(i));
-        if(gum.h > 0)
-            SDL_BlitScaled(sprites_planches, &(lgum), win_surface, &gum);
-    }
-
     int new_x = x_pac;
 	int new_y = y_pac;
     SDL_Rect add_rect = boar->get_elem_with_index(4).get_val_elem();
@@ -361,44 +214,32 @@ void Game::updatePacman(int x_pac, int y_pac, char s)
         new_y = add_rect.y;
     }
     else {
-        int gum_catch = 0;
-        if((gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y)) != -1)
-            cout << "catch gum number : " << gum_catch << endl;
+        int gum_catch = gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y)
         boar->change_pos(4,new_x,new_y);
         //Test du catch ball 
     }
     SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
     boar->get_elem_with_index(4).set_rect(&elem_newpos);
-    SDL_Rect* ghost_choice = nullptr;
-    ghost_choice = boar->getSkin(4,sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1));
-    SDL_BlitScaled(sprites_planches, ghost_choice, win_surface, &elem_newpos);
-    //SDL_SetColorKey(sprites_planches, true, 0);
-    //cout << boar->get_elem_with_index(idx_elem_to_update).get_x() << endl;
+	sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
 }
 
 
 // fonction qui met à jour la surface de la fenetre "win_surf"
 int Game::updateGhosts(int x_pac, int y_pac, char sens[4], int out_ghost)
 {
-	/*SDL_SetColorKey(plancheSprites, false, 0);
-	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);*/
-
 	//Faire tourner les fantomes 
-    if(updateRedGhost(x_pac,y_pac, sens[0])==-1)
-        return -1;
+    if(updateRedGhost(x_pac,y_pac, sens[0])==1)
+        return 1;
     if(out_ghost > 0)
-        if(updatePinkGhost(x_pac,y_pac, sens[1])==-1)
-            return -1;
+        if(updatePinkGhost(x_pac,y_pac, sens[1])==1)
+            return 1;
     if(out_ghost > 1)
-        if(updateCyanGhost(x_pac,y_pac,sens[2])==-1)
-            return -1;
+        if(updateCyanGhost(x_pac,y_pac,sens[2])==1)
+            return 1;
     if(out_ghost > 2)
-        if(updateYellowGhost(x_pac,y_pac,sens[3])==-1)
-            return -1;
+        if(updateYellowGhost(x_pac,y_pac,sens[3])==1)
+            return 1;
     return 0;
-	//print the skins on the window
-	/*SDL_SetColorKey(plancheSprites, true, 0);
-	SDL_BlitScaled(plancheSprites, &ghost_in2, win_surface, &ghost);*/
 }
 
 
@@ -407,22 +248,79 @@ char Game::sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_
     int x_m_nx = x - x_old;
 	int y_m_ny = y - y_old;
 	char sens = ((x_m_nx != 0) ? ((x_m_nx < 0) ? 'g': 'd') : ((y_m_ny < 0) ? 'h': 'b'));
-    cout << "sens direct : " << sens << endl;
-
-
-
     if((x_m_nx == 0) && (y_m_ny == 0))
         sens = base_sens;//no sens
     return sens;
 }
 
-int Game::catchPacman() //Mis en pause car implemter dans updateGhost
+int Game::catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens) //Mis en pause car implemter dans updateGhost
 {//test après chaque update de ghost et pacman si il y'a contact entre un fantomes et pacman
-    int hit_box_xpacman = 0; 
-    int hit_box_ypacman = 0;
-    return 0;
+    int l_box = x_pac;
+    int u_box = y_pac;
+    int r_box = x_pac+24;//24 = dim_perso
+    int d_box = y_pac+24;// "" ""
+	switch(sens) {
+		case 'g': 
+			return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
+		case 'd':
+			return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
+		case 'h':
+			return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
+		case 'b':
+			return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
+		default:
+			return 0;
+	}
 }
 
+
+void Game::exit_ghost(char ghost_name) { // r,p,c,o
+	SDL_Rect* ghost_choice = nullptr;
+	int index_choice = -1;
+	switch (ghost_name) {
+		case 'r':
+			index_choice = 0;
+			ghost_choice = &(ghost_rr1);
+			break;
+		case 'p':
+			index_choice = 1;
+			ghost_choice = &(ghost_pr1);
+			break;
+		case 'c':
+			index_choice = 2;
+			ghost_choice = &(ghost_cr1);
+			break;
+		case 'y':
+			index_choice = 3;
+			ghost_choice = &(ghost_yr1);
+			break;
+	}
+	boar->change_pos(index_choice,ghost_free.x,ghost_free.y);
+}
+
+void Game::drawGums()
+{
+	SDL_SetColorKey(sprites_planches, false, 0);//On efface tout 
+	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
+
+    int nb_gums = boar->get_gums().size();
+    for(int i = 0 ; i < nb_gums ; i++) {
+        SDL_Rect gum = (boar->getGum_with_index(i));
+        if((gum.h > 0) && (gum.h < 7)) //lgum limite a 6 de taille
+            SDL_BlitScaled(sprites_planches, &(lgum), win_surface, &gum);
+		else if(gum.h > 6) //bgum de taille sup à 6 (> lgum)
+			SDL_BlitScaled(sprites_planches,&(bgum),win_surface, &gum); 
+    }
+}
+
+void Game::drawGhostsAPac(char sens[5])
+{
+	for (int i = 0 ; i < 5; i++) {
+        SDL_Rect save_elem = boar->get_elem_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
+        SDL_Rect *skin_choice = boar->getSkin(i,sens[i]);//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
+        SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
+    }
+}
 
 Game::~Game()
 {
