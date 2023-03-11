@@ -367,7 +367,7 @@ int main(int argc, char** argv)
 	while (!quit)
 	{
 		cou++;
-		g.drawGums();
+		//g.drawGums();
 		g.drawGhostsAPac(*sens_ghosts);
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
@@ -381,16 +381,16 @@ int main(int argc, char** argv)
 			}
 		}
 
-		if(out_ghosts != -1)  //fonctionne
+		/*if(out_ghosts != -1)  //fonctionne
 			if(g.updateGhosts(g.get_board()->get_elem_with_index(4).get_x(),g.get_board()->get_elem_with_index(4).get_y(),*sens_ghosts,out_ghosts) == 1)
-				quit = true;
+				quit = true;*/
 		// Gestion du clavier        
 		int nbk;
 		const Uint8* keys = SDL_GetKeyboardState(&nbk);
 		if (keys[SDL_SCANCODE_ESCAPE])
 			quit = true;
 		if (keys[SDL_SCANCODE_LEFT]) {
-			g.updatePacman(-6,0,*sens_ghosts[4],'g');
+			g.updatePacman(-1,0,*sens_ghosts[4],'g');
 		}
 
 		if (keys[SDL_SCANCODE_RIGHT]) {
@@ -402,11 +402,11 @@ int main(int argc, char** argv)
 		}
 
 		if (keys[SDL_SCANCODE_UP]) {
-			g.updatePacman(0,-6,*sens_ghosts[4],'h');
+			g.updatePacman(0,-1,*sens_ghosts[4],'h');
 		}
 
 		//Sortie auto des fantomes 
-		if(cou == 50) {
+		/*if(cou == 50) {
 			g.exit_ghost('r');
 			out_ghosts++;
 			puts("Exit Rouge");
@@ -425,7 +425,7 @@ int main(int argc, char** argv)
 			g.exit_ghost('y');
 			out_ghosts++;
 			puts("Exit Jaune");
-		}
+		}*/
 		SDL_SetColorKey(plancheSprites, true, 0);
 
 		// AFFICHAGE

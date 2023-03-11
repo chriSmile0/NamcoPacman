@@ -214,13 +214,21 @@ void Game::updatePacman(int x_pac, int y_pac, char& sens,char s)
         new_y = add_rect.y;
     }
     else {
-        int gum_catch = gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y)
-        boar->change_pos(4,new_x,new_y);
+		cout << "iciiii  , new_x , y : " << new_x << " , " << new_y << endl;
+        int gum_catch = gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y);
         //Test du catch ball 
+		
+		sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
+		if((new_x < 0) && (new_y < 420+20)&&(new_y > 420-20)) {
+			new_x = 700;
+			sens = 'g';
+		}
+		else if((new_x > 700) &&(new_y < 420+20)&&(new_y > 420-20)) {
+			new_x = 0;
+			sens = 'd';
+		}
+	 	boar->change_pos(4,new_x,new_y);
     }
-    SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
-    boar->get_elem_with_index(4).set_rect(&elem_newpos);
-	sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
 }
 
 
