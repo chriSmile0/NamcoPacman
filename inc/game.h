@@ -4,16 +4,24 @@
 #include "board.h"
 #include <random>
 
+SDL_Window* pWindow = nullptr;
+SDL_Surface* win_surf = nullptr;
+SDL_Surface* plancheSprites = nullptr;
+
 class Game 
 {
     private:
         int nb_pts;
         int level;
+		int pac_huntime = 0;
+		int pac_huntime_limit;//Pour le moment en tour de boucle 
         string player_name;
         Board *boar;
 		SDL_Window* win;
 		SDL_Surface* win_surface;
 		SDL_Surface* sprites_planches;
+		char *sens[5];
+		int *status[5];
 		
     public:
         Game();
@@ -24,9 +32,25 @@ class Game
 
         void set_pts(int nb_p) {nb_pts = nb_p;}
         void set_level(int l) {level = l;}
+		void set_tabsens(char *s[5]) {for(int i = 0 ; i < 5; i++) sens[i] = (s[i]);}
+		void set_sens(int i, char s) {*(sens[i]) = s;}
+		void set_tabstatus(int *st[5]) {for(int i = 0 ; i < 5; i++) status[i] = (st[i]);}
+		void set_status(int i, int st) {*(status[i]) = st;}
+		void set_PacHuntime(int htime) {pac_huntime = htime;}
+		void set_PacHuntimeLimit(int htimel) {pac_huntime_limit = htimel;}
+
         int get_pts() {return nb_pts;}
         int get_level() {return level;}
+		char* get_tabsens() {return *sens;}
+		char get_sens(int i) {return *(sens[i]);}
+		int* get_tabstatus() {return *status;}
+		int get_status(int i) {return *(status[i]);}
+		int get_PacHuntime() {return pac_huntime;}
+		int ge_tPacHuntimeLimit() {return pac_huntime_limit;}
 
+
+        void init_walls();
+        void init_seeds();
 
         Board* get_board() {return boar;}
         SDL_Surface* get_planche() {return sprites_planches;}
@@ -37,22 +61,21 @@ class Game
         string get_name() {return player_name;}
 
 		void drawGums();
-		void drawGhostsAPac(char sens[5]);
+		void drawGhostsAPac(char sens[5], int status[5]);
 
 		void exit_ghost(char ghost_name);
 
-        int moveGhost(int x_pac, int y_pac, char &sens, int index);
-        int updateRedGhost(int x_pac, int y_pac, char &sens);
-        int updatePinkGhost(int x_pac, int y_pac, char &sens);
-        int updateCyanGhost(int x_pac, int y_pac, char &sens);
-        int updateYellowGhost(int x_pac, int y_pac, char &sens);
-        int updateGhosts(int x_pac, int y_pac, char sens[5], int out_ghost);
+        int moveGhost(int x_pac, int y_pac, char &sens, int index, int statut);
+        int updateRedGhost(int x_pac, int y_pac, char &sens, int statut);
+        int updatePinkGhost(int x_pac, int y_pac, char &sens, int statut);
+        int updateCyanGhost(int x_pac, int y_pac, char &sens, int statut);
+        int updateYellowGhost(int x_pac, int y_pac, char &sens, int statut);
+        int updateGhosts(int x_pac, int y_pac, char sens[5], int out_ghost, int status[5]);
         void updatePacman(int x_pac, int y_pac, char &sens, char s);
 
         char sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_or_p);
 
         int catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens);
-
 };
 
 Game::Game()
@@ -74,10 +97,239 @@ Game::Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* pl
 	win = w;
 	win_surface = s;
 	sprites_planches = pl;
+    init_seeds();
+	pac_huntime_limit = 300;
+	//init_walls();
+    //b->sort_gums_by_xy();
+}
+
+void Game::init_walls()
+{
+	//Voir pour ensuite confondre la map dans le jeu en entier 
+	int nb_murs = boar->getMap().getMurs().size();
+	for(int i = 0 ; i < nb_murs; i++) {
+		SDL_Rect seed = (lgum);// pour simuler le mur 
+		SDL_Rect *mur = (boar->getMap().getMur_with_index(i));
+		SDL_BlitScaled(plancheSprites, &seed, win_surf, mur);
+	}
+}
+
+void Game::init_seeds()
+{	
+	//On évite le surplus et la superposition de graine 
+	//en signifiant que les graines sont toutes à la verticales
+	//Ce n'est donc que elles qui comptent 
+	//On saute donc sur x toutes celle qui pourrait faire office de croisement
+
+		
+	//On fait pour le moment une version simple sans classe 
+
+    /* il y'a 197 gums et il faut 4 grosses gums , on va en placer une toutes les 45 gums
+    */
+
+
+	int x = 46+(32); // reference pour les horizontales
+	int y = 46;		//+32 aussi pour les verticales
+	int w = 6; // *3
+	int h = 6; // *3
+    int i = 0;
+	// *********************************************Les horizontales *************************************************//
+	for(i = 0 ; i < 12 ; i++) {
+		if((i == 3) || (i == 9))
+			x += 32;
+		if(i == 6)
+			x += 96;
+		boar->add_gum({x,y,w,h});
+		x += 32;
+	}
+	//PLACEMENT DANS LE BOARD//
+	cout << boar->get_tab_elem().size() << endl;
+
+	//La seconde horizontale en partant d'en haut à gauche
+	y = 46+(32*4); 
+	x = 46+(32);
+	for(i = 0 ; i < 11 ; i++) {
+		if((i == 3) || (i == 4) || (i == 5) || (i == 6) || (i == 7) || (i == 8))
+			x += 32;
+		boar->add_gum({x,y,w,h});
+		x += 32;
+	}
+	//La troisième horizontale en partant d'en haut à gauche
+	y = 46+(32*7);
+	x = 46+(32);
+	for(i = 0 ; i < 8 ; i++) {
+		if((i == 3) || (i == 4) || (i == 5))
+			x += 96; //saut de 3 cases
+		boar->add_gum({x,y,w,h});
+		x += 32;
+	}
+	//La quatrieme horizontale 
+	y = 46+(32*17);
+	x = 46+(32);
+	for(i = 0 ; i < 8 ; i++) {
+		// a opti ici -> trop de comparaison à faire 
+		if((i == 1) || (i == 2) || (i == 3) || (i == 5) || (i == 6) || (i == 7))
+			x += 32; //saut de 1 case
+		if(i == 4)
+			x += 96;
+		boar->add_gum({x,y,w,h});
+		x += 32;
+	}
+	//La cinquieme horizontale 
+	y = 46+(32*19);
+	x = 46+(32);
+	for(i = 0 ; i < 7 ; i++) {
+		if((i == 2) || (i == 3) || (i == 4) || (i == 5))
+			x += 32; //saut de 1 case
+		if((i == 1) || (i == 6))
+			x += 96;
+		boar->add_gum({x,y,w,h});
+		x += 32;
+	}
+	//La sizieme horizontale en partant d'en haut à gauche
+	y = 46+(32*22);
+	x = 46+(32);
+	for(i = 0 ; i < 6 ; i++) {
+		if((i == 2) || (i == 3) || (i == 4))
+			x += 96;
+		if((i == 1) || (i == 5))
+			x += 32;
+		boar->add_gum({x,y,w,h});
+		x += 32;
+	}	
+	//La septieme 
+	y = 46+(32*24);
+	x = 46+(32);
+	for(i = 0 ; i < 9 ; i++) {
+		if((i == 1) || (i == 2) || (i == 3) || (i == 4) || (i == 5) || (i == 6)
+			|| (i == 7) || (i == 8))
+			x += 32;
+		boar->add_gum({x,y,w,h});
+		x += 32;
+	}
+
+	// ************************************Les verticales********************************************************************** //
+	//La verticale en haut à gauche
+	x = 46;
+	y = 46;
+	for(i = 0 ; i < 14 ; i++) {
+		if(i == 8)
+			y += 32*9;
+		if(i == 11)
+			y += 64;
+		 SDL_Rect emplacement{x,y,w,h};
+        if((i == 2) || (i == 8)) {
+            emplacement.w = 24;
+            emplacement.h = 24;
+            emplacement.x -= 10;
+            emplacement.y -= 10;
+        }
+		boar->add_gum(emplacement);;
+		y += 32;
+	}
+	//La seconde verticale en partant de la gauche 
+	x = 46+(32*4);
+	y = 46;
+	for(i = 0 ; i < 24 ; i++) {
+		if(i == 23)
+			y += 32;
+		boar->add_gum({x,y,w,h});
+		y += 32;
+	}
+	//La troisieme verticale en partant de la gauche 
+	x = 46+(32*6);
+	y = 46+(32*4);
+	for(i = 0 ; i < 10 ; i++) {
+		if(i == 4) 
+			y += 32*9;
+		if((i == 5) || (i == 9))
+			y += 32;
+        boar->add_gum({x,y,w,h});
+		y += 32;
+	}
+	//La quatrième verticale en partant de la gauche 
+	x = 46+(32*8);
+	y = 46;
+	for(i = 0 ; i < 12 ; i++) {
+		if((i == 5) || (i == 9))
+			y += 64;
+		if(i == 6)
+			y += 32*9;
+		boar->add_gum({x,y,w,h});
+		y += 32;
+	}
+	//La cinquième = quatrième verticale en partant de la gauche
+	x = 46+(32*10);
+	y = 46;
+	for(i = 0 ; i < 12 ; i++) {
+		if((i == 5) || (i == 9))
+			y += 64;
+		if(i == 6)
+			y += 32*9;
+		boar->add_gum({x,y,w,h});
+		y += 32;
+	}
+	//La sizieme = troisieme verticale en partant de la gauche 
+	x = 46+(32*12);
+	y = 46+(32*4);
+	for(i = 0 ; i < 10 ; i++) {
+		if(i == 4) 
+			y += 32*9;
+		if((i == 5) || (i == 9))
+			y += 32;
+		boar->add_gum({x,y,w,h});
+		y += 32;
+	}
+	//La septieme = deuxieme verticale en partant de la gauche
+	x = 46+(32*14);
+	y = 46;
+	for(i = 0 ; i < 24 ; i++) {
+		if(i == 23)
+			y += 32;
+		boar->add_gum({x,y,w,h});
+		y += 32;
+	}
+	//La verticale en haut à droite
+	x = 46+(32*18);
+	y = 46;
+	for(i = 0 ; i < 14 ; i++) {
+		if(i == 8)
+			y += 32*9;
+		if(i == 11)
+			y += 64;
+        SDL_Rect emplacement{x,y,w,h};
+        if((i == 2) || (i == 8)){
+            emplacement.w = 24;
+            emplacement.h = 24;
+            emplacement.x -= 10;
+            emplacement.y -= 7;
+        }
+		boar->add_gum(emplacement);
+		y += 32;
+	}
+	//Verticales du bas de la MAP
+	//La deuxieme en partant de la gauche
+	x = 46+(32*2);
+	y = 46+(32*17);
+	for(i = 0 ; i < 6 ; i++) {
+		if((i == 1) || (i == 5))
+			y += 32;
+		boar->add_gum({x,y,w,h});
+		y += 32;
+	}
+	//La deuxieme en partant de la droite -> similaire à celle de la gauche 
+	x = 46+(32*16);
+	y = 46+(32*17);
+	for(i = 0 ; i < 6 ; i++) {
+		if((i == 1) || (i == 5))
+			y += 32;
+		boar->add_gum({x,y,w,h});
+		y += 32;
+	}
 }
 
 
-int Game::moveGhost(int x_pac, int y_pac, char &sens, int index)
+int Game::moveGhost(int x_pac, int y_pac, char &sens, int index, int statut)
 {
     int g_x = boar->get_elem_with_index(index).get_x();
     int g_y = boar->get_elem_with_index(index).get_y();
@@ -93,25 +345,26 @@ int Game::moveGhost(int x_pac, int y_pac, char &sens, int index)
     int rtn = 0;
     if(sens == 'b') {
         new_x = g_x;
-        new_y = g_y + distance;
+        new_y = (statut >= 1) ? (g_y - distance/2) : (g_y + distance);
     }
     if(sens == 'd') {
-        new_x = g_x + distance;
+        new_x = (statut >= 1) ? (g_x - distance/2) : (g_x + distance);
         new_y = g_y;
     }
-
     if(sens == 'g') {
-        new_x = g_x - distance;
+        new_x = (statut >= 1) ? (g_x + distance/2) : (g_x - distance);
         new_y = g_y;
     }
     if(sens == 'h') {
         new_x = g_x;
-        new_y = g_y - distance;
+        new_y = (statut >= 1) ? (g_y + distance/2) : (g_y - distance);
     }
+
     result_hitwal = boar->getMap().hitWall(g_x,g_y,new_x,new_y,24);
     
     if(result_hitwal == 'f') { //debut
 		rtn = catchPacman(new_x,new_y,x_pac,y_pac,sens);
+		//cout << boar->getGum_with_x_y(new_x,new_y) << endl;
     }
     else {
         std::random_device rd;  // Will be used to obtain a seed for the random number engine
@@ -162,9 +415,9 @@ int Game::moveGhost(int x_pac, int y_pac, char &sens, int index)
 /*
 - 
 */
-int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
+int Game::updateRedGhost(int x_pac, int y_pac, char &sens, int statut)
 {
-    return moveGhost(x_pac,y_pac,sens,0);
+    return moveGhost(x_pac,y_pac,sens,0,statut);
     /*Fonctionne mais ne prend pas les intervalles, c'est à dire ne fonctionne que dans les coins
         pour le moment, il faut trouver un moyen de faire aller dans un sens encore plus aléatoire
         en fonction de certain espace
@@ -177,27 +430,27 @@ int Game::updateRedGhost(int x_pac, int y_pac, char &sens)
 /*
 -
 */
-int Game::updatePinkGhost(int x_pac, int y_pac,char &sens)
+int Game::updatePinkGhost(int x_pac, int y_pac,char &sens, int statut)
 {
-    return moveGhost(x_pac,y_pac,sens,1);
+    return moveGhost(x_pac,y_pac,sens,1,statut);
 }
 
 // De temps en temps, il part dans la direction opposée à Pac-Man.
 /*
 -
 */
-int Game::updateCyanGhost(int x_pac, int y_pac, char &sens)
+int Game::updateCyanGhost(int x_pac, int y_pac, char &sens, int statut)
 {
-    return moveGhost(x_pac,y_pac,sens,2);
+    return moveGhost(x_pac,y_pac,sens,2,statut);
 }
 
 //De temps en temps, il choisit une direction au hasard (qui peut être celle de Pac-Man).
 /*
 -
 */
-int Game::updateYellowGhost(int x_pac, int y_pac, char &sens)
+int Game::updateYellowGhost(int x_pac, int y_pac, char &sens, int statut)
 {
-    return moveGhost(x_pac,y_pac,sens,3);
+    return moveGhost(x_pac,y_pac,sens,3,statut);
 }
 
 void Game::updatePacman(int x_pac, int y_pac, char& sens,char s) 
@@ -210,43 +463,74 @@ void Game::updatePacman(int x_pac, int y_pac, char& sens,char s)
 	
     char result_hitwal = 'x';
     if((result_hitwal = boar->getMap().hitWall(add_rect.x,add_rect.y,new_x,new_y,24)) != 'f') {//((new_x > 610) || (new_y > 800) || (new_y < 28) || (new_x < 28)) {//murs provisoires
-        new_x = add_rect.x;
+        switch(result_hitwal) {//ajustement de la position de pacman lorsque l'on tape un mur (pour revenir dans droit chemin !!)
+			case 'h': add_rect.y += 6;
+					//boar->change_pos(4,new_x,new_y+6);
+				break;
+			case 'b': cout << "icicicici " << endl;
+					//add_rect.y -= 6;
+					//boar->change_pos(4,new_x,new_y-6);
+				cout << "add rect y : " << add_rect.y << endl;
+				break;
+			case 'g': add_rect.x += 6;
+				break;
+			case 'd': add_rect.x -= 6;
+				break;
+			default: 
+				break;
+		}
+		new_x = add_rect.x;
         new_y = add_rect.y;
     }
     else {
 		cout << "iciiii  , new_x , y : " << new_x << " , " << new_y << endl;
-        int gum_catch = gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y);
-        //Test du catch ball 
+        int gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y);
+        //Test du catch ball 	
+
+		//Update des ghosts en fonction du type de gum 
+		cout << "" << boar->getGum_with_index(gum_catch).w << endl;
+		if(boar->getGum_with_index(gum_catch).w == 24) {
+			cout << "iihhhhhhh" << endl;
+			//bgum
+			//Tout les ghosts (qui sont dehors ) en mode bleu/blanc
+			for(int i = 0 ; i < 5; i++)
+				set_status(i,1); //a continuer dans updateGhost aussi en fonction du statut
+			
+			pac_huntime = 1;
+		}
+		else {
+			//lgum -> rien à faire de spécial juste update le score
+		}
 		
 		sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
-		if((new_x < 0) && (new_y < 420+20)&&(new_y > 420-20)) {
+		if((new_x < 0) && (new_y < 420+20) && (new_y > 420-20)) {
 			new_x = 700;
 			sens = 'g';
 		}
-		else if((new_x > 700) &&(new_y < 420+20)&&(new_y > 420-20)) {
+		else if((new_x > 680) && (new_y < 420+20) && (new_y > 420-20)) {
 			new_x = 0;
 			sens = 'd';
 		}
-	 	boar->change_pos(4,new_x,new_y);
+		boar->change_pos(4,new_x,new_y);
     }
 }
 
 
 // fonction qui met à jour la surface de la fenetre "win_surf"
-int Game::updateGhosts(int x_pac, int y_pac, char sens[4], int out_ghost)
+int Game::updateGhosts(int x_pac, int y_pac, char sens[5], int out_ghost, int status[5])
 {
 	//Faire tourner les fantomes 
-    if(updateRedGhost(x_pac,y_pac, sens[0])==1)
+    if(updateRedGhost(x_pac,y_pac, sens[0],status[0])==1)
         return 1;
     if(out_ghost > 0)
-        if(updatePinkGhost(x_pac,y_pac, sens[1])==1)
-            return 1;
+        if(updatePinkGhost(x_pac,y_pac, sens[1],status[1])==1)
+            return 2;
     if(out_ghost > 1)
-        if(updateCyanGhost(x_pac,y_pac,sens[2])==1)
-            return 1;
+        if(updateCyanGhost(x_pac,y_pac,sens[2],status[2])==1)
+            return 3;
     if(out_ghost > 2)
-        if(updateYellowGhost(x_pac,y_pac,sens[3])==1)
-            return 1;
+        if(updateYellowGhost(x_pac,y_pac,sens[3],status[3])==1)
+            return 4;
     return 0;
 }
 
@@ -321,11 +605,20 @@ void Game::drawGums()
     }
 }
 
-void Game::drawGhostsAPac(char sens[5])
+void Game::drawGhostsAPac(char sens[5],int status[5])
 {
 	for (int i = 0 ; i < 5; i++) {
         SDL_Rect save_elem = boar->get_elem_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
-        SDL_Rect *skin_choice = boar->getSkin(i,sens[i]);//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
+		if((status[i] == 1) && (pac_huntime >= 0.75*pac_huntime_limit)) {
+			set_status(i,2);//ani
+		}
+		else if((status[i] == 2) && (pac_huntime >= pac_huntime_limit)) {
+			set_status(i,0);
+			if(i == 4) //on attend la fin de la boucle pour stopper la chasse
+				pac_huntime = 0;
+		}
+		cout << save_elem.x << endl;
+        SDL_Rect *skin_choice = boar->getSkin(i,sens[i],status[i]);//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
         SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
     }
 }
