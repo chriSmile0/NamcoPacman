@@ -37,6 +37,8 @@ class Board
 		void set_Pacman(SDL_Rect pac) {pacman = &(pac);}
 		void del_elem(int index);
 
+		void set_startGhost(int i);
+
 		vector<Utile_elem> get_tab_elem() {return elems;}
 		Utile_elem get_elem_with_index(int index) {return elems[index];}
 		Map getMap() {return map;}
@@ -50,7 +52,7 @@ class Board
 		SDL_Rect getGum_with_index(int i) {return (gums[i]);}
 		int getGum_with_x_y(int x, int y);
 		SDL_Rect* getPacman() {return pacman;}
-		SDL_Rect* getSkin(int idx, char sens);//dans l'ordre r/p/c/y/pacman
+		SDL_Rect* getSkin(int idx, char sens, int statut);//dans l'ordre r/p/c/y/pacman
 
 		int catch_gum(int old_y, int old_x , int new_x, int new_y);
 
@@ -139,8 +141,34 @@ void Board::add_elem(Utile_elem elem)
 	elems.push_back(elem);
 }
 
-SDL_Rect* Board::getSkin(int idx, char sens)//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
+void Board::set_startGhost(int i)
 {
+	int x,y;
+	switch(i) {
+		case 0: x = ghost_rstart.x;
+				y = ghost_rstart.y;
+			break;
+		case 1: x = ghost_pstart.x;
+				y = ghost_pstart.y;
+			break;
+		case 2: x = ghost_cstart.x;
+				y = ghost_cstart.y;
+			break;
+		case 3:	x = ghost_ystart.x;
+				y = ghost_ystart.y;
+			break;
+		default:
+			break;
+	}
+	change_pos(i,x,y);
+}
+
+SDL_Rect* Board::getSkin(int idx, char sens, int statut)//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
+{
+	if((statut == 1) && (idx != 4))
+		return &(ghost_b1);
+	if((statut == 2) && (idx != 4))
+		return &(ghost_w1);
 	switch(idx) {
 		case 0: 
 			switch(sens) {
@@ -232,20 +260,20 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 		int largeur_gum = gum.w;
 		if(hauteur_gum > 0) {
 			switch(sens) { // La pour le moment sa le fera dès le premier mur 
-				case 'h': //y -= dim_perso; 
-						if((((old_y > gum.y) && (new_y <= (gum.y)))) && ((new_x > (gum.x-(largeur_gum*3))) && (new_x < (gum.x + (largeur_gum*2)))))
+				case 'h': 
+						if((((old_y > gum.y) && (new_y <= (gum.y)))) && ((new_x > (gum.x-(largeur_gum*4))) && (new_x < (gum.x + (largeur_gum)))))
 							goon = 0;
 						break;
-				case 'b': //gum.y -= dim_perso;
-						if((((old_y < gum.y) && (new_y >= (gum.y)))) && (((new_x > (gum.x-(largeur_gum*3)) && (new_x < (gum.x + (largeur_gum)))))))
+				case 'b': gum.y -= dim_perso;
+						if((((old_y < gum.y) && (new_y >= (gum.y)))) && ((new_x > (gum.x-(largeur_gum*4))) && (new_x < (gum.x + (largeur_gum)))))
 							goon = 0;
 						break;
-				case 'g': //x += dim_perso; 
-						if(((old_x > gum.x) && (new_x <= (gum.x))) && (((new_y > (gum.y-(hauteur_gum*3))) && (new_y < (gum.y + (hauteur_gum*2)))))) 
+				case 'g':  
+						if((((old_x > gum.x) && (new_x <= (gum.x)))) && ((new_y > (gum.y-(hauteur_gum*4))) && (new_y < (gum.y + (hauteur_gum))))) 
 							goon = 0;
 						break;
-				case 'd': //gum.x -= dim_perso; 
-						if(((old_x < gum.x) && (new_x >= (gum.x))) && (((new_y > (gum.y-(hauteur_gum*3))) && (new_y < (gum.y + (hauteur_gum*2)))))) 
+				case 'd': gum.x -= dim_perso; 
+						if((((old_x < gum.x) && (new_x >= (gum.x)))) && ((new_y > (gum.y-(hauteur_gum*4))) && (new_y < (gum.y + (hauteur_gum))))) 
 							goon = 0;
 						break;
 				default:
