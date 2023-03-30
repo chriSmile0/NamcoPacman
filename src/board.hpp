@@ -1,6 +1,7 @@
 #include "../inc/symboles.h"
 #include "../inc/board.h"
 
+
 Board::Board()
 {
 	type_board = 1;
@@ -67,9 +68,40 @@ void Board::get_sizeofgameboard()
 	cout << " w:" << ue.get_w() << " h:" << ue.get_h() << endl;
 }
 
-
-SDL_Rect* Board::getSkin(int idx, char sens)//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
+void Board::add_elem(Utile_elem elem)
 {
+	cout << "pos elem : " << elem.get_x() << endl;
+	elems.push_back(elem);
+}
+
+void Board::set_startGhost(int i)
+{
+	int x,y;
+	switch(i) {
+		case 0: x = ghost_rstart.x;
+				y = ghost_rstart.y;
+			break;
+		case 1: x = ghost_pstart.x;
+				y = ghost_pstart.y;
+			break;
+		case 2: x = ghost_cstart.x;
+				y = ghost_cstart.y;
+			break;
+		case 3:	x = ghost_ystart.x;
+				y = ghost_ystart.y;
+			break;
+		default:
+			break;
+	}
+	change_pos(i,x,y);
+}
+
+SDL_Rect* Board::getSkin(int idx, char sens, int statut)//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
+{
+	if((statut == 1) && (idx != 4))
+		return &(ghost_b1);
+	if((statut == 2) && (idx != 4))
+		return &(ghost_w1);
 	switch(idx) {
 		case 0: 
 			switch(sens) {
@@ -163,20 +195,20 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 		int w_gum = gum.get_w();
 		if(h_gum > 0) {
 			switch(sens) { // La pour le moment sa le fera dès le premier mur 
-				case 'h': //y -= dim_perso; 
-						if((((old_y > y_gum) && (new_y <= (y_gum)))) && ((new_x > (x_gum-(w_gum*3))) && (new_x < (x_gum + (w_gum*2)))))
+				case 'h': 
+						if((((old_y > y_gum) && (new_y <= (y_gum)))) && ((new_x > (x_gum-(w_gum*4))) && (new_x < (x_gum + (w_gum)))))
 							goon = 0;
 						break;
-				case 'b': //gum.y -= dim_perso;
-						if((((old_y < y_gum) && (new_y >= (y_gum)))) && (((new_x > (x_gum-(w_gum*3)) && (new_x < (x_gum + (w_gum)))))))
+				case 'b': y_gum -= dim_perso;
+						if((((old_y < y_gum) && (new_y >= (y_gum)))) && ((new_x > (x_gum-(w_gum*4))) && (new_x < (x_gum + (w_gum)))))
 							goon = 0;
 						break;
-				case 'g': //x += dim_perso; 
-						if(((old_x > x_gum) && (new_x <= (x_gum))) && (((new_y > (y_gum-(h_gum*3))) && (new_y < (y_gum + (h_gum*2)))))) 
+				case 'g':  
+						if((((old_x > x_gum) && (new_x <= (x_gum)))) && ((new_y > (y_gum-(h_gum*4))) && (new_y < (y_gum + (h_gum))))) 
 							goon = 0;
 						break;
-				case 'd': //gum.x -= dim_perso; 
-						if(((old_x < x_gum) && (new_x >= (x_gum))) && (((new_y > (y_gum-(h_gum*3))) && (new_y < (y_gum + (h_gum*2)))))) 
+				case 'd': x_gum -= dim_perso; 
+						if((((old_x < x_gum) && (new_x >= (x_gum)))) && ((new_y > (y_gum-(h_gum*4))) && (new_y < (y_gum + (h_gum))))) 
 							goon = 0;
 						break;
 				default:
@@ -199,10 +231,10 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 }
 
 
-void Board::change_pos(int index, int new_x, int new_y)
+void Board::change_pos(int index_elem, int new_x, int new_y)
 {
-	Utile_elem recup_elem = elems.at(index);
-	elems[index] = {new_x,new_y,recup_elem.get_w(),recup_elem.get_h()};
+	Utile_elem recup_elem = elems.at(index_elem);
+	elems[index_elem] = {new_x,new_y,recup_elem.get_w(),recup_elem.get_h()};
 }
 
 void Board::change_size(int index_elem, int new_w , int new_h)

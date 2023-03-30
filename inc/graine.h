@@ -14,6 +14,7 @@ class Graine: public Utile_elem
     public:
         Graine();
         Graine(SDL_Rect rect) : Utile_elem(rect) {}
+        Graine(int x,int y,int w,int h, int type) : Utile_elem(x,y,w,h) {nb_pts = (type == 0) ? 10 : 40;}
         Graine(SDL_Rect rect, int type) : Utile_elem(rect) {nb_pts = (type == 0) ? 10 : 40;}
         ~Graine();
 

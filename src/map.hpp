@@ -16,19 +16,19 @@ Map::Map()
 	Murs.push_back(&m10);
 	Murs.push_back(&m11);
 	Murs.push_back(&m12);
-	Murs.push_back(&m13);
+	//Murs.push_back(&m13);
 	Murs.push_back(&m14);
-	Murs.push_back(&m15);
+	//Murs.push_back(&m15);
 	Murs.push_back(&m16);
-	Murs.push_back(&m17);
+	//Murs.push_back(&m17);
 	Murs.push_back(&m18);
 	Murs.push_back(&m19);
 	Murs.push_back(&m20);
-	Murs.push_back(&m21);
+	//Murs.push_back(&m21);
 	Murs.push_back(&m22);
-	Murs.push_back(&m23);
+	//Murs.push_back(&m23);
 	Murs.push_back(&m24);
-	Murs.push_back(&m25);
+	//Murs.push_back(&m25);
 	Murs.push_back(&m26);
 	Murs.push_back(&m27);
 	Murs.push_back(&m28);
@@ -67,6 +67,8 @@ Map::Map()
 	Murs.push_back(&b30);
 	Murs.push_back(&b31);
 	Murs.push_back(&b32);
+	Murs.push_back(&b33);
+	Murs.push_back(&b34);
 }
 
 //A AMELIORER Car soucis !!!!! avec les coins et le vers la gauche et le haut pas correct dans certains cas 
@@ -130,7 +132,7 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 							goon = 0;
 						break;
 				case 'g':
-
+						
 						if(((x > wall.x) && (new_x <= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
 							goon = 0;
 						break;
