@@ -27,7 +27,6 @@ class Map {
 		std::vector<SDL_Rect*> Murs;
 };
 
-<<<<<<< HEAD
 
 Map::Map()
 {
@@ -183,8 +182,5 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 Map::~Map()
 {
 }
-=======
-#include "../src/map.hpp"
->>>>>>> base cpp
 
 #endif // MAP_H //
