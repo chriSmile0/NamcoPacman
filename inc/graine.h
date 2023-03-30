@@ -13,43 +13,15 @@ class Graine: public Utile_elem
 
     public:
         Graine();
-        Graine(int nb_points);
-        Graine(Graine const& copy);
-        Graine(SDL_Rect rect);
+        Graine(SDL_Rect rect) : Utile_elem(rect) {}
+        Graine(SDL_Rect rect, int type) : Utile_elem(rect) {nb_pts = (type == 0) ? 10 : 40;}
         ~Graine();
 
-		void hideSeed();
+		void hideSeed() {this->set_h(0);}
+        int get_val() {return nb_pts;}
+        void set_val(int n_val) {nb_pts = n_val;}
 };
 
-Graine::Graine(): Utile_elem()
-{
-
-}
-
-Graine::Graine(int nb_points): Utile_elem()
-{
-	nb_pts = nb_points;
-}
-
-Graine::Graine(Graine const& copy): Utile_elem()
-{
-	nb_pts = copy.nb_pts;
-}
-
-Graine::Graine(SDL_Rect rect): Utile_elem(rect)
-{
-
-}
-
-void Graine::hideSeed()
-{
-    this->set_h(0);
-    this->set_w(0);
-}
-
-Graine::~Graine()
-{
-}
-
+#include "../src/graine.hpp"
 
 #endif // GRAINE_H //

@@ -1,33 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
-
-#include <vector>
-
-//Il s'agit ici de crées les passages par lesquels les 
-//objets peuvent se déplacer //Pacman + les fantomes
-//Il faudra aussi implémenté les tunnels qui permettent d'aller de x = 700 à x = 0
-
-//Soit sous forme d'objet ou de SDL_Rect à l'infini
-
-//2 solutions -> On suit les verticales / horizontales en créant un cirtcuit 
-//            -> On crée des MUR qui sont donc des parties grises que les
-//                  les fantomes et que pacman ne peut traverser
-//
-
-class Map {
-    public:
-        Map();
-        ~Map();
-		std::vector<SDL_Rect*> getMurs() {return Murs;}
-		SDL_Rect* getMur_with_index(int index) {return Murs[index];}
-
-		char hitWall(int x, int y , int new_x, int new_y, int dim_perso);//char pour savoir de quel côté on est bloqué
-
-	private:
-		std::vector<SDL_Rect*> Murs;
-};
-
-<<<<<<< HEAD
+#include "../inc/murs.h"
+#include "../inc/map.h"
 
 Map::Map()
 {
@@ -44,19 +16,19 @@ Map::Map()
 	Murs.push_back(&m10);
 	Murs.push_back(&m11);
 	Murs.push_back(&m12);
-	//Murs.push_back(&m13);
+	Murs.push_back(&m13);
 	Murs.push_back(&m14);
-	//Murs.push_back(&m15);
+	Murs.push_back(&m15);
 	Murs.push_back(&m16);
-	//Murs.push_back(&m17);
+	Murs.push_back(&m17);
 	Murs.push_back(&m18);
 	Murs.push_back(&m19);
 	Murs.push_back(&m20);
-	//Murs.push_back(&m21);
+	Murs.push_back(&m21);
 	Murs.push_back(&m22);
-	//Murs.push_back(&m23);
+	Murs.push_back(&m23);
 	Murs.push_back(&m24);
-	//Murs.push_back(&m25);
+	Murs.push_back(&m25);
 	Murs.push_back(&m26);
 	Murs.push_back(&m27);
 	Murs.push_back(&m28);
@@ -95,8 +67,6 @@ Map::Map()
 	Murs.push_back(&b30);
 	Murs.push_back(&b31);
 	Murs.push_back(&b32);
-	Murs.push_back(&b33);
-	Murs.push_back(&b34);
 }
 
 //A AMELIORER Car soucis !!!!! avec les coins et le vers la gauche et le haut pas correct dans certains cas 
@@ -160,7 +130,7 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 							goon = 0;
 						break;
 				case 'g':
-						
+
 						if(((x > wall.x) && (new_x <= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
 							goon = 0;
 						break;
@@ -183,8 +153,3 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 Map::~Map()
 {
 }
-=======
-#include "../src/map.hpp"
->>>>>>> base cpp
-
-#endif // MAP_H //

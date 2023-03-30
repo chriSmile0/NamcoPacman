@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "board.h"
+#include "../inc/board.h"
 #include <random>
 
 SDL_Window* pWindow = nullptr;
@@ -78,6 +78,7 @@ class Game
         int catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens);
 };
 
+<<<<<<< HEAD
 Game::Game()
 {
     player_name = "no_name";
@@ -627,5 +628,8 @@ Game::~Game()
 {
 
 }
+=======
+#include "../src/game.hpp"
+>>>>>>> base cpp
 
 #endif // GAME_H //
