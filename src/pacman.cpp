@@ -24,47 +24,35 @@ void init_board(Board *b)
 	SDL_BlitScaled(plancheSprites, &ghost_cr1, win_surf, &ghost_cstart);
 	SDL_BlitScaled(plancheSprites, &ghost_yr1, win_surf, &ghost_ystart);
 	SDL_BlitScaled(plancheSprites, &lpacman_c, win_surf, &pacman_start);
-	b->add_ghost(ghost_r);
-	b->add_ghost(ghost_p);
-	b->add_ghost(ghost_c);
-	b->add_ghost(ghost_y);
-	b->add_ghost(pacman_p);
 
 	
-	Utile_elem g_r{&ghost_r}; //Utile_elem par Ghost
-	cout << "g_r x :: " << g_r.get_x() << endl;
-	cout << "ghost r x :: " << ghost_r.x << endl;
-	g_r.set_x(ghost_rstart.x);
-	cout << "g_r x :: " << g_r.get_x() << endl;
-	cout << "ghost r x :: " << ghost_r.x << endl;
-	g_r.set_y(ghost_rstart.y);
-	g_r.set_w(32);// x2 scale
-	g_r.set_h(32);// x2 scale
-	Utile_elem g_p{&ghost_p};
-	g_p.set_x(ghost_pstart.x);
-	g_p.set_y(ghost_pstart.y);
-	g_p.set_w(32);// x2 scale
-	g_p.set_h(32);// x2 scale
-	Utile_elem g_c{&ghost_c};
-	g_c.set_x(ghost_cstart.x);
-	g_c.set_y(ghost_cstart.y);
-	g_c.set_w(32);// x2 scale
-	g_c.set_h(32);// x2 scale
-	Utile_elem g_y{&ghost_y};
-	g_y.set_x(ghost_ystart.x);
-	g_y.set_y(ghost_ystart.y);
-	g_y.set_w(32);// x2 scale
-	g_y.set_h(32);// x2 scale
-	Utile_elem p{&pacman_p}; //Utile_elem par Pacman
-	p.set_x(pacman_start.x);
-	p.set_y(pacman_start.y);
-	p.set_w(32);
-	p.set_h(32);
-	b->add_elem(g_r);
+	Personnage g_r{&ghost_r,0,'r'}; //Utile_elem par Ghost
+	g_r.set_start();
+	Personnage g_p{&ghost_p,1,'p'};
+	g_p.set_start();
+	Personnage g_c{&ghost_c,2,'c'};
+	g_c.set_start();
+	Personnage g_y{&ghost_y,3,'y'};
+	g_y.set_start();
+	Personnage p{&pacman_p,4,'a'}; //Utile_elem par Pacman
+	p.set_start();
+	/*b->add_elem(g_r);
 	b->add_elem(g_p);
 	b->add_elem(g_c);
 	b->add_elem(g_y);
 	b->add_elem(p);
+
+	cout << b->get_elem_with_index(0).get_val_elem().x << endl;*/
+
+	b->add_perso(g_r);
+	b->add_perso(g_p);
+	b->add_perso(g_c);
+	b->add_perso(g_y);
+	b->add_perso(p);
+
+	cout << b->get_perso_with_index(0).get_val_elem().x << endl;
+	g_r.change_pos(15,16);
+	cout << b->get_perso_with_index(0).get_val_elem().x << endl;
 	//init_walls(b);
 	SDL_SetColorKey(plancheSprites, true, 0);
 	//Affichage des 4 fantomes aux centres et du pacman
@@ -94,13 +82,7 @@ int main(int argc, char** argv)
 	char sens_pac = 'd';
 	char *sens_ghosts[5] = {&sens_r,&sens_p,&sens_c,&sens_y,&sens_pac};//un peu overkill , on pourrais juste suppr les sens_ et mettre
 	g.set_tabsens(sens_ghosts);
-	cout << g.get_tabsens()[0] << endl;
-	sens_r = 'g';
-	cout << g.get_tabsens()[0] << endl;
-	g.set_sens(0,'h');
-	cout << g.get_sens(0) << endl;
-	cout << *(sens_ghosts[0]) << endl;
-	cout << sens_r << endl;
+
 
 
 	int status_r = -1;
@@ -111,8 +93,12 @@ int main(int argc, char** argv)
 	int *status_ghosts[5] = {&status_r,&status_p,&status_c,&status_y,&status_pac};
 	g.set_tabstatus(status_ghosts);
 
-	/*status_r = 3;
+	status_r = 3;
 	cout << g.get_status(0) << endl;//fonctionne*/
+
+	cout << g.get_board()->get_perso_with_index(0).get_val_elem().x << endl;
+	g.get_board()->get_perso_with_index(0).change_pos(155,40);
+	cout << g.get_board()->get_perso_with_index(0).get_val_elem().x << endl;
 
 	//direct des 'd'/'g' dans le tableau 
 	// BOUCLE PRINCIPALE
@@ -145,7 +131,7 @@ int main(int argc, char** argv)
 			g.set_PacHuntime(++pac_hunt);
 
 		if(ghosts_out != -1)  //fonctionne
-			if((capture_pac = g.updateGhosts(g.get_board()->get_elem_with_index(4).get_x(),g.get_board()->get_elem_with_index(4).get_y(),*sens_ghosts,ghosts_out,*status_ghosts)) >= 1) {
+			if((capture_pac = g.updateGhosts(g.get_board()->get_perso_with_index(4).get_x(),g.get_board()->get_perso_with_index(4).get_y(),*sens_ghosts,ghosts_out,*status_ghosts)) >= 1) {
 				cout << "pachunttime :: <<" << g.get_PacHuntime() << endl;
 				if(g.get_PacHuntime() == 0)
 					quit = true;
@@ -185,25 +171,28 @@ int main(int argc, char** argv)
 
 		//Sortie auto des fantomes 
 		if((cou == 50) || (cou_g[0] == 50)) {
-			g.exit_ghost('r');
+			cout << "gg" << g.get_board()->get_perso_with_index(0).get_val_elem().y << endl;
+			//g.exit_ghost(0);
+			g.get_board()->get_perso_with_index(0).change_pos(150,150);
+			cout << "bfg" << g.get_board()->get_perso_with_index(0).get_val_elem().y << endl;
 			out_ghosts[0]++;
 			ghosts_out++;
 			puts("Exit Rouge");
 		}
 		else if((cou == 130) || (cou_g[1] == 130)) {
-			g.exit_ghost('p');
+			g.exit_ghost(1);
 			out_ghosts[1]++;
 			ghosts_out++;
 			puts("Exit Rose");
 		}
 		else if((cou == 180) || (cou_g[2] == 180)) {
-			g.exit_ghost('c');
+			g.exit_ghost(2);
 			out_ghosts[2]++;
 			ghosts_out++;
 			puts("Exit Cyan");
 		}
 		else if((cou == 240)  || (cou_g[3] == 240)){
-			g.exit_ghost('y');
+			g.exit_ghost(3);
 			out_ghosts[3]++;
 			ghosts_out++;
 			puts("Exit Jaune");
@@ -211,7 +200,7 @@ int main(int argc, char** argv)
 		SDL_SetColorKey(plancheSprites, true, 0);
 
 		// AFFICHAGE
-		//draw();*/
+		//draw();
 		SDL_UpdateWindowSurface(pWindow); 
 		// LIMITE A 60 FPS
 		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions

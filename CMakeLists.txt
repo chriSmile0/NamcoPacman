@@ -13,6 +13,8 @@ add_executable(pacman src/pacman.cpp)
 target_sources(pacman PRIVATE src/pacman.cpp
 				inc/utile_elem.h
 				src/utile_elem.hpp
+				inc/personnage.h
+				src/personnage.hpp
 				inc/map.h
 				src/map.hpp	
 			

@@ -68,11 +68,6 @@ void Board::get_sizeofgameboard()
 	cout << " w:" << ue.get_w() << " h:" << ue.get_h() << endl;
 }
 
-void Board::add_elem(Utile_elem elem)
-{
-	cout << "pos elem : " << elem.get_x() << endl;
-	elems.push_back(elem);
-}
 
 void Board::set_startGhost(int i)
 {
@@ -235,6 +230,13 @@ void Board::change_pos(int index_elem, int new_x, int new_y)
 {
 	Utile_elem recup_elem = elems.at(index_elem);
 	elems[index_elem] = {new_x,new_y,recup_elem.get_w(),recup_elem.get_h()};
+}
+
+void Board::change_pos_perso(int index_elem, int new_x, int new_y)
+{
+	Personnage recup_elem = perso.at(index_elem);
+	perso[index_elem].set_x(new_x);
+	perso[index_elem].set_y(new_y);
 }
 
 void Board::change_size(int index_elem, int new_w , int new_h)

@@ -252,8 +252,10 @@ void Game::init_seeds()
 
 int Game::moveGhost(int x_pac, int y_pac, char &sens, int index, int statut)
 {
-    int g_x = boar->get_elem_with_index(index).get_x();
-    int g_y = boar->get_elem_with_index(index).get_y();
+    int g_x = boar->get_perso_with_index(index).get_x();
+    cout << "g_x " << g_x << endl;
+    int g_y = boar->get_perso_with_index(index).get_y();
+    cout << "g_y " << g_y << endl;
     int distance = 6;//distance de déplacement des fantomes
 
     int new_x = g_x;//à changer en fonction de la position de pacman
@@ -326,9 +328,10 @@ int Game::moveGhost(int x_pac, int y_pac, char &sens, int index, int statut)
         sens = new_sens;
     }
 
-    boar->change_pos(index,new_x,new_y);
+    boar->change_pos_perso(index,new_x,new_y);
+    cout << "new y " << new_y << endl;
     SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
-    boar->get_elem_with_index(index).set_rect(&elem_newpos);
+    boar->get_perso_with_index(index).set_rect(&elem_newpos);
     return rtn;
 }
 // attaque directement Pac Man. Il suit Pac-Man comme son ombre.
@@ -479,28 +482,12 @@ int Game::catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens
 }
 
 
-void Game::exit_ghost(char ghost_name) { // r,p,c,o
-	SDL_Rect* ghost_choice = nullptr;
-	int index_choice = -1;
-	switch (ghost_name) {
-		case 'r':
-			index_choice = 0;
-			ghost_choice = &(ghost_rr1);
-			break;
-		case 'p':
-			index_choice = 1;
-			ghost_choice = &(ghost_pr1);
-			break;
-		case 'c':
-			index_choice = 2;
-			ghost_choice = &(ghost_cr1);
-			break;
-		case 'y':
-			index_choice = 3;
-			ghost_choice = &(ghost_yr1);
-			break;
-	}
-	boar->change_pos(index_choice,ghost_free.x,ghost_free.y);
+void Game::exit_ghost(int idx) { // r,p,c,o
+	boar->get_perso_with_index(idx).exit_ghost(idx);
+	//boar->change_pos(index_choice,ghost_free.x,ghost_free.y);
+    //boar->change_pos_perso(index_choice,ghost_free.x,ghost_free.y);
+    //boar->get_elem_with_index(idx).set_x(ghost_free.x);
+    //boar->get_elem_with_index(idx).set_y(ghost_free.y);
 }
 
 void Game::drawGums()
@@ -521,7 +508,7 @@ void Game::drawGums()
 void Game::drawGhostsAPac(char sens[5],int status[5])
 {
 	for (int i = 0 ; i < 5; i++) {
-        SDL_Rect save_elem = boar->get_elem_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
+        SDL_Rect save_elem = boar->get_perso_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
 		if((status[i] == 1) && (pac_huntime >= 0.75*pac_huntime_limit)) {
 			set_status(i,2);//ani
 		}

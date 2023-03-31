@@ -15,7 +15,7 @@ class Pacman: public Personnage
     private:
 };
 
-Pacman::Pacman(): Personnage("PacMan")
+Pacman::Pacman(): Personnage()
 {
 }
 

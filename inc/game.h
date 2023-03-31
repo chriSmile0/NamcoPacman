@@ -63,7 +63,7 @@ class Game
 		void drawGums();
 		void drawGhostsAPac(char sens[5], int status[5]);
 
-		void exit_ghost(char ghost_name);
+		void exit_ghost(int id);
 
         int moveGhost(int x_pac, int y_pac, char &sens, int index, int statut);
         int updateRedGhost(int x_pac, int y_pac, char &sens, int statut);
