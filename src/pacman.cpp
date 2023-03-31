@@ -33,7 +33,6 @@ void init_board(Board *b)
 	b->add_perso(g_c);
 	b->add_perso(g_y);
 	b->add_perso(p);
-
 	SDL_SetColorKey(plancheSprites, true, 0);
 }
 
@@ -47,7 +46,7 @@ int main(int argc, char** argv)
 	
 	Board gmboard{3};
 	init_board(&gmboard);
-	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
+	Game g{"jojo",&gmboard,pWindow,win_surf,plancheSprites};
 	// BOUCLE PRINCIPALE
 	bool quit = false;
 	int cou = 0;

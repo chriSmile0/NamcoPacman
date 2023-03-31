@@ -11,6 +11,8 @@ Personnage::Personnage(SDL_Rect* rect, int idx, char name): Utile_elem(rect)
 	statut = -1;
 }
 
+
+
 SDL_Rect* Personnage::get_Skin() 
 {//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
 	if((statut == 1) && (id != 4))

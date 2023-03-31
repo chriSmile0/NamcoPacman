@@ -141,7 +141,7 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 	int goon = 1;
 	int i = 0;
 	while((goon) && (i < nb_gums)) {
-		Graine gum = gums.at(i);
+		Graine gum{gums.at(i)};
 		int h_gum = gum.get_h();
 		int x_gum = gum.get_x();
 		int y_gum = gum.get_y();

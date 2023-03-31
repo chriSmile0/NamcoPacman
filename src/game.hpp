@@ -29,7 +29,7 @@ void Game::init_walls()
 	//Voir pour ensuite confondre la map dans le jeu en entier 
 	int nb_murs = boar->getMap().getMurs().size();
 	for(int i = 0 ; i < nb_murs; i++) {
-		SDL_Rect seed = (lgum);// pour simuler le mur 
+		SDL_Rect seed{lgum};// pour simuler le mur 
 		SDL_Rect *mur = (boar->getMap().getMur_with_index(i));
 		SDL_BlitScaled(plancheSprites, &seed, win_surf, mur);
 	}
@@ -284,7 +284,7 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
     
     if(result_hitwal == 'f'){ //debut
 		rtn = catchPacman(new_x,new_y,x_pac,y_pac,sens);
-		if((statut == 1) && (rtn)){
+		if((statut >= 1) && (rtn)){
 			cout << "maison fantme" << endl;
 			rtn = 2;
 		}
@@ -390,7 +390,7 @@ void Game::updatePacman(int x_pac, int y_pac,char s)
     int new_x = x_pac;
 	int new_y = y_pac;
 	char sens = boar->get_perso_with_index(4).get_sens();
-    SDL_Rect add_rect = boar->get_perso_with_index(4).get_val_elem();
+    SDL_Rect add_rect{boar->get_perso_with_index(4).get_val_elem()};
 	new_x += add_rect.x;
 	new_y += add_rect.y;
 	
@@ -507,7 +507,7 @@ void Game::drawGhostsAPac()
 {
 	for (int i = 0 ; i < 5; i++) {
 		Personnage select_p = boar->get_perso_with_index(i);
-        SDL_Rect save_elem = boar->get_perso_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
+        SDL_Rect save_elem{boar->get_perso_with_index(i).get_val_elem()};//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
 		if((select_p.get_statut() == 1) && (pac_huntime >= 0.75*pac_huntime_limit)) {
 			boar->set_perso_with_statut_idx(i,2);
 		}
