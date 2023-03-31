@@ -16,6 +16,14 @@ bool compareGums(Graine sr1, Graine sr2)
 
 class Board 
 {
+	private:
+		int type_board;
+		SDL_Rect* gameboard;
+		Map map;
+		vector<Personnage> perso; //PAcman + les fantomes
+		vector<Graine> gums;//a changer car il y a 2 types de gums et donc il faut crée un objet(graine)
+		vector<SDL_Rect*> awards;//a changer car il y a plusieurs types de awards et donc il faut crée un objet(recompense) 
+		
 	public:
 		//Constructors
 		Board();
@@ -30,6 +38,9 @@ class Board
 		inline void set_perso_with_sens_idx(int idx,int sens) {perso[idx].set_sens(sens);}
 		inline void set_perso_with_timehouse_idx(int idx,int time_h) {perso[idx].set_time_house(time_h);}
 		inline void set_pos_perso(int index, int new_x, int new_y) {perso.at(index).change_pos(new_x,new_y);}
+		inline void add_perso(Personnage pers) {perso.push_back(pers);}
+		inline void add_gum(Graine gum) {gums.push_back(gum);}
+		
 		//Setters
 		void set_type_in_rectboard(int type_b);
 		void set_perso_with_index(int idx,char carac, int n_c);
@@ -38,8 +49,6 @@ class Board
 		//Inline getters
 		inline int get_typeboard() const {return type_board;}
 		inline SDL_Rect* get_gameboard() const {return gameboard;}
-		inline void add_perso(Personnage pers) const {perso.push_back(pers);}
-		inline void add_gum(Graine gum) const {gums.push_back(gum);}
 		inline vector<Personnage> get_tab_perso() const {return perso;}
 		inline Personnage get_perso_with_index(int index) const {return perso[index];}
 		inline Map getMap() const {return map;}
@@ -55,14 +64,6 @@ class Board
 		//Others
 		void sort_gums_by_xy() {std::sort(gums.begin(),gums.end(),compareGums);}
 		int catch_gum(int old_y, int old_x , int new_x, int new_y);
-		
-	private:
-		int type_board;
-		SDL_Rect* gameboard;
-		Map map;
-		vector<Personnage> perso; //PAcman + les fantomes
-		vector<Graine> gums;//a changer car il y a 2 types de gums et donc il faut crée un objet(graine)
-		vector<SDL_Rect*> awards;//a changer car il y a plusieurs types de awards et donc il faut crée un objet(recompense) 
 };
 
 #include "../src/board.hpp"

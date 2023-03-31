@@ -19,11 +19,13 @@ class Map {
 		std::vector<SDL_Rect*> Murs;
 
 	public:
+		//Constructors
 		Map();
 		~Map();
 		std::vector<SDL_Rect*> getMurs() {return Murs;}
 		SDL_Rect* getMur_with_index(int index) {return Murs[index];}
 
+		//Hit-Wall
 		char hitWall(int x, int y , int new_x, int new_y, int dim_perso);//char pour savoir de quel côté on est bloqué
 };
 

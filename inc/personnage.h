@@ -16,32 +16,39 @@ class Personnage: public Utile_elem {
 		SDL_Rect* Skin;
 		
 	public:
+		//Constructors
 		Personnage();
 		Personnage(SDL_Rect* rect, int idx, char name);
 		Personnage(int x,int y, int w, int h) : Utile_elem(x,y,w,h) {}
 		~Personnage();
 
-		void set_nom(char name) {nom_perso = name;}
-		void set_id(int idx) {id = idx;}
-		void set_statut(int new_stat) {statut = new_stat;}
-		void set_sens(char n_sens) {sens = n_sens;}
-		void set_out(int o) {out = o;}
-		void set_time_house(int time) {time_house = time;}
+		//Inline setters
+		inline void set_nom(char name) {nom_perso = name;}
+		inline void set_id(int idx) {id = idx;}
+		inline void set_statut(int new_stat) {statut = new_stat;}
+		inline void set_sens(char n_sens) {sens = n_sens;}
+		inline void set_out(int o) {out = o;}
+		inline void set_time_house(int time) {time_house = time;}
 
-		char get_nom() {return nom_perso;}
-		int get_id() {return id;}
-		int get_statut() {return statut;}
-		char get_sens() {return sens;}
-		int get_out() {return out;}
-		SDL_Rect* get_Skin();
-		int get_time_house() {return time_house;}
-
+		//Setters
 		void set_start();
 		void change_pos(int x, int y);
 		void change_size(int w,int h);
 
+		//Inline getters
+		inline char get_nom() const {return nom_perso;}
+		inline int get_id() const {return id;}
+		inline int get_statut() const {return statut;}
+		inline char get_sens() const {return sens;}
+		inline int get_out() const {return out;}
+		inline int get_time_house() const {return time_house;}
+
+		//Get Skin
+		SDL_Rect* get_Skin();
+
+		//Ghost 
 		void exit_ghost(int idx);
-		void home_ghost(int idx) {set_start();}
+		inline void home_ghost(int idx) {set_start();}
 };
 
 

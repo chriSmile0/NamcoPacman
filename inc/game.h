@@ -23,40 +23,45 @@ class Game
 		int ghosts_out = -1;
 		
 	public:
+		//Constructors
 		Game();
 		Game(string name, Board* b);
 		Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* pl);
 		~Game();
 
-		void set_pts(int nb_p) {nb_pts = nb_p;}
-		void set_level(int l) {level = l;}
-		void set_PacHuntime(int htime) {pac_huntime = htime;}
-		void set_PacHuntimeLimit(int htimel) {pac_huntime_limit = htimel;}
-		void set_ghosts_out(int g_out) {ghosts_out = g_out;}
+		//Inline setters
+		inline void set_pts(int nb_p) {nb_pts = nb_p;}
+		inline void set_level(int l) {level = l;}
+		inline void set_PacHuntime(int htime) {pac_huntime = htime;}
+		inline void set_PacHuntimeLimit(int htimel) {pac_huntime_limit = htimel;}
+		inline void set_ghosts_out(int g_out) {ghosts_out = g_out;}
+		inline void set_name(string name) {player_name = name;}
 
-		int get_pts() {return nb_pts;}
-		int get_level() {return level;}
-		int get_PacHuntime() {return pac_huntime;}
-		int get_PacHuntimeLimit() {return pac_huntime_limit;}
-		int get_ghosts_out() {return ghosts_out;}
+		//Inline getters
+		inline int get_pts() const {return nb_pts;}
+		inline int get_level() const {return level;}
+		inline int get_PacHuntime() const {return pac_huntime;}
+		inline int get_PacHuntimeLimit() const {return pac_huntime_limit;}
+		inline int get_ghosts_out() const {return ghosts_out;}
+		inline Board* get_board() const {return boar;}
+		inline SDL_Surface* get_planche() const {return sprites_planches;}
+		inline SDL_Surface* get_win_surf() const {return win_surface;}
+		inline SDL_Window* get_window() const {return win;}
+		inline string get_name() const {return player_name;}
 
-		void init_walls();
-		void init_seeds();
-
-		Board* get_board() {return boar;}
-		SDL_Surface* get_planche() {return sprites_planches;}
-		SDL_Surface* get_win_surf() {return win_surface;}
-		SDL_Window* get_window() {return win;}
-
-		void set_name(string name) {player_name = name;}
-		string get_name() {return player_name;}
-
+		//Draws
 		void drawGums();
 		void drawGhostsAPac();
 
+		//Init
+		void init_walls();
+		void init_seeds();
+		
+		//Ghosts
 		void exit_ghost(int id);
 		void go_home_ghost(int id);
 
+		//Update Personnage
 		int moveGhost(int x_pac, int y_pac, char sens, int index, int statut);
 		int updateRedGhost(int x_pac, int y_pac);
 		int updatePinkGhost(int x_pac, int y_pac);
@@ -65,8 +70,8 @@ class Game
 		int updateGhosts(int x_pac, int y_pac,int ghosts_out);
 		void updatePacman(int x_pac, int y_pac, char s);
 
+		//Others
 		char sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_or_p);
-
 		int catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char sens);
 };
 

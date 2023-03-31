@@ -7,16 +7,16 @@
 using namespace std;
 
 class Ghost: public Personnage {
-    public:
-        Ghost();
-        Ghost(Ghost const& perso);
-        Ghost(SDL_Rect* rect, int id, char nom);
-        Ghost(Personnage per);
-        Ghost(char nom);
-        ~Ghost();
-
-    private:
-        int out;
+	private:
+		int out;
+		
+	public:
+		Ghost();
+		Ghost(Ghost const& perso);
+		Ghost(SDL_Rect* rect, int id, char nom);
+		Ghost(Personnage per);
+		Ghost(char nom);
+		~Ghost();
 };
 
 Ghost::Ghost(): Personnage()

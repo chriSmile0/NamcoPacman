@@ -12,15 +12,19 @@ class Graine: public Utile_elem
 					//petite = 10 pts, grande(spéciale) = 50 pts
 
 	public:
+		//Constructors
 		Graine();
 		Graine(SDL_Rect rect) : Utile_elem(rect) {}
 		Graine(int x,int y,int w,int h, int type) : Utile_elem(x,y,w,h) {nb_pts = (type == 0) ? 10 : 40;}
 		Graine(SDL_Rect rect, int type) : Utile_elem(rect) {nb_pts = (type == 0) ? 10 : 40;}
 		~Graine();
 
-		void hideSeed() {this->set_h(0);}
-		int get_val() {return nb_pts;}
-		void set_val(int n_val) {nb_pts = n_val;}
+		//Hide 
+		inline void hideSeed() {this->set_h(0);}
+		//Getter
+		inline int get_val() const {return nb_pts;}
+		//Setter
+		inline void set_val(int n_val) {nb_pts = n_val;}
 };
 
 #include "../src/graine.hpp"
