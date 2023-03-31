@@ -331,7 +331,7 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
     }
 
 	boar->set_perso_with_sens_idx(index,sens);
-    boar->change_pos_perso(index,new_x,new_y);
+    boar->set_pos_perso(index,new_x,new_y);
 	if(rtn == 2) boar->home_ghosts(index);
     return rtn;
 }
@@ -428,7 +428,7 @@ void Game::updatePacman(int x_pac, int y_pac,char s)
 			sens = 'd';
 		}
 		boar->set_perso_with_sens_idx(4,sens);
-		boar->change_pos_perso(4,new_x,new_y);
+		boar->set_pos_perso(4,new_x,new_y);
     }
 }
 

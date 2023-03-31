@@ -5,19 +5,19 @@
 Board::Board()
 {
 	type_board = 1;
-	change_type_in_rectboard(type_board);
+	set_type_in_rectboard(type_board);
 }
 
 Board::Board(int t_board) 
 {
 	type_board = t_board;
-	change_type_in_rectboard(type_board);
+	set_type_in_rectboard(type_board);
 }
 
 Board::Board(Board const& copy)
 {
 	type_board = copy.type_board;
-	change_type_in_rectboard(type_board);
+	set_type_in_rectboard(type_board);
 }
 
 Board::~Board() 
@@ -25,27 +25,8 @@ Board::~Board()
 
 }
 
-int Board::get_typeboard() 
-{
-	return type_board;
-}
 
-void Board::set_typeboard(int t_board)
-{
-	type_board = t_board;
-}
-
-SDL_Rect* Board::get_gameboard() 
-{
-	return gameboard;
-}
-
-void Board::set_gameboard(SDL_Rect gameb)
-{
-	gameboard = &gameb;
-}
-
-void Board::change_type_in_rectboard(int type_b) 
+void Board::set_type_in_rectboard(int type_b) 
 {
 	switch(type_b) {
 		case 2 : 
@@ -58,14 +39,6 @@ void Board::change_type_in_rectboard(int type_b)
 			gameboard = &src_b1;
 			break;
 	}
-}
-
-void Board::get_sizeofgameboard() 
-{
-	Utile_elem ue(*gameboard);
-	cout << "Board dimension :";
-	cout << " x:" << ue.get_x() << " y:" << ue.get_y();
-	cout << " w:" << ue.get_w() << " h:" << ue.get_h() << endl;
 }
 
 
@@ -88,7 +61,7 @@ void Board::set_startGhost(int i)
 		default:
 			break;
 	}
-	change_pos_perso(i,x,y);
+	set_pos_perso(i,x,y);
 }
 
 SDL_Rect* Board::getSkin(int idx, char sens, int statut)//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
@@ -136,23 +109,8 @@ SDL_Rect* Board::getSkin(int idx, char sens, int statut)//0 = bas , 1 = haut, 2 
 	}
 }
 
-void Board::sort_gums_by_xy()
-{
-	cout << "x : " << gums.at(0).get_x() << " y : " << gums.at(0).get_y() << endl;
-	cout << "x : " << gums.at(192).get_x() << " y : " << gums.at(192).get_y() << endl;
-	std::sort(gums.begin(),gums.end(),compareGums);
-	cout << "x : " << gums.at(0).get_x() << " y : " << gums.at(0).get_y() << endl;
-	cout << "x : " << gums.at(192).get_x() << " y : " << gums.at(192).get_y() << endl;
-	gums[0].set_h(0);
-	gums[192].set_h(0);
-}
 
-void Board::del_elem(int index)
-{
-	elems.erase(elems.begin() + index);
-}
-
-int Board::getGum_with_x_y(int x, int y)
+int Board::getGum_with_x_y(int x, int y) const
 {
 	int nb_gums = gums.size();
 	int goon = 1;
@@ -222,34 +180,6 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 	}
 	else {
 		return -1;
-	}
-}
-
-
-void Board::change_pos(int index_elem, int new_x, int new_y)
-{
-	Utile_elem recup_elem = elems.at(index_elem);
-	elems[index_elem] = {new_x,new_y,recup_elem.get_w(),recup_elem.get_h()};
-}
-
-void Board::change_pos_perso(int index_elem, int new_x, int new_y)
-{
-	perso.at(index_elem).change_pos(new_x,new_y);//set_x(new_x);
-}
-
-void Board::change_size(int index_elem, int new_w , int new_h)
-{
-	Utile_elem recup_elem = elems.at(index_elem);
-	elems[index_elem] = {recup_elem.get_x(),recup_elem.get_y(),new_w,new_h};
-}
-
-void Board::set_elem_with_index(int idx,char carac, int n_c)
-{
-	switch(carac) {
-		case 'x' : elems[idx].set_x(n_c);
-		case 'y' : elems[idx].set_y(n_c);
-		case 'w' : elems[idx].set_w(n_c);
-		case 'h' : elems[idx].set_h(n_c);
 	}
 }
 
