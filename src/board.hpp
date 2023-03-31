@@ -88,7 +88,7 @@ void Board::set_startGhost(int i)
 		default:
 			break;
 	}
-	change_pos(i,x,y);
+	change_pos_perso(i,x,y);
 }
 
 SDL_Rect* Board::getSkin(int idx, char sens, int statut)//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
@@ -234,13 +234,31 @@ void Board::change_pos(int index_elem, int new_x, int new_y)
 
 void Board::change_pos_perso(int index_elem, int new_x, int new_y)
 {
-	Personnage recup_elem = perso.at(index_elem);
-	perso[index_elem].set_x(new_x);
-	perso[index_elem].set_y(new_y);
+	perso.at(index_elem).change_pos(new_x,new_y);//set_x(new_x);
 }
 
 void Board::change_size(int index_elem, int new_w , int new_h)
 {
 	Utile_elem recup_elem = elems.at(index_elem);
 	elems[index_elem] = {recup_elem.get_x(),recup_elem.get_y(),new_w,new_h};
+}
+
+void Board::set_elem_with_index(int idx,char carac, int n_c)
+{
+	switch(carac) {
+		case 'x' : elems[idx].set_x(n_c);
+		case 'y' : elems[idx].set_y(n_c);
+		case 'w' : elems[idx].set_w(n_c);
+		case 'h' : elems[idx].set_h(n_c);
+	}
+}
+
+void Board::set_perso_with_index(int idx,char carac, int n_c)
+{
+	switch(carac) {
+		case 'x' : perso[idx].set_x(n_c);
+		case 'y' : perso[idx].set_y(n_c);
+		case 'w' : perso[idx].set_w(n_c);
+		case 'h' : perso[idx].set_h(n_c);
+	}
 }

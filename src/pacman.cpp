@@ -25,7 +25,6 @@ void init_board(Board *b)
 	SDL_BlitScaled(plancheSprites, &ghost_yr1, win_surf, &ghost_ystart);
 	SDL_BlitScaled(plancheSprites, &lpacman_c, win_surf, &pacman_start);
 
-	
 	Personnage g_r{&ghost_r,0,'r'}; //Utile_elem par Ghost
 	g_r.set_start();
 	Personnage g_p{&ghost_p,1,'p'};
@@ -36,23 +35,16 @@ void init_board(Board *b)
 	g_y.set_start();
 	Personnage p{&pacman_p,4,'a'}; //Utile_elem par Pacman
 	p.set_start();
-	/*b->add_elem(g_r);
-	b->add_elem(g_p);
-	b->add_elem(g_c);
-	b->add_elem(g_y);
-	b->add_elem(p);
-
-	cout << b->get_elem_with_index(0).get_val_elem().x << endl;*/
-
+	
 	b->add_perso(g_r);
 	b->add_perso(g_p);
 	b->add_perso(g_c);
 	b->add_perso(g_y);
 	b->add_perso(p);
 
-	cout << b->get_perso_with_index(0).get_val_elem().x << endl;
-	g_r.change_pos(15,16);
-	cout << b->get_perso_with_index(0).get_val_elem().x << endl;
+	/*for(Personnage p : b->get_tab_perso())
+		p.set_start();*/ // Fait des persos trop petit 
+	
 	//init_walls(b);
 	SDL_SetColorKey(plancheSprites, true, 0);
 	//Affichage des 4 fantomes aux centres et du pacman
@@ -65,42 +57,40 @@ int main(int argc, char** argv)
 		std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError() << std::endl;
 		return 1;
 	}
+
+	/*int a = 2;
+	vector<int> vec;
+	vec.push_back(a);
+	a = 3;
+	cout << "a :" << a << endl;
+	cout << "vec a : " << vec.at(0) << endl;
+
+	int aa = 2;
+	vector<int*> vec_a;
+	vec_a.push_back(&aa);
+	aa = 3;
+	cout << "aa :" << aa << endl;
+	cout << "vec a : " << *(vec_a.at(0)) << endl;
+
+	Utile_elem ue;
+	cout << ue.get_x() << endl;
+	ue.set_x(70);
+	cout << ue.get_x() << endl;
+
+	Board b{3};
+	b.add_elem(ue);
+	cout << b.get_elem_with_index(0).get_x() << endl;
+	ue.set_x(120);
+	cout << b.get_elem_with_index(0).get_x() << endl;
+	b.set_elem_with_index(0,'x',50);
+	cout << b.get_elem_with_index(0).get_x() << endl;*/
+
 	
 	Board gmboard{3};
 	init_board(&gmboard);
 	Game g("jojo",&gmboard,pWindow,win_surf,plancheSprites);
-	
-
-	int out_ghosts[4] = {-1};
-	int ghosts_out = -1;
 
 	gmboard.sort_gums_by_xy();
-	char sens_r = 'd';
-	char sens_p = 'd';
-	char sens_c = 'd';
-	char sens_y = 'd';
-	char sens_pac = 'd';
-	char *sens_ghosts[5] = {&sens_r,&sens_p,&sens_c,&sens_y,&sens_pac};//un peu overkill , on pourrais juste suppr les sens_ et mettre
-	g.set_tabsens(sens_ghosts);
-
-
-
-	int status_r = -1;
-	int status_p = -1;
-	int status_c = -1;
-	int status_y = -1;
-	int status_pac = -1;
-	int *status_ghosts[5] = {&status_r,&status_p,&status_c,&status_y,&status_pac};
-	g.set_tabstatus(status_ghosts);
-
-	status_r = 3;
-	cout << g.get_status(0) << endl;//fonctionne*/
-
-	cout << g.get_board()->get_perso_with_index(0).get_val_elem().x << endl;
-	g.get_board()->get_perso_with_index(0).change_pos(155,40);
-	cout << g.get_board()->get_perso_with_index(0).get_val_elem().x << endl;
-
-	//direct des 'd'/'g' dans le tableau 
 	// BOUCLE PRINCIPALE
 	bool quit = false;
 	int cou = 0;
@@ -113,7 +103,7 @@ int main(int argc, char** argv)
 		cou_g[2]++;
 		cou_g[3]++;
 		g.drawGums();
-		g.drawGhostsAPac(*sens_ghosts,*status_ghosts);
+		g.drawGhostsAPac();
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{
@@ -127,74 +117,54 @@ int main(int argc, char** argv)
 		}
 		int pac_hunt = 0;
 		int capture_pac = 0;
+		int ghosts_out = -1;
 		if((pac_hunt = g.get_PacHuntime()) > 0)
 			g.set_PacHuntime(++pac_hunt);
-
-		if(ghosts_out != -1)  //fonctionne
-			if((capture_pac = g.updateGhosts(g.get_board()->get_perso_with_index(4).get_x(),g.get_board()->get_perso_with_index(4).get_y(),*sens_ghosts,ghosts_out,*status_ghosts)) >= 1) {
-				cout << "pachunttime :: <<" << g.get_PacHuntime() << endl;
-				if(g.get_PacHuntime() == 0)
+		
+		if((ghosts_out = g.get_ghosts_out()) != -1)  //fonctionne
+			if(capture_pac = (g.updateGhosts(g.get_board()->get_perso_with_index(4).get_x(),g.get_board()->get_perso_with_index(4).get_y(),ghosts_out))>=1) {
+				if(capture_pac == 1)
 					quit = true;
-				else {
-					g.get_board()->set_startGhost(capture_pac-1);
-					g.set_status(capture_pac-1,0);
-					cou_g[capture_pac-1] = 0;
-					out_ghosts[capture_pac-1] = -1;
-					cout << "capture d'un fantome " << endl;
-					//Ok mais il faut remettre le compteur de sortie pour chaque fantome
-					//afin qu'il ne ressorte pas de suite , mais sinon cela fonctionne
-				}
-
+				else 
+					cout << "pacman a capturer un fantome" << endl;	
 			}
-				//else
-					//capture ghost 
 		// Gestion du clavier        
 		int nbk;
 		const Uint8* keys = SDL_GetKeyboardState(&nbk);
 		if (keys[SDL_SCANCODE_ESCAPE])
 			quit = true;
 		if (keys[SDL_SCANCODE_LEFT]) {
-			g.updatePacman(-6,0,*sens_ghosts[4],'g');
+			g.updatePacman(-6,0,'g');
 		}
 
 		if (keys[SDL_SCANCODE_RIGHT]) {
-			g.updatePacman(6,0,*sens_ghosts[4],'d');
+			g.updatePacman(6,0,'d');
 		}
 
 		if (keys[SDL_SCANCODE_DOWN]) {
-			g.updatePacman(0,6,*sens_ghosts[4],'b');
+			g.updatePacman(0,6,'b');
 		}
 
 		if (keys[SDL_SCANCODE_UP]) {
-			g.updatePacman(0,-6,*sens_ghosts[4],'h');
+			g.updatePacman(0,-6,'h');
 		}
 
 		//Sortie auto des fantomes 
 		if((cou == 50) || (cou_g[0] == 50)) {
-			cout << "gg" << g.get_board()->get_perso_with_index(0).get_val_elem().y << endl;
-			//g.exit_ghost(0);
-			g.get_board()->get_perso_with_index(0).change_pos(150,150);
-			cout << "bfg" << g.get_board()->get_perso_with_index(0).get_val_elem().y << endl;
-			out_ghosts[0]++;
-			ghosts_out++;
+			g.exit_ghost(0);
+			//g.get_board()->change_pos_perso(0,20,100); -> fonctionne aussi 
 			puts("Exit Rouge");
 		}
 		else if((cou == 130) || (cou_g[1] == 130)) {
 			g.exit_ghost(1);
-			out_ghosts[1]++;
-			ghosts_out++;
 			puts("Exit Rose");
 		}
 		else if((cou == 180) || (cou_g[2] == 180)) {
 			g.exit_ghost(2);
-			out_ghosts[2]++;
-			ghosts_out++;
 			puts("Exit Cyan");
 		}
 		else if((cou == 240)  || (cou_g[3] == 240)){
 			g.exit_ghost(3);
-			out_ghosts[3]++;
-			ghosts_out++;
 			puts("Exit Jaune");
 		}
 		SDL_SetColorKey(plancheSprites, true, 0);

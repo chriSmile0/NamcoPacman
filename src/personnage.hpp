@@ -14,6 +14,7 @@ Personnage::Personnage(SDL_Rect* rect, int idx, char name): Utile_elem(rect)
 {
     id = idx;
     nom_perso = name;
+	statut = -1;
 }
 
 /*Personnage::Personnage(Personnage const& perso): Utile_elem()
@@ -75,6 +76,8 @@ SDL_Rect* Personnage::get_Skin()
 void Personnage::set_start()
 {
 	int x,y;
+	out = -1;
+	statut = -1;
 	switch(id) {
 		case 0: x = ghost_rstart.x;
 				y = ghost_rstart.y;
@@ -93,27 +96,21 @@ void Personnage::set_start()
                 y = pacman_start.y;
 			break;
 	}
-    cout << "bef Position x : " << this->get_x() << " , bef Position y " << this->get_y() << endl;
-    //this->set_x(x);
-    //this->set_y(y);
+	cout << "retour au départ" << endl;
     change_pos(x,y);
     change_size(32,32);
-    cout << "aftr Position x : " << this->get_x() << " , after Position y " << this->get_y() << endl;
-	//change_pos(i,x,y);
 }
 
 void Personnage::change_pos(int x, int y)
 {
-    cout << "before : " << get_x() << endl;
-    this->set_x(x);
-    this->set_y(y);
-    cout << "after : " << get_x() << endl;
+    set_x(x);
+    set_y(y);
 }
 
 void Personnage::change_size(int w, int h)
 {
-    this->set_w(w);
-    this->set_h(h);
+    set_w(w);
+    set_h(h);
 }
 
 void Personnage::exit_ghost(int idx) { // r,p,c,y
@@ -121,26 +118,18 @@ void Personnage::exit_ghost(int idx) { // r,p,c,y
     if(idx == get_id()) {
         out = 1;
         switch (idx) {
-            case 0:
-                ghost_choice = &(ghost_rr1);
-                cout << "exit rouge" << endl;
+            case 0: ghost_choice = &(ghost_rr1);
                 break;
-            case 1:
-                ghost_choice = &(ghost_pr1);
+            case 1: ghost_choice = &(ghost_pr1);
                 break;
-            case 2:
-                ghost_choice = &(ghost_cr1);
+            case 2: ghost_choice = &(ghost_cr1);
                 break;
-            case 3:
-                ghost_choice = &(ghost_yr1);
+            case 3: ghost_choice = &(ghost_yr1);
                 break;
         }
-        cout << "before ex" << get_x() << endl;
-        this->change_pos(ghost_free.x,ghost_free.y);
-        cout << "after ex" << get_x() << endl;
+        change_pos(ghost_free.x,ghost_free.y);
     }
 }
-
 
 
 

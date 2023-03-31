@@ -40,11 +40,22 @@ class Board
 		void del_elem(int index);
 
 		void set_startGhost(int i);
+		void exit_ghosts(int i) {perso[i].exit_ghost(i);}
+		void home_ghosts(int i) {perso[i].home_ghost(i);}
 
 		vector<Utile_elem> get_tab_elem() {return elems;}
 		Utile_elem get_elem_with_index(int index) {return elems[index];}
 		vector<Personnage> get_tab_perso() {return perso;}
 		Personnage get_perso_with_index(int index) {return perso[index];}
+
+		void set_elem_with_index(int idx, char carac, int n_c);
+		void set_perso_with_index(int idx,char carac, int n_c);
+
+
+		void set_perso_with_statut_idx(int idx,int statut) {perso[idx].set_statut(statut);}
+		void set_perso_with_sens_idx(int idx,int sens) {perso[idx].set_sens(sens);}
+
+
 		Map getMap() {return map;}
 		vector<Graine> get_gums() {return gums;}
 		vector<Ghost*> get_Ghosts() {return ghosts;}
@@ -56,7 +67,6 @@ class Board
 
 		Ghost* getGhost_with_index(int i) {return (ghosts[i]);}
 		Graine getGum_with_index(int i) {return (gums[i]);}
-		Personnage getPerso_with_index(int i) {return perso[i];}
 		int getGum_with_x_y(int x, int y);
 		SDL_Rect* getPacman() {return pacman;}
 		SDL_Rect* getSkin(int idx, char sens, int statut);//dans l'ordre r/p/c/y/pacman

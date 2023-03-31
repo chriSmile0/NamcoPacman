@@ -10,6 +10,7 @@ class Personnage: public Utile_elem {
         Personnage();
         //Personnage(Personnage const& perso);
         Personnage(SDL_Rect* rect, int idx, char name);
+        Personnage(int x,int y, int w, int h) : Utile_elem(x,y,w,h) {}
         //Personnage(char nom);
         //Personnage(SDL_Rect rect);
         //Personnage(SDL_Rect* rect);
@@ -27,6 +28,9 @@ class Personnage: public Utile_elem {
         void set_sens(char n_sens) {sens = n_sens;}
         char get_sens() {return sens;}
 
+        void set_out(int o) {out = o;}
+        int get_out() {return out;}
+
         SDL_Rect* get_Skin();
         void set_Skin();
 
@@ -38,6 +42,7 @@ class Personnage: public Utile_elem {
         void change_size(int w,int h);
 
         void exit_ghost(int idx);
+        void home_ghost(int idx) {set_start();}
 
     private:
         char nom_perso;

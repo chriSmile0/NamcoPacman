@@ -250,12 +250,10 @@ void Game::init_seeds()
 }
 
 
-int Game::moveGhost(int x_pac, int y_pac, char &sens, int index, int statut)
+int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 {
     int g_x = boar->get_perso_with_index(index).get_x();
-    cout << "g_x " << g_x << endl;
     int g_y = boar->get_perso_with_index(index).get_y();
-    cout << "g_y " << g_y << endl;
     int distance = 6;//distance de déplacement des fantomes
 
     int new_x = g_x;//à changer en fonction de la position de pacman
@@ -285,8 +283,13 @@ int Game::moveGhost(int x_pac, int y_pac, char &sens, int index, int statut)
 
     result_hitwal = boar->getMap().hitWall(g_x,g_y,new_x,new_y,24);
     
-    if(result_hitwal == 'f') { //debut
+    if(result_hitwal == 'f'){ //debut
 		rtn = catchPacman(new_x,new_y,x_pac,y_pac,sens);
+		if((statut == 1) && (rtn)){
+			cout << "maison fantme" << endl;
+			rtn = 2;
+		}
+
     }
     else {
         std::random_device rd;  // Will be used to obtain a seed for the random number engine
@@ -328,18 +331,19 @@ int Game::moveGhost(int x_pac, int y_pac, char &sens, int index, int statut)
         sens = new_sens;
     }
 
+	boar->set_perso_with_sens_idx(index,sens);
     boar->change_pos_perso(index,new_x,new_y);
-    cout << "new y " << new_y << endl;
-    SDL_Rect elem_newpos{new_x,new_y,32,32};//(g.get_board()->get_elem_with_index(2).get_val_elem());
-    boar->get_perso_with_index(index).set_rect(&elem_newpos);
+	if(rtn == 2) boar->home_ghosts(index);
     return rtn;
 }
 // attaque directement Pac Man. Il suit Pac-Man comme son ombre.
 /*
 - 
 */
-int Game::updateRedGhost(int x_pac, int y_pac, char &sens, int statut)
+int Game::updateRedGhost(int x_pac, int y_pac)
 {
+	char sens = boar->get_perso_with_index(0).get_sens();
+	int statut = boar->get_perso_with_index(3).get_statut();
     return moveGhost(x_pac,y_pac,sens,0,statut);
     /*Fonctionne mais ne prend pas les intervalles, c'est à dire ne fonctionne que dans les coins
         pour le moment, il faut trouver un moyen de faire aller dans un sens encore plus aléatoire
@@ -353,8 +357,10 @@ int Game::updateRedGhost(int x_pac, int y_pac, char &sens, int statut)
 /*
 -
 */
-int Game::updatePinkGhost(int x_pac, int y_pac,char &sens, int statut)
+int Game::updatePinkGhost(int x_pac, int y_pac)
 {
+	char sens = boar->get_perso_with_index(1).get_sens();
+	int statut = boar->get_perso_with_index(1).get_statut();
     return moveGhost(x_pac,y_pac,sens,1,statut);
 }
 
@@ -362,8 +368,10 @@ int Game::updatePinkGhost(int x_pac, int y_pac,char &sens, int statut)
 /*
 -
 */
-int Game::updateCyanGhost(int x_pac, int y_pac, char &sens, int statut)
+int Game::updateCyanGhost(int x_pac, int y_pac)
 {
+	char sens = boar->get_perso_with_index(2).get_sens();
+	int statut = boar->get_perso_with_index(2).get_statut();
     return moveGhost(x_pac,y_pac,sens,2,statut);
 }
 
@@ -371,16 +379,19 @@ int Game::updateCyanGhost(int x_pac, int y_pac, char &sens, int statut)
 /*
 -
 */
-int Game::updateYellowGhost(int x_pac, int y_pac, char &sens, int statut)
+int Game::updateYellowGhost(int x_pac, int y_pac)
 {
+	char sens = boar->get_perso_with_index(3).get_sens();
+	int statut = boar->get_perso_with_index(3).get_statut();
     return moveGhost(x_pac,y_pac,sens,3,statut);
 }
 
-void Game::updatePacman(int x_pac, int y_pac, char& sens,char s) 
+void Game::updatePacman(int x_pac, int y_pac,char s) 
 {
     int new_x = x_pac;
 	int new_y = y_pac;
-    SDL_Rect add_rect = boar->get_elem_with_index(4).get_val_elem();
+	char sens = boar->get_perso_with_index(4).get_sens();
+    SDL_Rect add_rect = boar->get_perso_with_index(4).get_val_elem();
 	new_x += add_rect.x;
 	new_y += add_rect.y;
 	
@@ -409,8 +420,10 @@ void Game::updatePacman(int x_pac, int y_pac, char& sens,char s)
 		if(boar->getGum_with_index(gum_catch).get_w() == 24) {
 			//bgum
 			//Tout les ghosts (qui sont dehors ) en mode bleu/blanc
-			for(int i = 0 ; i < 5; i++)
-				set_status(i,1); //a continuer dans updateGhost aussi en fonction du statut
+			for(int i = 0 ; i < 4; i++)  {
+				boar->set_perso_with_statut_idx(i,1);
+			}
+				//set_status(i,1); //a continuer dans updateGhost aussi en fonction du statut
 			
 			pac_huntime = 1;
 		}
@@ -427,25 +440,26 @@ void Game::updatePacman(int x_pac, int y_pac, char& sens,char s)
 			new_x = 0;
 			sens = 'd';
 		}
-		boar->change_pos(4,new_x,new_y);
+		boar->set_perso_with_sens_idx(4,sens);
+		boar->change_pos_perso(4,new_x,new_y);
     }
 }
 
 
 // fonction qui met à jour la surface de la fenetre "win_surf"
-int Game::updateGhosts(int x_pac, int y_pac, char sens[5], int out_ghost, int status[5])
+int Game::updateGhosts(int x_pac, int y_pac, int ghosts_out)
 {
 	//Faire tourner les fantomes 
-    if(updateRedGhost(x_pac,y_pac, sens[0],status[0])==1)
+    if(updateRedGhost(x_pac,y_pac)==1)
         return 1;
-    if(out_ghost > 0)
-        if(updatePinkGhost(x_pac,y_pac, sens[1],status[1])==1)
+    if(ghosts_out > 0)
+        if(updatePinkGhost(x_pac,y_pac)==1)
             return 2;
-    if(out_ghost > 1)
-        if(updateCyanGhost(x_pac,y_pac,sens[2],status[2])==1)
+    if(ghosts_out > 1)
+        if(updateCyanGhost(x_pac,y_pac)==1)
             return 3;
-    if(out_ghost > 2)
-        if(updateYellowGhost(x_pac,y_pac,sens[3],status[3])==1)
+    if(ghosts_out > 2)
+        if(updateYellowGhost(x_pac,y_pac)==1)
             return 4;
     return 0;
 }
@@ -482,12 +496,16 @@ int Game::catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens
 }
 
 
-void Game::exit_ghost(int idx) { // r,p,c,o
-	boar->get_perso_with_index(idx).exit_ghost(idx);
-	//boar->change_pos(index_choice,ghost_free.x,ghost_free.y);
-    //boar->change_pos_perso(index_choice,ghost_free.x,ghost_free.y);
-    //boar->get_elem_with_index(idx).set_x(ghost_free.x);
-    //boar->get_elem_with_index(idx).set_y(ghost_free.y);
+void Game::exit_ghost(int idx) 
+{ // r,p,c,o
+	ghosts_out++;
+	boar->exit_ghosts(idx);
+}
+
+void Game::go_home_ghost(int idx) 
+{
+	ghosts_out--;
+	boar->home_ghosts(idx);
 }
 
 void Game::drawGums()
@@ -505,19 +523,20 @@ void Game::drawGums()
     }
 }
 
-void Game::drawGhostsAPac(char sens[5],int status[5])
+void Game::drawGhostsAPac()
 {
 	for (int i = 0 ; i < 5; i++) {
+		Personnage select_p = boar->get_perso_with_index(i);
         SDL_Rect save_elem = boar->get_perso_with_index(i).get_val_elem();//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
-		if((status[i] == 1) && (pac_huntime >= 0.75*pac_huntime_limit)) {
-			set_status(i,2);//ani
+		if((select_p.get_statut() == 1) && (pac_huntime >= 0.75*pac_huntime_limit)) {
+			boar->set_perso_with_statut_idx(i,2);
 		}
-		else if((status[i] == 2) && (pac_huntime >= pac_huntime_limit)) {
-			set_status(i,0);
+		else if((select_p.get_statut() == 2) && (pac_huntime >= pac_huntime_limit)) {
+			boar->set_perso_with_statut_idx(i,0);
 			if(i == 4) //on attend la fin de la boucle pour stopper la chasse
 				pac_huntime = 0;
 		}
-        SDL_Rect *skin_choice = boar->getSkin(i,sens[i],status[i]);//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
+        SDL_Rect *skin_choice = boar->get_perso_with_index(i).get_Skin();//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
         SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
     }
 }
