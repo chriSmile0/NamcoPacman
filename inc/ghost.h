@@ -15,8 +15,6 @@ class Ghost: public Personnage {
         Ghost(char nom);
         ~Ghost();
 
-        
-
     private:
         int out;
 };

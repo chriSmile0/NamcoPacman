@@ -4,32 +4,15 @@ Personnage::Personnage(): Utile_elem()
 {
 	nom_perso = ';';
 }
-
-/*Personnage::Personnage(SDL_Rect rect): Utile_elem(rect)
-{
-    cout << "crea rect" << endl;
-}
-*/
 Personnage::Personnage(SDL_Rect* rect, int idx, char name): Utile_elem(rect)
 {
-    id = idx;
-    nom_perso = name;
+	id = idx;
+	nom_perso = name;
 	statut = -1;
 }
 
-/*Personnage::Personnage(Personnage const& perso): Utile_elem()
-{
-    nom_perso = perso.nom_perso;
-}
-
-Personnage::Personnage(char nom): Utile_elem()
-{
-    nom_perso = nom;
-}*/
-
 SDL_Rect* Personnage::get_Skin() 
 {//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
-
 	if((statut == 1) && (id != 4))
 		return &(ghost_b1);
 	if((statut == 2) && (id != 4))
@@ -92,46 +75,45 @@ void Personnage::set_start()
 				y = ghost_ystart.y;
 			break;
 		default:
-                x = pacman_start.x;
-                y = pacman_start.y;
+				x = pacman_start.x;
+				y = pacman_start.y;
 			break;
 	}
 	cout << "retour au départ" << endl;
-    change_pos(x,y);
-    change_size(32,32);
+	time_house = 0;
+	change_pos(x,y);
+	change_size(32,32);
 }
 
 void Personnage::change_pos(int x, int y)
 {
-    set_x(x);
-    set_y(y);
+	set_x(x);
+	set_y(y);
 }
 
 void Personnage::change_size(int w, int h)
 {
-    set_w(w);
-    set_h(h);
+	set_w(w);
+	set_h(h);
 }
 
 void Personnage::exit_ghost(int idx) { // r,p,c,y
 	SDL_Rect* ghost_choice = nullptr;
-    if(idx == get_id()) {
-        out = 1;
-        switch (idx) {
-            case 0: ghost_choice = &(ghost_rr1);
-                break;
-            case 1: ghost_choice = &(ghost_pr1);
-                break;
-            case 2: ghost_choice = &(ghost_cr1);
-                break;
-            case 3: ghost_choice = &(ghost_yr1);
-                break;
-        }
-        change_pos(ghost_free.x,ghost_free.y);
-    }
+	if(idx == get_id()) {
+		out = 1;
+		switch (idx) {
+			case 0: ghost_choice = &(ghost_rr1);
+				break;
+			case 1: ghost_choice = &(ghost_pr1);
+				break;
+			case 2: ghost_choice = &(ghost_cr1);
+				break;
+			case 3: ghost_choice = &(ghost_yr1);
+				break;
+		}
+		change_pos(ghost_free.x,ghost_free.y);
+	}
 }
-
-
 
 Personnage::~Personnage()
 {

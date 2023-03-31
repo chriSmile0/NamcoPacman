@@ -1,6 +1,5 @@
 #ifndef MAP_H
 #define MAP_H
-
 #include "murs.h"
 #include <vector>
 
@@ -16,20 +15,17 @@
 //
 
 class Map {
-    public:
-        Map();
-        ~Map();
+	private:
+		std::vector<SDL_Rect*> Murs;
+
+	public:
+		Map();
+		~Map();
 		std::vector<SDL_Rect*> getMurs() {return Murs;}
 		SDL_Rect* getMur_with_index(int index) {return Murs[index];}
 
 		char hitWall(int x, int y , int new_x, int new_y, int dim_perso);//char pour savoir de quel côté on est bloqué
-
-	private:
-		std::vector<SDL_Rect*> Murs;
 };
-
-
-
 
 #include "../src/map.hpp"
 

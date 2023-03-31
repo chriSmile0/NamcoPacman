@@ -75,46 +75,33 @@ Map::Map()
 
 char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check si la position "heurte" un mur 
 {										//sens : h = haut , b = bas, g = gauche, d = droit
-	//on peut determiner le sens nous même maintenant avec new et old 
-
-	//Possibilités de crées des zones de murs 
-	//Comme ça en fonction de x et y on sait quel groupe de mur 
-	//on doit checker 
 	int x_m_nx = new_x - x;
 	int y_m_ny = new_y - y;
-	int hauteur_mur = 0; //a calc dans Utile_elem au besoin si les murs deviennent des Utile_elem
-	int largeur_mur = 0;
+	int h_mur = 0; //a calc dans Utile_elem au besoin si les murs deviennent des Utile_elem
+	int w_mur = 0;
 	char sens = ((x_m_nx != 0) ? ((x_m_nx < 0) ? 'g': 'd') : ((y_m_ny < 0) ? 'h': 'b'));
 
 	int nb_murs = Murs.size();
 	int goon = 1;
 	int i = 0;
-	//On reste pour le moment sur les murs basiques
-	//On verra ensuite pour les ilots , comme les carrées, les L , les T etcc
-	
-	//On cherche le mur qui est traverser par ce déplacement//
 
 	while((goon) && (i < nb_murs)) {
 		SDL_Rect wall = *(Murs.at(i));
-		hauteur_mur = wall.h;
-		largeur_mur = wall.w;
-		if((hauteur_mur > 16) && (largeur_mur > 16))//cas d'un bloc 
+		h_mur = wall.h;
+		w_mur = wall.w;
+		if((h_mur > 16) && (w_mur > 16))//cas d'un bloc 
 		{
 			switch(sens) { // La pour le moment sa le fera dès le premier mur 
-				case 'h': 
-						if(((y > wall.y) && (new_y <= (wall.y+hauteur_mur))) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
+				case 'h': if(((y > wall.y) && (new_y <= (wall.y+h_mur))) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
 							goon = 0;
 						break;
-				case 'b': //wall.y -= dim_perso;
-						if(((y < wall.y) && (new_y >= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
+				case 'b': if(((y < wall.y) && (new_y >= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
 							goon = 0;
 						break;
-				case 'g':
-						if(((x > wall.x) && (new_x <= (wall.x+largeur_mur))) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
+				case 'g': if(((x > wall.x) && (new_x <= (wall.x+w_mur))) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
 							goon = 0;
 						break;
-				case 'd': //wall.x -= dim_perso; 
-						if(((x < wall.x) && (new_x >= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
+				case 'd': if(((x < wall.x) && (new_x >= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
 							goon = 0;
 						break;
 				default:
@@ -123,17 +110,14 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 		}
 		else { // cas d'un mur
 			switch(sens) { // La pour le moment sa le fera dès le premier mur 
-				case 'h': 
-						if(((y > wall.y) && (new_y <= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
+				case 'h': if(((y > wall.y) && (new_y <= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
 							goon = 0;
 						break;
 				case 'b': wall.y -= dim_perso;
 						if(((y < wall.y) && (new_y >= wall.y)) && ((new_x > wall.x) && (new_x < (wall.x + wall.w))))
 							goon = 0;
 						break;
-				case 'g':
-						
-						if(((x > wall.x) && (new_x <= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
+				case 'g': if(((x > wall.x) && (new_x <= wall.x)) && ((new_y > wall.y) && (new_y < (wall.y + wall.h))))
 							goon = 0;
 						break;
 				case 'd': wall.x -= dim_perso; 
@@ -146,7 +130,7 @@ char Map::hitWall(int x , int y , int new_x, int new_y, int dim_perso) //check s
 		}
 		i++;
 	}
-	if(goon == 0)
+	if(!goon)
 		return sens;
 	else
 		return 'f';//f for free

@@ -21,8 +21,7 @@ Game::Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* pl
 	sprites_planches = pl;
     init_seeds();
 	pac_huntime_limit = 300;
-	//init_walls();
-    //b->sort_gums_by_xy();
+    b->sort_gums_by_xy();
 }
 
 void Game::init_walls()
@@ -414,23 +413,11 @@ void Game::updatePacman(int x_pac, int y_pac,char s)
     }
     else {
         int gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y);
-        //Test du catch ball 	
-
-		//Update des ghosts en fonction du type de gum 
 		if(boar->getGum_with_index(gum_catch).get_w() == 24) {
-			//bgum
-			//Tout les ghosts (qui sont dehors ) en mode bleu/blanc
-			for(int i = 0 ; i < 4; i++)  {
+			for(int i = 0 ; i < 4; i++)  
 				boar->set_perso_with_statut_idx(i,1);
-			}
-				//set_status(i,1); //a continuer dans updateGhost aussi en fonction du statut
-			
 			pac_huntime = 1;
 		}
-		else {
-			//lgum -> rien à faire de spécial juste update le score
-		}
-		
 		sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
 		if((new_x < 0) && (new_y < 420+20) && (new_y > 420-20)) {
 			new_x = 700;
@@ -448,8 +435,7 @@ void Game::updatePacman(int x_pac, int y_pac,char s)
 
 // fonction qui met à jour la surface de la fenetre "win_surf"
 int Game::updateGhosts(int x_pac, int y_pac, int ghosts_out)
-{
-	//Faire tourner les fantomes 
+{//Faire tourner les fantomes 
     if(updateRedGhost(x_pac,y_pac)==1)
         return 1;
     if(ghosts_out > 0)
@@ -470,26 +456,20 @@ char Game::sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_
     int x_m_nx = x - x_old;
 	int y_m_ny = y - y_old;
 	char sens = ((x_m_nx != 0) ? ((x_m_nx < 0) ? 'g': 'd') : ((y_m_ny < 0) ? 'h': 'b'));
-    if((x_m_nx == 0) && (y_m_ny == 0))
-        sens = base_sens;//no sens
-    return sens;
+	return ((x_m_nx == 0) && (y_m_ny == 0)) ? base_sens : sens;
 }
 
-int Game::catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens) //Mis en pause car implemter dans updateGhost
+int Game::catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char sens) //Mis en pause car implemter dans updateGhost
 {//test après chaque update de ghost et pacman si il y'a contact entre un fantomes et pacman
     int l_box = x_pac;
     int u_box = y_pac;
     int r_box = x_pac+24;//24 = dim_perso
     int d_box = y_pac+24;// "" ""
 	switch(sens) {
-		case 'g': 
-			return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
-		case 'd':
-			return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
-		case 'h':
-			return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
-		case 'b':
-			return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
+		case 'g': return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
+		case 'd': return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
+		case 'h': return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
+		case 'b': return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
 		default:
 			return 0;
 	}
@@ -497,7 +477,7 @@ int Game::catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char &sens
 
 
 void Game::exit_ghost(int idx) 
-{ // r,p,c,o
+{
 	ghosts_out++;
 	boar->exit_ghosts(idx);
 }
@@ -536,6 +516,7 @@ void Game::drawGhostsAPac()
 			if(i == 4) //on attend la fin de la boucle pour stopper la chasse
 				pac_huntime = 0;
 		}
+		boar->set_perso_with_timehouse_idx(i,select_p.get_time_house()+1);
         SDL_Rect *skin_choice = boar->get_perso_with_index(i).get_Skin();//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
         SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
     }

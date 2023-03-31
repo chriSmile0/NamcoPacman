@@ -11,7 +11,7 @@ using namespace std;
 
 bool compareGums(Graine sr1, Graine sr2)
 {
-    return ((sr1.get_x() <= sr2.get_x()) && (sr1.get_y() <= sr2.get_y()));
+	return ((sr1.get_x() <= sr2.get_x()) && (sr1.get_y() <= sr2.get_y()));
 }
 
 
@@ -54,6 +54,7 @@ class Board
 
 		void set_perso_with_statut_idx(int idx,int statut) {perso[idx].set_statut(statut);}
 		void set_perso_with_sens_idx(int idx,int sens) {perso[idx].set_sens(sens);}
+		void set_perso_with_timehouse_idx(int idx,int time_h) {perso[idx].set_time_house(time_h);}
 
 
 		Map getMap() {return map;}

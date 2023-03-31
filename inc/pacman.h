@@ -7,12 +7,12 @@ using namespace std;
 
 class Pacman: public Personnage
 {
-    public:
-        Pacman();
-        Pacman(Pacman const& perso);
-        ~Pacman();
+	public:
+		Pacman();
+		Pacman(Pacman const& perso);
+		~Pacman();
 
-    private:
+	private:
 };
 
 Pacman::Pacman(): Personnage()
