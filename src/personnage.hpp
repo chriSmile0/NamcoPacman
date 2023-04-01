@@ -57,7 +57,6 @@ void Personnage::set_start()
 {
 	int x,y;
 	out = -1;
-	statut = -1;
 	switch(id) {
 		case 0: x = ghost_rstart.x;
 				y = ghost_rstart.y;

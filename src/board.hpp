@@ -120,6 +120,7 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 		if(!goon) {
 			cout << "gum carac : x: " << x_gum  <<", y: " << y_gum << ", h: " << h_gum << ",w: " << w_gum << endl;
 			cout << " old x : " << old_x << ", new x:" << new_x <<  " old y : " << old_y << ", new y:" << new_y << endl;
+			gum_catch++;
 		}
 		i++;
 	}
@@ -132,6 +133,39 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 	}
 }
 
+int Board::catch_award(int old_x, int old_y ,int new_x, int new_y)
+{
+	int x_m_nx = new_x - old_x;
+	int y_m_ny = new_y - old_y;
+	char sens = ((x_m_nx != 0) ? ((x_m_nx < 0) ? 'g': 'd') : ((y_m_ny < 0) ? 'h': 'b'));
+	Recompense p = get_recompense_with_index(get_awards().size()-1);
+	if(p.get_w() > 0) {
+			int goon = 1;
+			int y_award = award_place.y;
+			int x_award = award_place.x;
+			int w_award = award_place.w;
+			int h_award = award_place.h;
+			switch(sens) { // La pour le moment sa le fera dès le premier mur 
+				case 'g':  if((((old_x > x_award) && (new_x <= (x_award)))) && ((new_y > (y_award-(h_award))) && (new_y < (y_award + (h_award))))) 
+							goon = 0;
+						break;
+				case 'd': if((new_y > (y_award-(h_award))) && (new_y < (y_award + (h_award))))
+							goon = 0;
+						break;
+				default:
+					break;
+			}
+			if(!goon) {
+				int index = get_awards().size()-1;
+				set_awards_with_index(index,'w',0);
+				cout << "indeexx" << index << endl;
+				return index;
+			}
+	}
+	return -1;
+		
+}
+
 void Board::set_perso_with_index(int idx,char carac, int n_c)
 {
 	switch(carac) {
@@ -139,5 +173,15 @@ void Board::set_perso_with_index(int idx,char carac, int n_c)
 		case 'y' : perso[idx].set_y(n_c);
 		case 'w' : perso[idx].set_w(n_c);
 		case 'h' : perso[idx].set_h(n_c);
+	}
+}
+
+void Board::set_awards_with_index(int idx,char carac, int n_c)
+{
+	switch(carac) {
+		case 'x' : awards[idx].set_x(n_c);
+		case 'y' : awards[idx].set_y(n_c);
+		case 'w' : awards[idx].set_w(n_c);
+		case 'h' : awards[idx].set_h(n_c);
 	}
 }

@@ -21,6 +21,7 @@ class Board
 		int type_board;
 		SDL_Rect* gameboard;
 		Map map;
+		int gum_catch = 0;
 		vector<Personnage> perso; //PAcman + les fantomes
 		vector<Graine> gums;//a changer car il y a 2 types de gums et donc il faut crée un objet(graine)
 		vector<Recompense> awards;//a changer car il y a plusieurs types de awards et donc il faut crée un objet(recompense)
@@ -33,6 +34,7 @@ class Board
 		~Board();
 
 		//Inline setters
+		inline void set_gum_catch(int nb_gc) {gum_catch = nb_gc;}
 		inline void set_typeboard(int type_b) {type_board = type_b;}
 		inline void set_gameboard(SDL_Rect gameb) {gameboard = &gameb;}
 		inline void set_perso_with_statut_idx(int idx,int statut) {perso[idx].set_statut(statut);}
@@ -46,9 +48,11 @@ class Board
 		//Setters
 		void set_type_in_rectboard(int type_b);
 		void set_perso_with_index(int idx,char carac, int n_c);
+		void set_awards_with_index(int idx,char carac, int n_c);
 		void set_startGhost(int i);
 
 		//Inline getters
+		inline int get_gum_catch() const {return gum_catch;}
 		inline int get_typeboard() const {return type_board;}
 		inline SDL_Rect* get_gameboard() const {return gameboard;}
 		inline vector<Personnage> get_tab_perso() const {return perso;}
@@ -80,6 +84,10 @@ class Board
 		 * @return son index ou -1 si elle a déjà était catch
 		*/
 		int catch_gum(int old_y, int old_x , int new_x, int new_y);
+		/**
+		 * 
+		*/
+		int catch_award(int old_y, int old_x, int new_x, int new_y);
 };
 
 #include "../src/board.hpp"

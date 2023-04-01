@@ -5,13 +5,22 @@ Recompense::Recompense(): Utile_elem()
 
 }
 
+Recompense::Recompense(SDL_Rect rect, Artefacts arte,string name,int nb_points): Utile_elem(rect)
+{
+	artefact = arte;
+	nom = name;
+	nb_pts = nb_points;
+	cout << "constructeur ici" << endl;
+}
+
+
 Recompense::Recompense(Artefacts arte,string name,int nb_points): Utile_elem() 
 {
 	artefact = arte;
 	nom = name;
 	nb_pts = nb_points;
 }
-
+/*
 Recompense::Recompense(Recompense const& copy): Utile_elem() 
 {
 	artefact = copy.artefact;
@@ -21,8 +30,7 @@ Recompense::Recompense(Recompense const& copy): Utile_elem()
 
 Recompense::Recompense(SDL_Rect rect): Utile_elem(rect) 
 {
-
-}
+}*/
 
 
 int Recompense::arte_in_pts(Artefacts arte) const
@@ -41,17 +49,17 @@ int Recompense::arte_in_pts(Artefacts arte) const
 	} 
 }
 
-SDL_Rect* Recompense::get_Skin()  
+SDL_Rect Recompense::get_Skin()  
 {
     switch(artefact) {
-		case Cerise: return &(cherry_r);
-		case Fraise: return &(strawberry_r);
-		case Orange: return &(orange_o);
-		case Pomme: return &(apple_r);
-		case Melon: return &(melon_g);
-		case Galboss: return &(galboss_r);
-		case Cloche: return &(bell_o);
-		case Cle: return &(key_b);
+		case Cerise: return (cherry_r);
+		case Fraise: return (strawberry_r);
+		case Orange: return (orange_o);
+		case Pomme: return (apple_r);
+		case Melon: return (melon_g);
+		case Galboss: return (galboss_r);
+		case Cloche: return (bell_o);
+		case Cle: return (key_b);
 		default:
             break;
 	}   
