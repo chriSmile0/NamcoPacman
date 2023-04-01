@@ -20,41 +20,36 @@ SDL_Rect* Personnage::get_Skin()
 	if((statut == 2) && (id != 4))
 		return &(ghost_w1);
 	switch(id) {
-		case 0: 
-			switch(sens) {
-				case 'b': return &(ghost_rd1); 
-				case 'h': return &(ghost_ru1);
-				case 'g': return &(ghost_rl1);
-				case 'd': return &(ghost_rr1);
-			}
-		case 1: 
-			switch(sens) {
-				case 'b': return &(ghost_pd1); 
-				case 'h': return &(ghost_pu1);
-				case 'g': return &(ghost_pl1);
-				case 'd': return &(ghost_pr1);
-			}
-		case 2:
-			switch(sens) {
-				case 'b': return &(ghost_cd1); 
-				case 'h': return &(ghost_cu1);
-				case 'g': return &(ghost_cl1);
-				case 'd': return &(ghost_cr1);
-			}
-		case 3: 
-			switch(sens) {
-				case 'b': return &(ghost_yd1); 
-				case 'h': return &(ghost_yu1);
-				case 'g': return &(ghost_yl1);
-				case 'd': return &(ghost_yr1);
-			}
-		default:
-			switch(sens) {
-				case 'b': return &(lpacman_cod); 
-				case 'h': return &(lpacman_cou);
-				case 'g': return &(lpacman_col);
-				case 'd': return &(lpacman_cor);
-			}
+		case 0: switch(sens) {
+					case 'b': return &(ghost_rd1); 
+					case 'h': return &(ghost_ru1);
+					case 'g': return &(ghost_rl1);
+					case 'd': return &(ghost_rr1);
+				}
+		case 1: switch(sens) {
+					case 'b': return &(ghost_pd1); 
+					case 'h': return &(ghost_pu1);
+					case 'g': return &(ghost_pl1);
+					case 'd': return &(ghost_pr1);
+				}
+		case 2: switch(sens) {
+					case 'b': return &(ghost_cd1); 
+					case 'h': return &(ghost_cu1);
+					case 'g': return &(ghost_cl1);
+					case 'd': return &(ghost_cr1);
+				}
+		case 3: switch(sens) {
+					case 'b': return &(ghost_yd1); 
+					case 'h': return &(ghost_yu1);
+					case 'g': return &(ghost_yl1);
+					case 'd': return &(ghost_yr1);
+				}
+		default: switch(sens) {
+					case 'b': return &(lpacman_cod); 
+					case 'h': return &(lpacman_cou);
+					case 'g': return &(lpacman_col);
+					case 'd': return &(lpacman_cor);
+				}
 	}
 }
 

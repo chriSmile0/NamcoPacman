@@ -282,13 +282,12 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 
     result_hitwal = boar->getMap().hitWall(g_x,g_y,new_x,new_y,24);
     
-    if(result_hitwal == 'f'){ //debut
+    if(result_hitwal == 'f') { //debut
 		rtn = catchPacman(new_x,new_y,x_pac,y_pac,sens);
 		if((statut >= 1) && (rtn)){
 			cout << "maison fantme" << endl;
 			rtn = 2;
 		}
-
     }
     else {
         std::random_device rd;  // Will be used to obtain a seed for the random number engine
@@ -342,7 +341,7 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 int Game::updateRedGhost(int x_pac, int y_pac)
 {
 	char sens = boar->get_perso_with_index(0).get_sens();
-	int statut = boar->get_perso_with_index(3).get_statut();
+	int statut = boar->get_perso_with_index(0).get_statut();
     return moveGhost(x_pac,y_pac,sens,0,statut);
     /*Fonctionne mais ne prend pas les intervalles, c'est à dire ne fonctionne que dans les coins
         pour le moment, il faut trouver un moyen de faire aller dans un sens encore plus aléatoire
@@ -486,6 +485,17 @@ void Game::go_home_ghost(int idx)
 {
 	ghosts_out--;
 	boar->home_ghosts(idx);
+}
+
+void Game::drawAward()
+{//Met à la place de pacman une récompense
+	//Toujours dessiner la récompense qui est en queue des awards
+	//SDL_Rect recp = (boar->get_recompense_with_index(boar->get_awards().size()-1).get_val_elem());
+	//SDL_BlitScaled(sprites_planches, &(recp), win_surface, &gum);
+
+	//Il me faut juste son skin car je connais l'emplacmeent
+	SDL_Rect *skin_choice = boar->get_recompense_with_index(boar->get_awards().size()-1).get_Skin();
+	SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &pacman_start);
 }
 
 void Game::drawGums()

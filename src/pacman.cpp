@@ -6,6 +6,13 @@
 #include "../inc/recompense.h"
 
 int coun;
+/** @brief On va ici initialiser le board , avec sa window, sa sous fenêtre
+ * 			et la planche que l'on doit "découper"
+ * 			Enfin on crée les 5 personnages que sont les 4 fantomes et Pacman
+ * 			Et on les placent sur leur point de départ
+* @param{b} le board à init
+* @return{none} 
+*/
 void init_board(Board *b)
 {
 	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 672, 864, SDL_WINDOW_SHOWN);
@@ -27,12 +34,14 @@ void init_board(Board *b)
 	g_y.set_start();
 	Personnage p{&pacman_p,4,'a'}; //Utile_elem par Pacman
 	p.set_start();
+	Recompense rp(Cerise,"Cerise",300);
 	
 	b->add_perso(g_r);
 	b->add_perso(g_p);
 	b->add_perso(g_c);
 	b->add_perso(g_y);
 	b->add_perso(p);
+	b->add_awards(rp);//add à chaque niveau une récompense différente
 	SDL_SetColorKey(plancheSprites, true, 0);
 }
 
@@ -55,6 +64,7 @@ int main(int argc, char** argv)
 		cou++;
 		g.drawGums();
 		g.drawGhostsAPac();
+		g.drawAward();//fonctionne mais il faut la placer dans certaines condition
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{
