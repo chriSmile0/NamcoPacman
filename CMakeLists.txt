@@ -10,7 +10,15 @@ find_package(SDL2 REQUIRED)
 add_executable(pacman src/pacman.cpp)
 
 
-target_sources(pacman PRIVATE src/pacman.cpp)
+target_sources(pacman PRIVATE src/pacman.cpp
+				inc/utile_elem.h
+				src/utile_elem.hpp
+				inc/personnage.h
+				src/personnage.hpp
+				inc/map.h
+				src/map.hpp	
+			
+							)
 target_include_directories(pacman PRIVATE ${SDL2_INCLUDE_DIRS})
 target_compile_definitions(pacman PRIVATE "SDL_MAIN_HANDLED")
 target_link_libraries(pacman PRIVATE ${SDL2_LIBRARIES})
