@@ -56,7 +56,7 @@ class Recompense: public Utile_elem
 		* @param{none}
 		* @return L'adresse qui correspond au skin sur la bitmap 
 		**/
-		SDL_Rect* get_Skin();  
+		SDL_Rect get_Skin();  
 		
 };
 

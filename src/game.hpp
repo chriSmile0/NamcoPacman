@@ -98,11 +98,12 @@ void Game::init_seeds()
 	//La cinquieme horizontale 
 	y = 46+(32*19);
 	x = 46+(32);
-	for(i = 0 ; i < 7 ; i++) {
-		if((i == 2) || (i == 4) || (i == 5))
+	for(i = 0 ; i < 6 ; i++) {
+		if((i == 2) || (i == 4))
 			x += 32; //saut de 1 case*/
-		if((i == 1) || (i== 3) || (i == 6))
+		if((i == 1) || (i == 3) || (i == 5))
 			x += 96;
+		
 		boar->add_gum(Graine{x,y,w,h,0});
 		x += 32;
 	}
@@ -337,15 +338,10 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 
 	boar->set_perso_with_sens_idx(index,sens);
     boar->set_pos_perso(index,new_x,new_y);
-<<<<<<< HEAD
 	if(rtn == 2) {
 		boar->home_ghosts(index);
 		boar->set_perso_with_statut_idx(index,0);
 	}
-=======
-	if(rtn == 2) 
-		boar->home_ghosts(index);
->>>>>>> main
     return rtn;
 }
 // attaque directement Pac Man. Il suit Pac-Man comme son ombre.

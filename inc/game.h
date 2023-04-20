@@ -11,7 +11,7 @@ SDL_Surface* plancheSprites = nullptr;
 class Game 
 {
 	private:
-		int nb_pts;
+		int nb_pts = 0;
 		int level;
 		int pac_huntime = 0;
 		int pac_huntime_limit;//Pour le moment en tour de boucle 
