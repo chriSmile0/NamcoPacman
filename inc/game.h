@@ -20,6 +20,7 @@ class Game
 		SDL_Window* win;
 		SDL_Surface* win_surface;
 		SDL_Surface* sprites_planches;
+		vector<SDL_Rect> letters_hs;
 		int ghosts_out = -1;
 		
 	public:
@@ -73,6 +74,8 @@ class Game
 		 * @return{none} 
 		*/
 		void drawAward();
+
+		void drawScore();
 
 		//Init
 		/** @brief	Affichage des murs (pas beau!!!)
@@ -174,6 +177,9 @@ class Game
 		 * @return 1 pour capture , 0 pour pas de capture
 		*/
 		int catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char sens);
+
+
+		void init_high_score_letters();
 };
 
 #include "../src/game.hpp"

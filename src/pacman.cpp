@@ -15,7 +15,7 @@ int coun;
 */
 void init_board(Board *b)
 {
-	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 900, 1000, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1100, 864, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
 
 	plancheSprites = SDL_LoadBMP("../inc/pacman_sprites.bmp");
@@ -65,6 +65,7 @@ int main(int argc, char** argv)
 		g.drawGums();
 		g.drawGhostsAPac();
 		g.drawAward();//fonctionne mais il faut la placer dans certaines condition
+		g.drawScore();
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{

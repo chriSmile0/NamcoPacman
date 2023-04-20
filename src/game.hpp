@@ -22,6 +22,7 @@ Game::Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* pl
     init_seeds();
 	pac_huntime_limit = 300;
     b->sort_gums_by_xy();
+	init_high_score_letters();
 }
 
 void Game::init_walls()
@@ -562,6 +563,34 @@ void Game::drawGhostsAPac()
         SDL_Rect *skin_choice = boar->get_perso_with_index(i).get_Skin();//boar->getGhost_with_index(i);//ghosts.at(i);//(boar->get_elem_with_index(i).get_val_elem());
         SDL_BlitScaled(sprites_planches, skin_choice, win_surface, &save_elem);
     }
+}
+
+void Game::drawScore()
+{
+	SDL_Rect high_score;
+	SDL_Rect emplacement_title{850,50,14,14};
+	for (auto letter : letters_hs) {
+		SDL_BlitScaled(sprites_planches, &letter, win_surface, &emplacement_title);
+		emplacement.x += 12;
+	}
+	//SDL_BlitScaled(sprites_planches, &high_score, win_surface, &emplacement);
+	
+}
+
+void Game::init_high_score_letters()
+{
+	letters_hs.push_back(letter_h);
+	letters_hs.push_back(letter_i);
+	letters_hs.push_back(letter_g);
+	letters_hs.push_back(letter_h);
+	letters_hs.push_back(letter_space);
+	letters_hs.push_back(letter_s);
+	letters_hs.push_back(letter_c);
+	letters_hs.push_back(letter_o);
+	letters_hs.push_back(letter_r);
+	letters_hs.push_back(letter_e);
+
+
 }
 
 Game::~Game()

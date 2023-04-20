@@ -95,6 +95,7 @@ SDL_Rect lpacman_cod{ 109,89, 16,16 };
 SDL_Rect lpacman_ou{ 126,93, 16,13 };
 
 //Letters 
+SDL_Rect letter_space{ 2,60, 9,9 };
 SDL_Rect letter_a{ 11,60, 9,9 };
 SDL_Rect letter_b{ 19,60, 9,9 };
 SDL_Rect letter_c{ 27,60, 9,9 };
