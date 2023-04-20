@@ -51,6 +51,7 @@ SDL_Rect* Personnage::get_Skin()
 					case 'd': return &(lpacman_cor);
 				}
 	}
+	return nullptr;
 }
 
 void Personnage::set_start()
@@ -98,7 +99,7 @@ void Personnage::exit_ghost(int idx) { // r,p,c,y
 	SDL_Rect* ghost_choice = nullptr;
 	if(idx == get_id()) {
 		out = 1;
-		switch (idx) {
+		/*switch (idx) {
 			case 0: ghost_choice = &(ghost_rr1);
 				break;
 			case 1: ghost_choice = &(ghost_pr1);
@@ -107,7 +108,7 @@ void Personnage::exit_ghost(int idx) { // r,p,c,y
 				break;
 			case 3: ghost_choice = &(ghost_yr1);
 				break;
-		}
+		}*/
 		change_pos(ghost_free.x,ghost_free.y);
 	}
 }

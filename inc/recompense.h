@@ -17,6 +17,7 @@ class Recompense: public Utile_elem
 		int nb_pts = 0;
 		string nom = "no_name";
 		Artefacts artefact = Cerise;
+		int visible = 0;
 
 	public:
 		//Constructors
@@ -30,18 +31,32 @@ class Recompense: public Utile_elem
 		inline void setArtefact(Artefacts arte) {artefact = arte;}
 		inline void setName(string name) {nom = name;}
 		inline void setNb_pts(int nb_points) {nb_pts = nb_points;}
+		inline void setVisible(int vis) {visible = vis;}
 
 		//Inline getters
 		inline Artefacts getArtefact() const {return artefact;}
 		inline string getName() const {return nom;}
 		inline int getNb_pts() const {return nb_pts;}
+		inline int getVisible() const {return visible;}
 
 		//Getters 
-		/*Conversion d'un artefacts en fonction de sa valeur en points*/
+		/**
+		* @brief Conversion d'un artefact en sa valeur en points
+		* @param{arte} : {/}
+		* @return le nombre de points associés
+		**/
 		int arte_in_pts(Artefacts arte) const ;
-		/*Renvoie le nom de l'artefact*/
+		/**
+		* @brief Conversion d'un artefact en son nom 
+		* @param{arte} : {/}
+		* @return le nom de l'artefact 
+		**/
 		string arte_in_str(Artefacts arte) const ;
-
+		/**
+		* @brief Renvoie le Skin en fonction de l'artefact de l'objet
+		* @param{none}
+		* @return L'adresse qui correspond au skin sur la bitmap 
+		**/
 		SDL_Rect* get_Skin();  
 		
 };

@@ -43,18 +43,19 @@ int Recompense::arte_in_pts(Artefacts arte) const
 
 SDL_Rect* Recompense::get_Skin()  
 {
-    switch(artefact) {
-		case Cerise: return &(cherry_r);
-		case Fraise: return &(strawberry_r);
-		case Orange: return &(orange_o);
-		case Pomme: return &(apple_r);
-		case Melon: return &(melon_g);
-		case Galboss: return &(galboss_r);
-		case Cloche: return &(bell_o);
-		case Cle: return &(key_b);
-		default:
-            break;
-	}   
+		switch(artefact) {
+			case Cerise: return &(cherry_r);
+			case Fraise: return &(strawberry_r);
+			case Orange: return &(orange_o);
+			case Pomme: return &(apple_r);
+			case Melon: return &(melon_g);
+			case Galboss: return &(galboss_r);
+			case Cloche: return &(bell_o);
+			case Cle: return &(key_b);
+			default:
+				break;
+		}
+	
 }
 
 string Recompense::arte_in_str(Artefacts arte) const
