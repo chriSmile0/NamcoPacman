@@ -25,10 +25,10 @@ class Utile_elem
 		~Utile_elem();
 
 		//Inline setters 
-		inline int set_x(int nx) {x = nx; elem->x = (nx);}
-		inline int set_y(int ny) {y = ny; elem->y = (ny);}
-		inline int set_w(int nw) {w = nw; elem->w = (nw);}
-		inline int set_h(int nh) {h = nh; elem->h = (nh);}
+		inline void set_x(int nx) {x = nx; elem->x = (nx);}
+		inline void set_y(int ny) {y = ny; elem->y = (ny);}
+		inline void set_w(int nw) {w = nw; elem->w = (nw);}
+		inline void set_h(int nh) {h = nh; elem->h = (nh);}
 
 		//Setter
 		SDL_Rect* set_rect(SDL_Rect *rect);

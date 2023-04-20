@@ -11,6 +11,7 @@ class Ghost: public Personnage {
 		int out;
 		
 	public:
+		//Constructors 
 		Ghost();
 		Ghost(Ghost const& perso);
 		Ghost(SDL_Rect* rect, int id, char nom);
@@ -38,13 +39,6 @@ Ghost::Ghost(Personnage per): Personnage(per)
 {  
 
 }
-/*
-Ghost::Ghost(char nom): Personnage(nom)
-{
-
-}*/
-
-
 
 Ghost::~Ghost()
 {

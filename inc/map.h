@@ -22,10 +22,23 @@ class Map {
 		//Constructors
 		Map();
 		~Map();
+		//Inline Getters 
 		std::vector<SDL_Rect*> getMurs() {return Murs;}
 		SDL_Rect* getMur_with_index(int index) {return Murs[index];}
 
 		//Hit-Wall
+		/**
+		* @brief	Il s'agit ici de déterminer si un personnage est libre de 
+		* 			se déplacer dans un sens précis ou non.
+		*			La fonction détermine le sens via les différents coordonnées
+		*			en paramètres.
+		*			Si on heurte un mur le sens devra changer mais ce changement 
+		*			n'a pas lieu dans cette fonction 
+		* @param{x,y,new_x,new_y,dim_perso} : x,y les coordonnées exacts new_x/y les nouvelles coordonnées
+		* 									dim_perso , les dimensions de personnage concernée
+		* @return , le sens pour savoir où est le mur par rapport au personnage 
+		*			et f si le personnage peut aller aux nouveaux coordonnées ou non
+		**/
 		char hitWall(int x, int y , int new_x, int new_y, int dim_perso);//char pour savoir de quel côté on est bloqué
 };
 

@@ -337,10 +337,15 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 
 	boar->set_perso_with_sens_idx(index,sens);
     boar->set_pos_perso(index,new_x,new_y);
+<<<<<<< HEAD
 	if(rtn == 2) {
 		boar->home_ghosts(index);
 		boar->set_perso_with_statut_idx(index,0);
 	}
+=======
+	if(rtn == 2) 
+		boar->home_ghosts(index);
+>>>>>>> main
     return rtn;
 }
 // attaque directement Pac Man. Il suit Pac-Man comme son ombre.
@@ -355,7 +360,7 @@ int Game::updateRedGhost(int x_pac, int y_pac)
     /*Fonctionne mais ne prend pas les intervalles, c'est à dire ne fonctionne que dans les coins
         pour le moment, il faut trouver un moyen de faire aller dans un sens encore plus aléatoire
         en fonction de certain espace
-    - En tout cas fonctiionne bien pour les coins de la map car on va dans une direction , on ne peut pas
+    - En tout cas fonctionne bien pour les coins de la map car on va dans une direction , on ne peut pas
     aller dans celle d'où l'on viens ni l'inverse donc on va forcément dans le dernier sens possible 
     */
 }
