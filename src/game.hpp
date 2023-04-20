@@ -99,9 +99,9 @@ void Game::init_seeds()
 	y = 46+(32*19);
 	x = 46+(32);
 	for(i = 0 ; i < 7 ; i++) {
-		if((i == 2) || (i == 3) || (i == 4) || (i == 5))
-			x += 32; //saut de 1 case
-		if((i == 1) || (i == 6))
+		if((i == 2) || (i == 4) || (i == 5))
+			x += 32; //saut de 1 case*/
+		if((i == 1) || (i== 3) || (i == 6))
 			x += 96;
 		boar->add_gum(Graine{x,y,w,h,0});
 		x += 32;
@@ -284,9 +284,15 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
     
     if(result_hitwal == 'f') { //debut
 		rtn = catchPacman(new_x,new_y,x_pac,y_pac,sens);
-		if((statut >= 1) && (rtn)){
-			cout << "maison fantme" << endl;
+		if((statut >= 1) && (rtn)) {
+			cout << "maison fantome" << endl;
 			rtn = 2;
+			int nb_ghost_eat = 0;
+			for(int i = 0 ; i < 4; i++) 
+				nb_ghost_eat += (boar->get_perso_with_index(i).get_statut()==0) ? 2 : 0;
+			cout << "nb_pts" << nb_pts << endl;
+			nb_pts += (nb_ghost_eat == 0) ? 200 : 200*(nb_ghost_eat);//a multiplier par 2 à chaque fois qu'il y a eu une capture lors de cette chasse
+			cout << "nb_pts after : " << nb_pts << endl;
 		}
     }
     else {
@@ -331,8 +337,15 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 
 	boar->set_perso_with_sens_idx(index,sens);
     boar->set_pos_perso(index,new_x,new_y);
+<<<<<<< HEAD
+	if(rtn == 2) {
+		boar->home_ghosts(index);
+		boar->set_perso_with_statut_idx(index,0);
+	}
+=======
 	if(rtn == 2) 
 		boar->home_ghosts(index);
+>>>>>>> main
     return rtn;
 }
 // attaque directement Pac Man. Il suit Pac-Man comme son ombre.
@@ -413,10 +426,27 @@ void Game::updatePacman(int x_pac, int y_pac,char s)
     }
     else {
         int gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y);
+		if(boar->get_gum_catch() == 170) {
+			int index = boar->get_awards().size()-1;
+			boar->set_awards_with_index(index,'w',boar->get_recompense_with_index(index).get_Skin().w);//15 à remplacer par la taille originale 
+		}
+		//321,481,
+		if(((add_rect.x > 295) && (add_rect.x < 350)) && ((add_rect.y > 450) && (add_rect.y < 500))) {
+			int index_recp = boar->catch_award(add_rect.x,add_rect.y,new_x, new_y);
+			if(index_recp != -1) 
+				nb_pts += boar->get_recompense_with_index(index_recp).getNb_pts();
+		}
+
+			
 		if(boar->getGum_with_index(gum_catch).get_w() == 24) {
+			cout << "ici " << endl;
+			nb_pts += 50;
 			for(int i = 0 ; i < 4; i++)  
 				boar->set_perso_with_statut_idx(i,1);
 			pac_huntime = 1;
+		}
+		else if(gum_catch != -1) {
+			nb_pts += 10;
 		}
 		sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
 		if((new_x < 0) && (new_y < 420+20) && (new_y > 420-20)) {
@@ -495,9 +525,13 @@ void Game::drawAward()
 	//SDL_BlitScaled(sprites_planches, &(recp), win_surface, &gum);
 
 	//Il me faut juste son skin car je connais l'emplacmeent
-	Recompense skin_choice = boar->get_recompense_with_index(boar->get_awards().size()-1);
-	if(skin_choice.getVisible() == 1)
-		SDL_BlitScaled(sprites_planches, skin_choice.get_Skin(), win_surface, &pacman_start);
+	int gum_ctch = boar->get_gum_catch();
+	Recompense p = boar->get_recompense_with_index(boar->get_awards().size()-1);
+	//w pour l'affichage sur la map, h pour l'affichage dans la barre de
+ 	if((p.get_w() > 0) && (gum_ctch > 70 || gum_ctch > 170)) {
+		SDL_Rect skin_choice = p.get_Skin();
+		SDL_BlitScaled(sprites_planches, &skin_choice, win_surface, &award_place);
+	}
 }
 
 void Game::drawGums()
@@ -524,7 +558,7 @@ void Game::drawGhostsAPac()
 			boar->set_perso_with_statut_idx(i,2);
 		}
 		else if((select_p.get_statut() == 2) && (pac_huntime >= pac_huntime_limit)) {
-			boar->set_perso_with_statut_idx(i,0);
+			boar->set_perso_with_statut_idx(i,-1);
 			if(i == 4) //on attend la fin de la boucle pour stopper la chasse
 				pac_huntime = 0;
 		}

@@ -34,7 +34,7 @@ void init_board(Board *b)
 	g_y.set_start();
 	Personnage p{&pacman_p,4,'a'}; //Utile_elem par Pacman
 	p.set_start();
-	Recompense rp(Cerise,"Cerise",300);
+	Recompense rp(cherry_r,Cerise,"Cerise",300);
 	
 	b->add_perso(g_r);
 	b->add_perso(g_p);
@@ -121,5 +121,6 @@ int main(int argc, char** argv)
 		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
 	}
 	SDL_Quit(); // ON SORT
+	cout << g.get_pts() << endl;
 	return 0;
 }

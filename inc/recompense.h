@@ -22,9 +22,8 @@ class Recompense: public Utile_elem
 	public:
 		//Constructors
 		Recompense();
+		Recompense(SDL_Rect rect, Artefacts arte,string name,int nb_points);
 		Recompense(Artefacts arte,string name,int nb_points);
-		Recompense(Recompense const& copy);
-		Recompense(SDL_Rect rect);
 		~Recompense();
 
 		//Inline setters

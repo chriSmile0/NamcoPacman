@@ -71,7 +71,8 @@ SDL_Rect ghost_pstart{ 291,416, 32,32 };
 SDL_Rect ghost_cstart{ 321,416, 32,32 };    
 SDL_Rect ghost_ystart{ 351,416, 32,32 };
 //Start pacman 
-SDL_Rect pacman_start{ 321,481, 32,32 };
+SDL_Rect pacman_start{ 321,640, 32,32 };
+SDL_Rect award_place{ 321,481,  32,32 };
 
 //Ghost Exit -> behind to front of the door
 SDL_Rect ghost_free{ 321,326, 32,32 };
