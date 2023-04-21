@@ -130,13 +130,13 @@ SDL_Rect dbl_quote{ 124,69, 7,8 };
 
 //Digits 
 SDL_Rect digit_0{ 3,52,  9,9 }; 
-SDL_Rect digit_1{ 10,52, 9,9 }; 
-SDL_Rect digit_2{ 18,52, 9,9 }; 
+SDL_Rect digit_1{ 11,52, 9,9 }; 
+SDL_Rect digit_2{ 19,52, 9,9 }; 
 SDL_Rect digit_3{ 27,52, 9,9 }; 
 SDL_Rect digit_4{ 35,52, 9,9 }; 
 SDL_Rect digit_5{ 43,52, 9,9 }; 
-SDL_Rect digit_6{ 50,52, 9,9 }; 
-SDL_Rect digit_7{ 58,52, 9,9 }; 
+SDL_Rect digit_6{ 51,52, 9,9 }; 
+SDL_Rect digit_7{ 59,52, 9,9 }; 
 SDL_Rect digit_8{ 67,52, 9,9 }; 
 SDL_Rect digit_9{ 75,52, 9,9 }; 
 

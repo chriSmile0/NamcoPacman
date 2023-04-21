@@ -23,6 +23,7 @@ Game::Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* pl
 	pac_huntime_limit = 300;
     b->sort_gums_by_xy();
 	init_high_score_letters();
+	init_high_score_digits();
 }
 
 void Game::init_walls()
@@ -569,14 +570,41 @@ void Game::drawScore()
 {
 	SDL_Rect high_score;
 	SDL_Rect emplacement_title{850,50,14,14};
+	SDL_Rect emplacement_score{880,80,14,14};
 	for (auto letter : letters_hs) {
 		SDL_BlitScaled(sprites_planches, &letter, win_surface, &emplacement_title);
-		emplacement.x += 12;
+		emplacement_title.x += 12;
 	}
-	//SDL_BlitScaled(sprites_planches, &high_score, win_surface, &emplacement);
-	
+
+	int nb_digits_in_score = 1;
+	int copy_nb_pts = nb_pts;
+	while((copy_nb_pts) > 9) {
+		nb_digits_in_score++; 
+		copy_nb_pts/=10;
+	}
+	int power = pow(10,nb_digits_in_score-1);//(nb_digits_in_score > 1) ? 10^nb_digits_in_score : 1;
+	int re_copy_nb_pts = nb_pts;
+	int goon = 1;
+	while(goon) {
+		if(power == 1)
+			goon = 0;
+		for(int i = 0 ; i < 10 ; i++) {
+			if(re_copy_nb_pts/power == i) {
+				SDL_BlitScaled(sprites_planches, &(digits_hs.at(i)), win_surface, &emplacement_score);
+				emplacement_score.x += 12;
+				re_copy_nb_pts = re_copy_nb_pts%power;
+				i = 10;
+			}
+		}
+		power /= 10;
+	}
 }
 
+
+/**
+ * 412/41 -> 8
+ * 
+*/
 void Game::init_high_score_letters()
 {
 	letters_hs.push_back(letter_h);
@@ -589,8 +617,20 @@ void Game::init_high_score_letters()
 	letters_hs.push_back(letter_o);
 	letters_hs.push_back(letter_r);
 	letters_hs.push_back(letter_e);
+}
 
-
+void Game::init_high_score_digits()
+{
+	digits_hs.push_back(digit_0);
+	digits_hs.push_back(digit_1);
+	digits_hs.push_back(digit_2);
+	digits_hs.push_back(digit_3);
+	digits_hs.push_back(digit_4);
+	digits_hs.push_back(digit_5);
+	digits_hs.push_back(digit_6);
+	digits_hs.push_back(digit_7);
+	digits_hs.push_back(digit_8);
+	digits_hs.push_back(digit_9);
 }
 
 Game::~Game()

@@ -3,6 +3,7 @@
 
 #include "../inc/board.h"
 #include <random>
+#include <cmath>
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -21,6 +22,7 @@ class Game
 		SDL_Surface* win_surface;
 		SDL_Surface* sprites_planches;
 		vector<SDL_Rect> letters_hs;
+		vector<SDL_Rect> digits_hs;
 		int ghosts_out = -1;
 		
 	public:
@@ -178,8 +180,21 @@ class Game
 		*/
 		int catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char sens);
 
-
+		/**
+		 * @brief	init des lettres du champ texte high score
+		 * @param{none}
+		 * @return 
+		**/
 		void init_high_score_letters();
+
+		/**
+		 * @brief	init des chiffres du champ texte des points
+		 * @param{none}
+		 * @return 
+		**/
+		void init_high_score_digits();
+
+
 };
 
 #include "../src/game.hpp"
