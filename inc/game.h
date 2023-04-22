@@ -79,6 +79,10 @@ class Game
 
 		void drawScore();
 
+		void drawLifes();
+
+		void drawListAwards();
+
 		//Init
 		/** @brief	Affichage des murs (pas beau!!!)
 		 * 			On applatit une gum pour la texture 

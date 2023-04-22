@@ -15,7 +15,7 @@ int coun;
 */
 void init_board(Board *b)
 {
-	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1100, 864, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1100, 950, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
 
 	plancheSprites = SDL_LoadBMP("../inc/pacman_sprites.bmp");
@@ -24,15 +24,15 @@ void init_board(Board *b)
 	SDL_SetColorKey(plancheSprites, false, 0);
 	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
 
-	Personnage g_r{&ghost_r,0,'r'}; //Utile_elem par Ghost
+	Ghost g_r{&ghost_r,0,'r'}; //Utile_elem par Ghost
 	g_r.set_start();
-	Personnage g_p{&ghost_p,1,'p'};
+	Ghost g_p{&ghost_p,1,'p'};
 	g_p.set_start();
-	Personnage g_c{&ghost_c,2,'c'};
+	Ghost g_c{&ghost_c,2,'c'};
 	g_c.set_start();
-	Personnage g_y{&ghost_y,3,'y'};
+	Ghost g_y{&ghost_y,3,'y'};
 	g_y.set_start();
-	Personnage p{&pacman_p,4,'a'}; //Utile_elem par Pacman
+	Pacman p{&pacman_p,4,'a'}; //Utile_elem par Pacman
 	p.set_start();
 	Recompense rp(cherry_r,Cerise,"Cerise",300);
 	
@@ -66,6 +66,8 @@ int main(int argc, char** argv)
 		g.drawGhostsAPac();
 		g.drawAward();//fonctionne mais il faut la placer dans certaines condition
 		g.drawScore();
+		g.drawLifes();
+		g.drawListAwards();
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{

@@ -4,6 +4,7 @@
 #include "map.h"
 #include "graine.h"
 #include "ghost.h"
+#include "pacman.h"
 #include "recompense.h"
 #include <iostream>
 #include <vector>

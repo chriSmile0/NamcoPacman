@@ -83,6 +83,7 @@ SDL_Rect ghost_free{ 321,326, 32,32 };
 SDL_Rect bpacman_c{ 3,218, 32,32 }; // bigpacman
 SDL_Rect bpacman_co{ 36,218, 32,32 }; //bigpacman
 SDL_Rect bpacman_o{ 68,218, 32,32 }; //bigpacman
+SDL_Rect life{168,75,12,15};//life of pacman}
 
 SDL_Rect lpacman_c{ 3,89, 16,16 };
 SDL_Rect lpacman_cor{ 20,89, 16,16 };

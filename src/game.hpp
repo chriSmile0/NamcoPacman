@@ -600,6 +600,25 @@ void Game::drawScore()
 	}
 }
 
+void Game::drawLifes()
+{
+	SDL_Rect emplacement_lifes{5,865,26,26};
+	int nb_life  = (static_cast<Pacman>(boar->get_perso_with_index(4))).getLife();
+	for(int i = 0 ; i < nb_life ; i++) {
+		SDL_BlitScaled(sprites_planches, &life, win_surface, &emplacement_lifes);
+		emplacement_lifes.x += 25;
+	}
+}
+
+void Game::drawListAwards()
+{
+	SDL_Rect emplacement_awards{200,865,26,26};
+	for(auto award : boar->get_awards()) {
+		SDL_Rect skin_a = award.get_Skin();
+		SDL_BlitScaled(sprites_planches, &skin_a, win_surface, &emplacement_awards);
+		emplacement_awards.x += 25;
+	}
+}
 
 /**
  * 412/41 -> 8

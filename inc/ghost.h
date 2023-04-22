@@ -14,18 +14,13 @@ class Ghost: public Personnage {
 		//Constructors 
 		Ghost();
 		Ghost(Ghost const& perso);
-		Ghost(SDL_Rect* rect, int id, char nom);
+		Ghost(SDL_Rect* rect, int id, char nom) : Personnage(rect,id,nom) {}
 		Ghost(Personnage per);
 		Ghost(char nom);
 		~Ghost();
 };
 
 Ghost::Ghost(): Personnage()
-{
-
-}
-
-Ghost::Ghost(SDL_Rect* rect, int id, char nom): Personnage(rect,id,nom)
 {
 
 }
