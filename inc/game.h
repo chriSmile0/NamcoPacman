@@ -8,28 +8,32 @@
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
 SDL_Surface* plancheSprites = nullptr;
+SDL_Surface* win_surf2 = nullptr;
 
 class Game 
 {
 	private:
 		int nb_pts = 0;
-		int level;
+		int level = 1;
 		int pac_huntime = 0;
 		int pac_huntime_limit;//Pour le moment en tour de boucle 
 		string player_name;
 		Board *boar;
 		SDL_Window* win;
 		SDL_Surface* win_surface;
+		SDL_Surface* win_surface2;
 		SDL_Surface* sprites_planches;
 		vector<SDL_Rect> letters_hs;
 		vector<SDL_Rect> digits_hs;
+		vector<SDL_Rect> letters_lvl;
+		vector<SDL_Rect> digits_lvl;
 		int ghosts_out = -1;
 		
 	public:
 		//Constructors
 		Game();
 		Game(string name, Board* b);
-		Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* pl);
+		Game(string name, Board* b, SDL_Window* w, SDL_Surface* s, SDL_Surface* s2, SDL_Surface* pl);
 		~Game();
 
 		//Inline setters
@@ -39,6 +43,7 @@ class Game
 		inline void set_PacHuntimeLimit(int htimel) {pac_huntime_limit = htimel;}
 		inline void set_ghosts_out(int g_out) {ghosts_out = g_out;}
 		inline void set_name(string name) {player_name = name;}
+		inline void level_up() {level++;}
 
 		//Inline getters
 		inline int get_pts() const {return nb_pts;}
@@ -78,6 +83,8 @@ class Game
 		void drawAward();
 
 		void drawScore();
+
+		void drawLevel();
 
 		void drawLifes();
 
@@ -157,9 +164,9 @@ class Game
 		 * 			ici	
 		 * @param{x_pac,y_pac,s} , s = la flèche appuyer(peut être sauvegarder en cas 
 		 * 						d'hitwall et donc d'éviter de rester bloquer)
-		 * @return{none} 
+		 * @return -1 pour arrêt du jeu et donc de pacman (juste un test ) 
 		*/
-		void updatePacman(int x_pac, int y_pac, char s);
+		int updatePacman(int x_pac, int y_pac, char s);
 
 		//Others
 		/** @brief	On va ici déterminer vers quelle direction se dirige un 
@@ -197,6 +204,27 @@ class Game
 		 * @return 
 		**/
 		void init_high_score_digits();
+
+		/**
+		 * @brief	init des lettres du champ level
+		 * @param{none}
+		 * @return 
+		**/
+		void init_level_letters();
+
+		/**
+		 * @brief	init des chiffres du champ level 
+		 * @param{none}
+		 * @return 
+		**/
+		void init_level_digits();
+
+		/**
+		 * @brief	reset des positions et des skins 
+		 * @param{none}
+		 * @return 
+		**/
+		void reset_positions();
 
 
 };

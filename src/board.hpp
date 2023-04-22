@@ -6,18 +6,21 @@ Board::Board()
 {
 	type_board = 1;
 	set_type_in_rectboard(type_board);
+	vid = &vide;
 }
 
 Board::Board(int t_board) 
 {
 	type_board = t_board;
 	set_type_in_rectboard(type_board);
+	vid = &vide;
 }
 
 Board::Board(Board const& copy)
 {
 	type_board = copy.type_board;
 	set_type_in_rectboard(type_board);
+	vid = &vide;
 }
 
 Board::~Board() 
@@ -117,15 +120,17 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 					break;
 			}
 		}
-		if(!goon) {
-			cout << "gum carac : x: " << x_gum  <<", y: " << y_gum << ", h: " << h_gum << ",w: " << w_gum << endl;
-			cout << " old x : " << old_x << ", new x:" << new_x <<  " old y : " << old_y << ", new y:" << new_y << endl;
+		if(!goon) 
 			gum_catch++;
-		}
 		i++;
 	}
 	if(!goon) {
 		gums[i-1].set_h(0);
+		active_gums--;
+		if(active_gums == 0) {
+			for(int i = 0 ; i < 192;i++)
+				gums[i].showSeed();
+		}
 		return (i-1);
 	}
 	else {
@@ -183,5 +188,39 @@ void Board::set_awards_with_index(int idx,char carac, int n_c)
 		case 'y' : awards[idx].set_y(n_c);
 		case 'w' : awards[idx].set_w(n_c);
 		case 'h' : awards[idx].set_h(n_c);
+	}
+}
+
+//Setup des niveaux
+void Board::add_award_in_list(int niveau)
+{
+	switch(niveau) {
+		case 1 : awards.push_back(Recompense{cherry_r,Cerise});
+			break;
+		case 2 : awards.push_back(Recompense{strawberry_r,Fraise});
+			break;
+		case 3 : awards.push_back(Recompense{orange_o,Orange});
+			break;
+		case 4 : awards.push_back(Recompense{orange_o,Orange});
+			break;
+		case 5 : awards.push_back(Recompense{apple_r,Pomme});
+			break;
+		case 6 : awards.push_back(Recompense{apple_r,Pomme});
+			break;
+		case 7 : awards.push_back(Recompense{melon_g,Melon});
+			break;
+		case 8 : awards.push_back(Recompense{melon_g,Melon});
+			break;
+		case 9 : awards.push_back(Recompense{galboss_r,Galboss});
+			break;
+		case 10 : awards.push_back(Recompense{galboss_r,Galboss});
+			break;
+		case 11 : awards.push_back(Recompense{bell_o,Cloche});
+			break;
+		case 12 : awards.push_back(Recompense{bell_o,Cloche});
+			break;
+		default: awards.push_back(Recompense{key_r,Cle});
+			// 13 ou + 
+			break;
 	}
 }

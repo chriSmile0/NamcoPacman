@@ -7,7 +7,9 @@ SDL_Rect selectuu{355,390,32,32};//g.get_board()->get_elem_with_index(2).get_val
 SDL_Rect src_b1{ 200,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
 SDL_Rect src_b2{ 370,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
 SDL_Rect src_b3{ 540,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
+SDL_Rect vide{540,220, 80,80};
 SDL_Rect bg{ 0,0, 672,864 }; // ici scale x4
+SDL_Rect ls_as{0,830, 700,70}; //plage des view et récompenses 
 
 //Ghosts 
 //Skins

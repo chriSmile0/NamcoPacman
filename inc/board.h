@@ -21,8 +21,11 @@ class Board
 	private:
 		int type_board;
 		SDL_Rect* gameboard;
+		SDL_Rect* vid;
 		Map map;
 		int gum_catch = 0;
+		int pac_life = 3;
+		int active_gums = 192;//192 gums au départ 
 		vector<Personnage> perso; //PAcman + les fantomes
 		vector<Graine> gums;//a changer car il y a 2 types de gums et donc il faut crée un objet(graine)
 		vector<Recompense> awards;//a changer car il y a plusieurs types de awards et donc il faut crée un objet(recompense)
@@ -45,6 +48,10 @@ class Board
 		inline void add_perso(Personnage pers) {perso.push_back(pers);}
 		inline void add_gum(Graine gum) {gums.push_back(gum);}
 		inline void add_awards(Recompense recp) {awards.push_back(recp);}
+		inline void setLife(int l) {pac_life = l;}
+		inline void loseLife() {pac_life--;}
+		inline void winLife() {pac_life++;}
+		inline void setActiveGums(int a_g) {active_gums = a_g;}
 		
 		//Setters
 		void set_type_in_rectboard(int type_b);
@@ -56,13 +63,17 @@ class Board
 		inline int get_gum_catch() const {return gum_catch;}
 		inline int get_typeboard() const {return type_board;}
 		inline SDL_Rect* get_gameboard() const {return gameboard;}
+		inline SDL_Rect* get_vid() const {return vid;}
 		inline vector<Personnage> get_tab_perso() const {return perso;}
-		inline Personnage get_perso_with_index(int index) const {return perso[index];}
+		inline Personnage get_perso_with_index(int index) {return perso[index];}
+		inline Personnage& get_ref_perso_with_index(int index) {return perso[index];}
 		inline Recompense get_recompense_with_index(int index) const {return awards[index];}
 		inline Map getMap() const {return map;}
 		inline vector<Graine> get_gums() const {return gums;}
 		inline vector<Recompense> get_awards() const {return awards;}
 		inline Graine getGum_with_index(int i) const {return (gums[i]);}
+		inline int getLife() const {return pac_life;}
+		inline int get_ActiveGums() const {return active_gums;}
 		//Getters
 		/** @brief	Renvoie la Gum qui se trouve aux coordonnées x,y
 		 * @param{x,y} : {/,/}
@@ -89,6 +100,13 @@ class Board
 		 * 
 		*/
 		int catch_award(int old_y, int old_x, int new_x, int new_y);
+
+		/**
+		* @brief	On ajoute les récompenses qu'il faut pour un niveau précis
+		* @param{niveau}
+		* @return 
+		*/
+		void add_award_in_list(int niveau);
 };
 
 #include "../src/board.hpp"

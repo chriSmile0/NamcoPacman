@@ -12,7 +12,6 @@ Personnage::Personnage(SDL_Rect* rect, int idx, char name): Utile_elem(rect)
 }
 
 
-
 SDL_Rect* Personnage::get_Skin() 
 {//0 = bas , 1 = haut, 2 = gauche, 3 = droit , s = sens_appuyer (que pour pacman)
 	if((statut == 1) && (id != 4))
@@ -76,7 +75,6 @@ void Personnage::set_start()
 				y = pacman_start.y;
 			break;
 	}
-	cout << "retour au départ" << endl;
 	time_house = 0;
 	change_pos(x,y);
 	change_size(32,32);

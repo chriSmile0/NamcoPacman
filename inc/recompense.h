@@ -24,6 +24,7 @@ class Recompense: public Utile_elem
 		Recompense();
 		Recompense(SDL_Rect rect, Artefacts arte,string name,int nb_points);
 		Recompense(Artefacts arte,string name,int nb_points);
+		Recompense(SDL_Rect r, Artefacts arte);
 		~Recompense();
 
 		//Inline setters

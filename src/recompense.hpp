@@ -10,7 +10,6 @@ Recompense::Recompense(SDL_Rect rect, Artefacts arte,string name,int nb_points):
 	artefact = arte;
 	nom = name;
 	nb_pts = nb_points;
-	cout << "constructeur ici" << endl;
 }
 
 
@@ -19,6 +18,14 @@ Recompense::Recompense(Artefacts arte,string name,int nb_points): Utile_elem()
 	artefact = arte;
 	nom = name;
 	nb_pts = nb_points;
+}
+
+Recompense::Recompense(SDL_Rect r, Artefacts arte): Utile_elem(r)
+{
+	artefact = arte;
+	nom = arte_in_str(arte);
+	nb_pts = arte_in_pts(arte);
+
 }
 /*
 Recompense::Recompense(Recompense const& copy): Utile_elem() 

@@ -25,6 +25,8 @@ class Graine: public Utile_elem
 		inline int get_val() const {return nb_pts;}
 		//Setter
 		inline void set_val(int n_val) {nb_pts = n_val;}
+
+		inline void showSeed();
 };
 
 #include "../src/graine.hpp"

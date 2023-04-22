@@ -17,12 +17,14 @@ void init_board(Board *b)
 {
 	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1100, 950, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
+	win_surf2 = SDL_GetWindowSurface(pWindow);
 
 	plancheSprites = SDL_LoadBMP("../inc/pacman_sprites.bmp");
 	coun = 0;
 
 	SDL_SetColorKey(plancheSprites, false, 0);
 	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
+	SDL_BlitScaled(plancheSprites, &vide, win_surf2, &ls_as);
 
 	Ghost g_r{&ghost_r,0,'r'}; //Utile_elem par Ghost
 	g_r.set_start();
@@ -34,14 +36,15 @@ void init_board(Board *b)
 	g_y.set_start();
 	Pacman p{&pacman_p,4,'a'}; //Utile_elem par Pacman
 	p.set_start();
-	Recompense rp(cherry_r,Cerise,"Cerise",300);
+	//Recompense rp(cherry_r,Cerise);
 	
 	b->add_perso(g_r);
 	b->add_perso(g_p);
 	b->add_perso(g_c);
 	b->add_perso(g_y);
 	b->add_perso(p);
-	b->add_awards(rp);//add à chaque niveau une récompense différente
+	//b->add_awards(rp);//add à chaque niveau une récompense différente
+	b->add_award_in_list(1);
 	SDL_SetColorKey(plancheSprites, true, 0);
 }
 
@@ -55,19 +58,35 @@ int main(int argc, char** argv)
 	
 	Board gmboard{3};
 	init_board(&gmboard);
-	Game g{"jojo",&gmboard,pWindow,win_surf,plancheSprites};
+	Game g{"jojo",&gmboard,pWindow,win_surf,win_surf2,plancheSprites};
 	// BOUCLE PRINCIPALE
 	bool quit = false;
 	int cou = 0;
+	int play = 1;
+	g.drawLifes();//mis à jour après chaque perte de vie ou gain de vie 
+	g.drawListAwards();//mis à jour à chaque nouveau niveau 
+	g.drawLevel();
 	while (!quit)
 	{
+		if(play<1) {// 0 pour loselife, -1 pour nouveau niveau 
+			//reset all 
+			g.reset_positions();
+			cou = 0;
+			if(play == -1) {
+				std::cout << "NEW level" << std::endl;
+				g.drawLevel();
+				//Le rest est déjà setup , on pourrais trop une zone en dessous du score pour le level 
+				//Si on change de level il faut setup les différents paramètres qui changent sur les fantomes aussi 
+				//Pour le moment on ne bouge pas 
+			}
+			play = 1;
+		}
 		cou++;
 		g.drawGums();
 		g.drawGhostsAPac();
 		g.drawAward();//fonctionne mais il faut la placer dans certaines condition
-		g.drawScore();
-		g.drawLifes();
-		g.drawListAwards();
+		//g.drawLevel();
+		//g.drawScore();
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{
@@ -85,13 +104,16 @@ int main(int argc, char** argv)
 		if((pac_hunt = g.get_PacHuntime()) > 0)
 			g.set_PacHuntime(++pac_hunt);
 		
-		if((ghosts_out = g.get_ghosts_out()) != -1)  //fonctionne
+		if(((ghosts_out = g.get_ghosts_out()) != -1) && play)  //fonctionne
 			if(capture_pac = (g.updateGhosts(g.get_board()->get_perso_with_index(4).get_x(),g.get_board()->get_perso_with_index(4).get_y(),ghosts_out))>=1) {
-				if(capture_pac == 1)
-					quit = true;
-				else {
-					cout << "pacman a capturer un fantome: "<< capture_pac << endl;	
-					//Compteur les points que vaut un fantome passif
+				if(capture_pac == 1) {
+					g.get_board()->loseLife();
+					if(g.get_board()->getLife() <= 0)
+						quit = true;
+					else {
+						play = 0;
+						g.reset_positions();
+					}
 				}
 			}
 		// Gestion du clavier        
@@ -100,13 +122,17 @@ int main(int argc, char** argv)
 		if (keys[SDL_SCANCODE_ESCAPE])
 			quit = true;
 		if (keys[SDL_SCANCODE_LEFT]) 
-			g.updatePacman(-6,0,'g');
+			if(g.updatePacman(-6,0,'g')==-1)
+				play = -1;
 		if (keys[SDL_SCANCODE_RIGHT]) 
-			g.updatePacman(6,0,'d');
+			if(g.updatePacman(6,0,'d')==-1)
+				play = -1;
 		if (keys[SDL_SCANCODE_DOWN]) 
-			g.updatePacman(0,6,'b');
+			if(g.updatePacman(0,6,'b')==-1)
+				play = -1;
 		if (keys[SDL_SCANCODE_UP]) 
-			g.updatePacman(0,-6,'h');
+			if(g.updatePacman(0,-6,'h') ==-1)
+				play = -1;
 		//Sortie auto des fantomes 
 		if((cou == 50) || (g.get_board()->get_perso_with_index(0).get_time_house()==50)) 
 			g.exit_ghost(0); 
@@ -116,6 +142,7 @@ int main(int argc, char** argv)
 			g.exit_ghost(2);
 		else if((cou == 240) || (g.get_board()->get_perso_with_index(3).get_time_house()==240))
 			g.exit_ghost(3);
+		
 		
 		SDL_SetColorKey(plancheSprites, true, 0);
 
