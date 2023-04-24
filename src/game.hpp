@@ -437,10 +437,6 @@ int Game::updatePacman(int x_pac, int y_pac,char s)
     }
     else {
         int gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y);
-		if(boar->get_gum_catch() == 170) {
-			int index = boar->get_awards().size()-1;
-			boar->set_awards_with_index(index,'w',boar->get_recompense_with_index(index).get_Skin().w);//15 à remplacer par la taille originale 
-		}
 		//321,481,
 		int u_pts = nb_pts;
 		if(((add_rect.x > 295) && (add_rect.x < 350)) && ((add_rect.y > 450) && (add_rect.y < 500))) {
@@ -449,14 +445,16 @@ int Game::updatePacman(int x_pac, int y_pac,char s)
 				u_pts += boar->get_recompense_with_index(index_recp).getNb_pts();
 		}
 
-		if(boar->getGum_with_index(gum_catch).get_w() == 24) {
-			u_pts += 50;
-			for(int i = 0 ; i < 4; i++)  
-				boar->set_perso_with_statut_idx(i,1);
-			pac_huntime = 1;
-		}
-		else if(gum_catch != -1) {
-			u_pts += 10;
+		if(gum_catch != -1) {
+			if((boar->getGum_with_index(gum_catch).get_w() == 24)) {
+				u_pts += 50;
+				for(int i = 0 ; i < 4; i++)  
+					boar->set_perso_with_statut_idx(i,1);
+				pac_huntime = 1;
+			}
+			else  {
+				u_pts += 10;
+			}
 		}
 		sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
 		if((new_x < 0) && (new_y < 420+20) && (new_y > 420-20)) {
@@ -545,16 +543,14 @@ void Game::go_home_ghost(int idx)
 }
 
 void Game::drawAward()
-{//Met à la place de pacman une récompense
-	//Toujours dessiner la récompense qui est en queue des awards
-	//SDL_Rect recp = (boar->get_recompense_with_index(boar->get_awards().size()-1).get_val_elem());
-	//SDL_BlitScaled(sprites_planches, &(recp), win_surface, &gum);
-
-	//Il me faut juste son skin car je connais l'emplacmeent
+{
 	int gum_ctch = boar->get_gum_catch();//active gums à la place 
-	Recompense p = boar->get_recompense_with_index(boar->get_awards().size()-1);
-	//w pour l'affichage sur la map, h pour l'affichage dans la barre de
- 	if((p.get_w() > 0) && (gum_ctch > 70 || gum_ctch > 170)) {
+	Recompense& p = boar->get_ref_recompense_with_index(boar->get_awards().size()-1);
+	p.reduceTime();
+	if(p.getViewTime()==0) 
+		p.set_w(0);
+	//w pour l'affichage sur la map, h pour l'affichage dans la barre d'awards
+ 	if(((p.get_w() > 0) && ((gum_ctch > 70) || gum_ctch > 170))) {
 		SDL_Rect skin_choice = p.get_Skin();
 		SDL_BlitScaled(sprites_planches, &skin_choice, win_surface, &award_place);
 	}

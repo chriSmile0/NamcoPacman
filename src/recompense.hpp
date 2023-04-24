@@ -27,6 +27,15 @@ Recompense::Recompense(SDL_Rect r, Artefacts arte): Utile_elem(r)
 	nb_pts = arte_in_pts(arte);
 
 }
+
+Recompense::Recompense(SDL_Rect r, Artefacts arte, int nb_secondes): Utile_elem(r)
+{
+	artefact = arte;
+	nom = arte_in_str(arte);
+	nb_pts = arte_in_pts(arte);
+	nb_seconds = nb_secondes;
+}
+
 /*
 Recompense::Recompense(Recompense const& copy): Utile_elem() 
 {
@@ -87,6 +96,7 @@ string Recompense::arte_in_str(Artefacts arte) const
 		return "None";
 	}
 }
+
 
 Recompense::~Recompense()
 {

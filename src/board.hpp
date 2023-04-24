@@ -127,6 +127,8 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 	if(!goon) {
 		gums[i-1].set_h(0);
 		active_gums--;
+		if((gum_catch == 70) || (gum_catch == 170)) 
+			set_awards_with_index(awards.size()-1,'w',awards[awards.size()-1].get_Skin().w);
 		if(active_gums == 0) {
 			for(int i = 0 ; i < 192;i++)
 				gums[i].showSeed();
@@ -163,7 +165,6 @@ int Board::catch_award(int old_x, int old_y ,int new_x, int new_y)
 			if(!goon) {
 				int index = get_awards().size()-1;
 				set_awards_with_index(index,'w',0);
-				cout << "indeexx" << index << endl;
 				return index;
 			}
 	}
@@ -187,6 +188,8 @@ void Board::set_awards_with_index(int idx,char carac, int n_c)
 		case 'x' : awards[idx].set_x(n_c);
 		case 'y' : awards[idx].set_y(n_c);
 		case 'w' : awards[idx].set_w(n_c);
+			if(n_c > 0)
+				awards[idx].setViewTime();//60 = 1 secondes
 		case 'h' : awards[idx].set_h(n_c);
 	}
 }
@@ -195,31 +198,31 @@ void Board::set_awards_with_index(int idx,char carac, int n_c)
 void Board::add_award_in_list(int niveau)
 {
 	switch(niveau) {
-		case 1 : awards.push_back(Recompense{cherry_r,Cerise});
+		case 1 : awards.push_back(Recompense{cherry_r,Cerise,6});
 			break;
-		case 2 : awards.push_back(Recompense{strawberry_r,Fraise});
+		case 2 : awards.push_back(Recompense{strawberry_r,Fraise,5});
 			break;
-		case 3 : awards.push_back(Recompense{orange_o,Orange});
+		case 3 : awards.push_back(Recompense{orange_o,Orange,4});
 			break;
-		case 4 : awards.push_back(Recompense{orange_o,Orange});
+		case 4 : awards.push_back(Recompense{orange_o,Orange,3});
 			break;
-		case 5 : awards.push_back(Recompense{apple_r,Pomme});
+		case 5 : awards.push_back(Recompense{apple_r,Pomme,2});
 			break;
-		case 6 : awards.push_back(Recompense{apple_r,Pomme});
+		case 6 : awards.push_back(Recompense{apple_r,Pomme,5});
 			break;
-		case 7 : awards.push_back(Recompense{melon_g,Melon});
+		case 7 : awards.push_back(Recompense{melon_g,Melon,2});
 			break;
-		case 8 : awards.push_back(Recompense{melon_g,Melon});
+		case 8 : awards.push_back(Recompense{melon_g,Melon,2});
 			break;
-		case 9 : awards.push_back(Recompense{galboss_r,Galboss});
+		case 9 : awards.push_back(Recompense{galboss_r,Galboss,1});
 			break;
-		case 10 : awards.push_back(Recompense{galboss_r,Galboss});
+		case 10 : awards.push_back(Recompense{galboss_r,Galboss,5});
 			break;
-		case 11 : awards.push_back(Recompense{bell_o,Cloche});
+		case 11 : awards.push_back(Recompense{bell_o,Cloche,2});
 			break;
-		case 12 : awards.push_back(Recompense{bell_o,Cloche});
+		case 12 : awards.push_back(Recompense{bell_o,Cloche,1});
 			break;
-		default: awards.push_back(Recompense{key_r,Cle});
+		default: awards.push_back(Recompense{key_r,Cle,1});
 			// 13 ou + 
 			break;
 	}

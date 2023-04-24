@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <chrono>
 using namespace std;
 
 bool compareGums(Graine sr1, Graine sr2)
@@ -68,6 +69,7 @@ class Board
 		inline Personnage get_perso_with_index(int index) {return perso[index];}
 		inline Personnage& get_ref_perso_with_index(int index) {return perso[index];}
 		inline Recompense get_recompense_with_index(int index) const {return awards[index];}
+		inline Recompense& get_ref_recompense_with_index(int index) {return awards[index];}
 		inline Map getMap() const {return map;}
 		inline vector<Graine> get_gums() const {return gums;}
 		inline vector<Recompense> get_awards() const {return awards;}
