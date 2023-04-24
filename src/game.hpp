@@ -603,13 +603,7 @@ void Game::drawScore()
 		emplacement_title.x += 12;
 	}
 
-	int nb_digits_in_score = 1;
-	int copy_nb_pts = nb_pts;
-	while((copy_nb_pts) > 9) {
-		nb_digits_in_score++; 
-		copy_nb_pts/=10;
-	}
-	int power = pow(10,nb_digits_in_score-1);//(nb_digits_in_score > 1) ? 10^nb_digits_in_score : 1;
+	int power = pow(10,(int)(log10(nb_pts)));//(nb_digits_in_score > 1) ? 10^nb_digits_in_score : 1;
 	int re_copy_nb_pts = nb_pts;
 	int goon = 1;
 	while(goon) {
@@ -637,13 +631,8 @@ void Game::drawLevel()
 		SDL_BlitScaled(sprites_planches, &letter, win_surface, &emplacement_title);
 		emplacement_title.x += 12;
 	}
-	int nb_digits_in_level = 1;
-	int copy_level = level;
-	while((copy_level) > 9) {
-		nb_digits_in_level++; 
-		copy_level/=10;
-	}
-	int power = pow(10,nb_digits_in_level-1);//(nb_digits_in_score > 1) ? 10^nb_digits_in_score : 1;
+	
+	int power = pow(10,(int)(log10(level)));//(nb_digits_in_score > 1) ? 10^nb_digits_in_score : 1;
 	int re_copy_level = level;
 	int goon = 1;
 	while(goon) {
