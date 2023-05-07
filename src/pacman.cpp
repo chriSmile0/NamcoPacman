@@ -5,7 +5,18 @@
 #include "../inc/graine.h"
 #include "../inc/recompense.h"
 
+#include <thread>
+
 int coun;
+
+
+void thread_effacer()
+{
+	SDL_SetColorKey(plancheSprites, false, 0);//On efface tout 
+	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
+}
+
+
 /** @brief On va ici initialiser le board , avec sa window, sa sous fenêtre
  * 			et la planche que l'on doit "découper"
  * 			Enfin on crée les 5 personnages que sont les 4 fantomes et Pacman
@@ -13,9 +24,11 @@ int coun;
 * @param{b} le board à init
 * @return{none} 
 */
+
 void init_board(Board *b)
 {
-	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1100, 950, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, 
+				SDL_WINDOWPOS_UNDEFINED, 1100, 950, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
 	win_surf2 = SDL_GetWindowSurface(pWindow);
 
@@ -36,14 +49,12 @@ void init_board(Board *b)
 	g_y.set_start();
 	Pacman p{&pacman_p,4,'a'}; //Utile_elem par Pacman
 	p.set_start();
-	//Recompense rp(cherry_r,Cerise);
 	
 	b->add_perso(g_r);
 	b->add_perso(g_p);
 	b->add_perso(g_c);
 	b->add_perso(g_y);
 	b->add_perso(p);
-	//b->add_awards(rp);//add à chaque niveau une récompense différente
 	b->add_award_in_list(1);
 	SDL_SetColorKey(plancheSprites, true, 0);
 }
@@ -52,7 +63,8 @@ int main(int argc, char** argv)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0 )
 	{
-		std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError() << std::endl;
+		std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError(); 
+		std::cerr << std::endl;
 		return 1;
 	}
 	
@@ -68,6 +80,10 @@ int main(int argc, char** argv)
 	g.drawLevel();
 	while (!quit)
 	{
+		//thread ici 
+		std::thread thr(thread_effacer);
+		thr.join();
+
 		if(play<1) {// 0 pour loselife, -1 pour nouveau niveau 
 			//reset all 
 			g.reset_positions();
@@ -75,8 +91,10 @@ int main(int argc, char** argv)
 			if(play == -1) {
 				std::cout << "NEW level" << std::endl;
 				g.drawLevel();
-				//Le rest est déjà setup , on pourrais trop une zone en dessous du score pour le level 
-				//Si on change de level il faut setup les différents paramètres qui changent sur les fantomes aussi 
+				//Le rest est déjà setup , on pourrais trop une zone en 
+				//dessous du score pour le level 
+				//Si on change de level il faut setup les différents 
+				//paramètres qui changent sur les fantomes aussi 
 				//Pour le moment on ne bouge pas 
 			}
 			play = 1;
@@ -84,9 +102,7 @@ int main(int argc, char** argv)
 		cou++;
 		g.drawGums();
 		g.drawGhostsAPac();
-		g.drawAward();//fonctionne mais il faut la placer dans certaines condition
-		//g.drawLevel();
-		//g.drawScore();
+		g.drawAward();//fonctionne mais il faut la placer dans certaines conditions
 		SDL_Event event;
 		while (!quit && SDL_PollEvent(&event))
 		{
@@ -105,7 +121,8 @@ int main(int argc, char** argv)
 			g.set_PacHuntime(++pac_hunt);
 		
 		if(((ghosts_out = g.get_ghosts_out()) != -1) && play)  //fonctionne
-			if(capture_pac = (g.updateGhosts(g.get_board()->get_perso_with_index(4).get_x(),g.get_board()->get_perso_with_index(4).get_y(),ghosts_out))>=1) {
+			if(capture_pac = (g.updateGhosts(g.get_board()->get_perso_with_index(4).get_x()
+				,g.get_board()->get_perso_with_index(4).get_y(),ghosts_out))>=1) {
 				if(capture_pac == 1) {
 					g.get_board()->loseLife();
 					if(g.get_board()->getLife() <= 0)
@@ -151,6 +168,5 @@ int main(int argc, char** argv)
 		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
 	}
 	SDL_Quit(); // ON SORT
-	cout << g.get_pts() << endl;
 	return 0;
 }

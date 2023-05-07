@@ -13,6 +13,7 @@ class Personnage: public Utile_elem {
 		char sens = 'd';
 		int out = -1;
 		int time_house = 0;
+		double speed = 6.0; //de base on met 6 aux personnages
 		SDL_Rect* Skin;
 		
 	public:
@@ -29,6 +30,7 @@ class Personnage: public Utile_elem {
 		inline void set_sens(char n_sens) {sens = n_sens;}
 		inline void set_out(int o) {out = o;}
 		inline void set_time_house(int time) {time_house = time;}
+		inline void set_speed(double s) {speed = s;}
 
 		//Setters
 		/**
@@ -59,6 +61,7 @@ class Personnage: public Utile_elem {
 		inline char get_sens() const {return sens;}
 		inline int get_out() const {return out;}
 		inline int get_time_house() const {return time_house;}
+		inline double get_speed() const {return speed;}
 
 		//Get Skin
 		/**

@@ -102,18 +102,26 @@ int Board::catch_gum(int old_x, int old_y ,int new_x, int new_y)
 		int w_gum = gum.get_w();
 		if(h_gum > 0) {
 			switch(sens) { // La pour le moment sa le fera dès le premier mur 
-				case 'h': if((((old_y > y_gum) && (new_y <= (y_gum)))) && ((new_x > (x_gum-(w_gum*4))) && (new_x < (x_gum + (w_gum)))))
+				case 'h': if((((old_y > y_gum) && (new_y <= (y_gum)))) 
+							&& ((new_x > (x_gum-(w_gum*4))) 
+							&& (new_x < (x_gum + (w_gum)))))
 							goon = 0;
 						break;
 				case 'b': y_gum -= dim_perso;
-						if((((old_y < y_gum) && (new_y >= (y_gum)))) && ((new_x > (x_gum-(w_gum*4))) && (new_x < (x_gum + (w_gum)))))
+						if((((old_y < y_gum) && (new_y >= (y_gum)))) 
+							&& ((new_x > (x_gum-(w_gum*4))) 
+							&& (new_x < (x_gum + (w_gum)))))
 							goon = 0;
 						break;
-				case 'g':  if((((old_x > x_gum) && (new_x <= (x_gum)))) && ((new_y > (y_gum-(h_gum*4))) && (new_y < (y_gum + (h_gum))))) 
+				case 'g':  if((((old_x > x_gum) && (new_x <= (x_gum)))) 
+								&& ((new_y > (y_gum-(h_gum*4))) 
+								&& (new_y < (y_gum + (h_gum))))) 
 							goon = 0;
 						break;
 				case 'd': x_gum -= dim_perso; 
-						if((((old_x < x_gum) && (new_x >= (x_gum)))) && ((new_y > (y_gum-(h_gum*4))) && (new_y < (y_gum + (h_gum))))) 
+						if((((old_x < x_gum) && (new_x >= (x_gum)))) 
+							&& ((new_y > (y_gum-(h_gum*4))) 
+							&& (new_y < (y_gum + (h_gum))))) 
 							goon = 0;
 						break;
 				default:
@@ -153,10 +161,13 @@ int Board::catch_award(int old_x, int old_y ,int new_x, int new_y)
 			int w_award = award_place.w;
 			int h_award = award_place.h;
 			switch(sens) { // La pour le moment sa le fera dès le premier mur 
-				case 'g':  if((((old_x > x_award) && (new_x <= (x_award)))) && ((new_y > (y_award-(h_award))) && (new_y < (y_award + (h_award))))) 
+				case 'g':  if((((old_x > x_award) && (new_x <= (x_award)))) 
+							&& ((new_y > (y_award-(h_award))) 
+							&& (new_y < (y_award + (h_award))))) 
 							goon = 0;
 						break;
-				case 'd': if((new_y > (y_award-(h_award))) && (new_y < (y_award + (h_award))))
+				case 'd': if((new_y > (y_award-(h_award))) 
+							&& (new_y < (y_award + (h_award))))
 							goon = 0;
 						break;
 				default:

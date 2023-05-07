@@ -45,6 +45,7 @@ class Board
 		inline void set_perso_with_statut_idx(int idx,int statut) {perso[idx].set_statut(statut);}
 		inline void set_perso_with_sens_idx(int idx,int sens) {perso[idx].set_sens(sens);}
 		inline void set_perso_with_timehouse_idx(int idx,int time_h) {perso[idx].set_time_house(time_h);}
+		inline void set_perso_with_speed_idx(int idx,int speed) {perso[idx].set_speed((int)speed);}
 		inline void set_pos_perso(int index, int new_x, int new_y) {perso.at(index).change_pos(new_x,new_y);}
 		inline void add_perso(Personnage pers) {perso.push_back(pers);}
 		inline void add_gum(Graine gum) {gums.push_back(gum);}

@@ -12,7 +12,8 @@ Game::Game(string name , Board* b)
 
 }
 
-Game::Game(string name, Board* b, SDL_Window* w, SDL_Surface* s,SDL_Surface* s2, SDL_Surface* pl) 
+Game::Game(string name, Board* b, SDL_Window* w, SDL_Surface* s,
+			SDL_Surface* s2, SDL_Surface* pl) 
 {
 	player_name = name;
 	boar = b;
@@ -59,7 +60,7 @@ void Game::init_seeds()
 	int w = 6; // *3
 	int h = 6; // *3
     int i = 0;
-	// *********************************************Les horizontales *************************************************//
+	// *********************************************Les horizontales *********//
 	for(i = 0 ; i < 12 ; i++) {
 		if((i == 3) || (i == 9))
 			x += 32;
@@ -134,7 +135,7 @@ void Game::init_seeds()
 		x += 32;
 	}
 
-	// ************************************Les verticales********************************************************************** //
+	// ************************************Les verticales*********************//
 	//La verticale en haut à gauche
 	x = 46;
 	y = 46;
@@ -266,7 +267,8 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 	Personnage& p = boar->get_ref_perso_with_index(index);
 	int g_x = p.get_x();
 	int g_y = p.get_y();
-    int distance = 6;//distance de déplacement des fantomes
+	double speed = p.get_speed();
+	int distance = speed;//distance de déplacement des fantomes
 
     int new_x = g_x;//à changer en fonction de la position de pacman
     int new_y = g_y;// "" "" 
@@ -302,7 +304,7 @@ int Game::moveGhost(int x_pac, int y_pac, char sens, int index, int statut)
 			int nb_ghost_eat = 0;
 			for(int i = 0 ; i < 4; i++) 
 				nb_ghost_eat += (boar->get_perso_with_index(i).get_statut()==0) ? 2 : 0;
-			nb_pts += (nb_ghost_eat == 0) ? 200 : 200*(nb_ghost_eat);//a multiplier par 2 à chaque fois qu'il y a eu une capture lors de cette chasse
+			nb_pts += (nb_ghost_eat == 0) ? 200 : 200*(nb_ghost_eat);
 			drawScore();
 		}
     }
@@ -439,7 +441,8 @@ int Game::updatePacman(int x_pac, int y_pac,char s)
         int gum_catch = boar->catch_gum(add_rect.x,add_rect.y,new_x,new_y);
 		//321,481,
 		int u_pts = nb_pts;
-		if(((add_rect.x > 295) && (add_rect.x < 350)) && ((add_rect.y > 450) && (add_rect.y < 500))) {
+		if(((add_rect.x > 295) && (add_rect.x < 350)) && ((add_rect.y > 450) && 
+			(add_rect.y < 500))) {
 			int index_recp = boar->catch_award(add_rect.x,add_rect.y,new_x, new_y);
 			if(index_recp != -1) 
 				u_pts += boar->get_recompense_with_index(index_recp).getNb_pts();
@@ -458,10 +461,10 @@ int Game::updatePacman(int x_pac, int y_pac,char s)
 		}
 		sens = sens_of_walk(add_rect.x,add_rect.y,new_x,new_y,s,1);
 		if((new_x < 0) && (new_y < 420+20) && (new_y > 420-20)) {
-			new_x = 700;
+			new_x = 640;
 			sens = 'g';
 		}
-		else if((new_x > 680) && (new_y < 420+20) && (new_y > 420-20)) {
+		else if((new_x > 640) && (new_y < 420+20) && (new_y > 420-20)) {
 			new_x = 0;
 			sens = 'd';
 		}
@@ -480,6 +483,8 @@ int Game::updatePacman(int x_pac, int y_pac,char s)
 				boar->add_award_in_list(level);
 				boar->setActiveGums(192);
 				boar->set_gum_catch(0);//a voir pour changer avec active gums au final
+				//reduction du temps de chasse aussi 
+				pac_huntime_limit = pac_huntime_limit*0.90;
 				return -1;
 			}
 		}
@@ -505,7 +510,8 @@ int Game::updateGhosts(int x_pac, int y_pac, int ghosts_out)
 }
 
 
-char Game::sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, int g_or_p)//g_or_p = ghost_or_pacman ; 0 pour g, 1 pour pacman
+char Game::sens_of_walk(int x_old,int y_old, int x, int y,char base_sens, 
+			int g_or_p)//g_or_p = ghost_or_pacman ; 0 pour g, 1 pour pacman
 {
     int x_m_nx = x - x_old;
 	int y_m_ny = y - y_old;
@@ -520,10 +526,14 @@ int Game::catchPacman(int x_ghost, int y_ghost, int x_pac, int y_pac, char sens)
     int r_box = x_pac+24;//24 = dim_perso
     int d_box = y_pac+24;// "" ""
 	switch(sens) {
-		case 'g': return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
-		case 'd': return (((x_ghost <= r_box) && (x_ghost >= l_box)) && ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
-		case 'h': return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
-		case 'b': return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) && ((y_ghost >= u_box) && (y_ghost <= d_box)));
+		case 'g': return (((x_ghost <= r_box) && (x_ghost >= l_box)) 
+					&& ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
+		case 'd': return (((x_ghost <= r_box) && (x_ghost >= l_box)) 
+					&& ((y_ghost >= u_box-10) && (y_ghost <= d_box+10)));
+		case 'h': return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) 
+					&& ((y_ghost >= u_box) && (y_ghost <= d_box)));
+		case 'b': return (((x_ghost <= r_box+10) && (x_ghost >= l_box-10)) 
+					&& ((y_ghost >= u_box) && (y_ghost <= d_box)));
 		default:
 			return 0;
 	}
@@ -558,8 +568,7 @@ void Game::drawAward()
 
 void Game::drawGums()
 {
-	SDL_SetColorKey(sprites_planches, false, 0);//On efface tout 
-	SDL_BlitScaled(sprites_planches, boar->get_gameboard(), win_surface, &bg);
+	//Voir pour faire effacer par un thread -> ralenti le jeu
 
     int nb_gums = boar->get_gums().size();
     for(int i = 0 ; i < nb_gums ; i++) {
@@ -576,16 +585,19 @@ void Game::drawGhostsAPac()
 	for (int i = 0 ; i < 5; i++) {
 		Personnage& select_p = boar->get_ref_perso_with_index(i);
         SDL_Rect save_elem{select_p.get_val_elem()};//boar->getGhost_with_index(i);//boar->get_elem_with_index(i).get_val_elem();
-		if((select_p.get_statut() == 1) && (pac_huntime >= 0.75*pac_huntime_limit)) {
+		if((select_p.get_statut() == 1) 
+			&& (pac_huntime >= 0.75*pac_huntime_limit)) {
 			boar->set_perso_with_statut_idx(i,2);
 		}
-		else if((select_p.get_statut() == 2) && (pac_huntime >= pac_huntime_limit)) {
+		else if((select_p.get_statut() == 2) 
+			&& (pac_huntime >= pac_huntime_limit)) {
 			boar->set_perso_with_statut_idx(i,-1);
 			if(i == 4) //on attend la fin de la boucle pour stopper la chasse
 				pac_huntime = 0;
 		}
 		select_p.set_time_house(select_p.get_time_house()+1);//a remplacer par une fonction faite pour ça -> ++;
-        SDL_BlitScaled(sprites_planches, (select_p.get_Skin()), win_surface, &save_elem);
+        SDL_BlitScaled(sprites_planches, (select_p.get_Skin()), win_surface, 
+				&save_elem);
     }
 }
 
@@ -607,7 +619,8 @@ void Game::drawScore()
 			goon = 0;
 		for(int i = 0 ; i < 10 ; i++) {
 			if(re_copy_nb_pts/power == i) {
-				SDL_BlitScaled(sprites_planches, &(digits_hs.at(i)), win_surface, &emplacement_score);
+				SDL_BlitScaled(sprites_planches, &(digits_hs.at(i)), win_surface,
+					&emplacement_score);
 				emplacement_score.x += 12;
 				re_copy_nb_pts = re_copy_nb_pts%power;
 				i = 10;
@@ -636,7 +649,8 @@ void Game::drawLevel()
 			goon = 0;
 		for(int i = 0 ; i < 10 ; i++) {
 			if(re_copy_level/power == i) {
-				SDL_BlitScaled(sprites_planches, &(digits_lvl.at(i)), win_surface, &emplacement_level);
+				SDL_BlitScaled(sprites_planches, &(digits_lvl.at(i)), 
+					win_surface, &emplacement_level);
 				emplacement_level.x += 12;
 				re_copy_level = re_copy_level%power;
 				i = 10;
