@@ -18,6 +18,8 @@ class Recompense: public Utile_elem
 		string nom = "no_name";
 		Artefacts artefact = Cerise;
 		int visible = 0;
+		int time_view = 0;
+		int nb_seconds;
 
 	public:
 		//Constructors
@@ -25,6 +27,7 @@ class Recompense: public Utile_elem
 		Recompense(SDL_Rect rect, Artefacts arte,string name,int nb_points);
 		Recompense(Artefacts arte,string name,int nb_points);
 		Recompense(SDL_Rect r, Artefacts arte);
+		Recompense(SDL_Rect r, Artefacts arte, int nb_secondes);
 		~Recompense();
 
 		//Inline setters
@@ -32,12 +35,16 @@ class Recompense: public Utile_elem
 		inline void setName(string name) {nom = name;}
 		inline void setNb_pts(int nb_points) {nb_pts = nb_points;}
 		inline void setVisible(int vis) {visible = vis;}
+		inline void setViewTime() {time_view = 60*nb_seconds;}
+		inline void reduceTime() {time_view--;}
 
 		//Inline getters
 		inline Artefacts getArtefact() const {return artefact;}
 		inline string getName() const {return nom;}
 		inline int getNb_pts() const {return nb_pts;}
 		inline int getVisible() const {return visible;}
+		inline int getViewTime() const {return time_view;}
+		inline int getNbSeconds() const {return nb_seconds;}
 
 		//Getters 
 		/**
@@ -58,6 +65,8 @@ class Recompense: public Utile_elem
 		* @return L'adresse qui correspond au skin sur la bitmap 
 		**/
 		SDL_Rect get_Skin();  
+
+
 		
 };
 
