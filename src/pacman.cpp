@@ -13,7 +13,7 @@ int coun;
 void thread_effacer()
 {
 	SDL_SetColorKey(plancheSprites, false, 0);//On efface tout 
-	SDL_BlitScaled(plancheSprites, &src_b3, win_surf, &bg);
+	SDL_BlitScaled(plancheSprites, &src_b2, win_surf, &bg);
 }
 
 
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	
-	Board gmboard{3};
+	Board gmboard{2};
 	init_board(&gmboard);
 	Game g{"jojo",&gmboard,pWindow,win_surf,win_surf2,plancheSprites};
 	// BOUCLE PRINCIPALE
